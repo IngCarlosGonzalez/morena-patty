@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ColoniaController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\AgendaController;
@@ -29,9 +30,10 @@ Route::middleware([
     'verified'
 ])->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get(
+        '/dashboard',
+        [DashboardController::class, 'asegun']
+    )->name('dashboard');
 
     Route::resource(
         'colonias',
