@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('colonias', function (Blueprint $table) {
             $table->id();
-            $table->integer('codigo')->unsigned()->unique()->default(0);
+            $table->integer('codigo')->unsigned()->default(0);
             $table->integer('entidad')->unsigned()->default(0);
-            $table->integer('municipio')->unsigned()->default(0);
+            $table->unsignedBigInteger('municipio_id')->nullable();
             $table->string('nombre_mpio', 30)->nullable();
             $table->tinyInteger('distrito_fed')->unsigned()->default(0);
             $table->tinyInteger('distrito_local')->unsigned()->default(0);
@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('nombre_colonia', 60)->nullable();
             $table->integer('cod_post_colon')->unsigned()->default(0);
             $table->integer('num_control')->unsigned()->default(0);
+            $table->foreign('municipio_id')->references('id')->on('municipios')->onDelete('cascade');
             $table->timestamps();
         });
     }

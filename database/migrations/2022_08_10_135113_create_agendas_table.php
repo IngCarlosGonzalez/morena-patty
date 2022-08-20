@@ -25,7 +25,10 @@ return new class extends Migration
             $table->tinyInteger('contacto_catalogado')->unsigned()->default(0);
             $table->unsignedBigInteger('contacto_id')->nullable();
             $table->string('persona_nombre', 60)->nullable();
-            $table->string('persona_telefonos', 60)->nullable();
+            $table->unsignedBigInteger('persona_tel_fijo')->default(0);
+            $table->unsignedBigInteger('persona_tel_movil')->default(0);
+            $table->tinyInteger('persona_watsapp')->unsigned()->default(0);
+            $table->text('asunto_de_la_cita')->nullable();
             $table->string('referencia_cita', 60)->nullable();
             $table->tinyInteger('cita_confirmada')->unsigned()->default(0);
             $table->string('confirma_notas', 30)->nullable();
@@ -36,7 +39,7 @@ return new class extends Migration
             $table->date('nueva_fecha')->nullable();
             $table->time('nueva_hora')->nullable();
             $table->tinyInteger('cita_efectuada')->unsigned()->default(0);
-            $table->text('notas_resultado')->nullable();
+            $table->text('notas_finales_cita')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('owner_id')->references('id')->on('owners')->onDelete('cascade');
             $table->foreign('contacto_id')->references('id')->on('contactos')->onDelete('cascade');

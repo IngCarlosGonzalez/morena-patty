@@ -5,13 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Categoria extends Model
+class Municipio extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'clasificacion'
+        'nombre_mpio'
     ];
+
+    public function colonias()
+    {
+        return $this->hasMany('App\Models\Colonia');
+    }
 
     public function contactos()
     {

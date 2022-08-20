@@ -21,5 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(OwnerSeeder::class);
 
         $this->call(CategoriaSeeder::class);
+
+        $this->call(MunicipioSeeder::class);
     }
 }

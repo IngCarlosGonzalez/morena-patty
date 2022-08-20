@@ -1,13 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ColoniaController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\VisitaController;
+use App\Http\Controllers\ColoniaController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocumentoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,12 @@ Route::middleware([
         ContactoController::class
     )
     ->names('contactos');
+
+    Route::resource(
+        'documentos',
+        DocumentoController::class
+    )
+    ->names('documentos');
 
     Route::resource(
         'visitas',
