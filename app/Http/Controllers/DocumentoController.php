@@ -15,7 +15,7 @@ class DocumentoController extends Controller
      */
     public function index()
     {
-        //
+        return view('ejemplo2');
     }
 
     /**

@@ -9,11 +9,122 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <!-- Styles -->
+        <style>
+            .topnavv {
+              overflow: hidden;
+              background-color: #aa0000;
+            }
+
+            .topnavv a {
+              float: left;
+              display: block;
+              color: #d36e6e;
+              text-align: center;
+              padding: 14px 16px;
+              text-decoration: none;
+              font-size: 17px;
+            }
+
+            .topnavv a:active {
+              background-color: #33362bd8;
+              color: white;
+            }
+
+            .topnavv .icon {
+              display: none;
+            }
+
+            .dropdownv {
+              float: left;
+              overflow: hidden;
+            }
+
+            .dropdownv .dropbtnv {
+              font-size: 17px;
+              border: none;
+              outline: none;
+              color: white;
+              padding: 14px 16px;
+              background-color: inherit;
+              font-family: inherit;
+              margin: 0;
+            }
+
+            .dropdownv-content {
+              display: none;
+              position: absolute;
+              background-color: #f9f9f9;
+              min-width: 160px;
+              box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+              z-index: 1;
+            }
+
+            .dropdownv-content a {
+              float: none;
+              color: black;
+              padding: 12px 16px;
+              text-decoration: none;
+              display: block;
+              text-align: left;
+            }
+
+            .topnavv a:hover, .dropdownv:hover .dropbtnv {
+              background-color: #555;
+              color: white;
+            }
+
+            .dropdownv-content a:hover {
+              background-color: rgb(234, 121, 121);
+              color: black;
+            }
+
+            .dropdownv:hover .dropdownv-content {
+              display: block;
+            }
+
+            .dropdownv-content a:active {
+              background-color: #33362bd8;
+              color: white;
+            }
+
+            @media screen and (max-width: 600px) {
+              .topnavv a:not(:first-child), .dropdownv .dropbtnv {
+                display: none;
+              }
+              .topnavv a.icon {
+                float: right;
+                display: block;
+              }
+            }
+
+            @media screen and (max-width: 600px) {
+              .topnavv.responsive {position: relative;}
+              .topnavv.responsive .icon {
+                position: absolute;
+                right: 0;
+                top: 0;
+              }
+              .topnavv.responsive a {
+                float: none;
+                display: block;
+                text-align: left;
+              }
+              .topnavv.responsive .dropdownv {float: none;}
+              .topnavv.responsive .dropdownv-content {position: relative;}
+              .topnavv.responsive .dropdownv .dropbtnv {
+                display: block;
+                width: 100%;
+                text-align: left;
+              }
+            }
+        </style>
+
         @livewireStyles
 
     </head>
@@ -24,7 +135,135 @@
 
         <div class="min-h-screen bg-gray-800">
 
-            @livewire('navigation-menu')
+            {{-- @livewire('navigation-menu') --}}
+
+            <!-- Mi top navbar -->
+            @if(@Auth::user()->hasRole('superusuario'))
+
+                <!-- Navigation Links del Superusuario -->
+                <div class="topnavv" id="myTopnav">
+                    <div>
+                        <a href="/" style="background-color: #c0c0c0">
+                            <img src="https://morena.org/wp-content/uploads/2021/02/logo_retina.png" alt="Logo Oficial de MNorena" width="96" height="96">
+                        </a>
+                    </div>
+                    <div class="dropdownv">
+                        <button class="dropbtnv" onclick="window.location.href='{{ route('dashboard') }}'">
+                            <i class="fa fa-home"></i>
+                            &nbsp;&nbsp;INICIO&nbsp;&nbsp;
+                        </button>
+                    </div>
+                    <!-- Catálogos del Sistema -->
+                    <div class="dropdownv">
+                        <button class="dropbtnv">CATALOGOS
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdownv-content">
+                            <a href="{{ route('usuarios.index') }}">Usuarios</a>
+                            <a href="{{ route('owners.index') }}">Propietarios</a>
+                            <a href="{{ route('categorias.index') }}">Categorias</a>
+                        </div>
+                    </div>
+                    <!-- Manejo de Contactos -->
+                    <div class="dropdownv">
+                        <button class="dropbtnv">CONTACTOS
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdownv-content">
+                            <a href="{{ route('contactos.create') }}">Nuevo Contacto</a>
+                            <a href="{{ route('contactos.index') }}">Mis Contactos</a>
+                            <a href="{{ route('documentos.index') }}">Expedientes</a>
+                            <a href="#">Consultas</a>
+                        </div>
+                    </div>
+                    <!-- Control de Visitantes -->
+                    <div class="dropdownv">
+                        <button class="dropbtnv">VISITANTES
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdownv-content">
+                            <a href="{{ route('visitas.create') }}">Registrar Visita</a>
+                            <a href="{{ route('visitas.index') }}">Listado de Visitas</a>
+                            <a href="#">Seguimiento</a>
+                        </div>
+                    </div>
+                    <!-- Manejo de Agenda -->
+                    <div class="dropdownv">
+                        <button class="dropbtnv">AGENDA
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdownv-content">
+                            <a href="{{ route('agendas.index') }}">Mi Agenda</a>
+                            <a href="#">Compromisos</a>
+                            <a href="#">Otra Agenda</a>
+                            <a href="#">Listar Otra</a>
+                        </div>
+                    </div>
+                    <!-- Salir del Sistema -->
+                    <div class="dropdownv" style="float:right">
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button class="dropbtnv">
+                                &nbsp;&nbsp;SALIR&nbsp;&nbsp;
+                                <i class="fa fa-arrow-circle-o-right"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <div>
+                        <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+                    </div>
+                </div>
+
+            @else
+
+                <!-- Navigation Links del Usuario Común -->
+                <div class="topnavv" id="myTopnav">
+                    <div>
+                        <a href="/" style="background-color: #c0c0c0">
+                            <img src="https://morena.org/wp-content/uploads/2021/02/logo_retina.png" alt="Logo Oficial de MNorena" width="96" height="96">
+                        </a>
+                    </div>
+                    <div class="dropdownv">
+                        <button class="dropbtnv" onclick="window.location.href='{{ route('dashboard') }}'">
+                            <i class="fa fa-home"></i>
+                            &nbsp;&nbsp;INICIO&nbsp;&nbsp;
+                        </button>
+                    </div>
+                    <!-- Manejo de Contactos -->
+                    <div class="dropdownv">
+                        <button class="dropbtnv">CONTACTOS
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdownv-content">
+                            <a href="{{ route('contactos.index') }}">Mis Contactos</a>
+                            <a href="#">Exportacion</a>
+                        </div>
+                    </div>
+                    <!-- Manejo de Agenda -->
+                    <div class="dropdownv">
+                        <button class="dropbtnv">AGENDA
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdownv-content">
+                            <a href="{{ route('agendas.index') }}">Mi Agenda</a>
+                            <a href="#">Compromisos</a>
+                        </div>
+                    </div>
+                    <!-- Salir del Sistema -->
+                    <div class="dropdownv" style="float:right">
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button class="dropbtnv">
+                                &nbsp;&nbsp;SALIR&nbsp;&nbsp;
+                                <i class="fa fa-arrow-circle-o-right"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <div>
+                        <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+                    </div>
+                </div>
+            @endif
 
             <!-- Page Heading -->
             @if (isset($header))
@@ -43,6 +282,17 @@
         </div>
 
         @stack('modals')
+
+        <script>
+            function myFunction() {
+              var x = document.getElementById("myTopnav");
+              if (x.className === "topnavv") {
+                x.className += " responsive";
+              } else {
+                x.className = "topnavv";
+              }
+            }
+        </script>
 
         @livewireScripts
 

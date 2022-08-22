@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('agendas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('owner_id');
+            $table->unsignedBigInteger('owner_id')->default(1);
             $table->date('fecha_de_cita')->nullable();
             $table->time('hora_de_cita')->nullable();
             $table->string('tipo_de_cita', 20)->default('');
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('clase_de_cita', 20)->default('');
             $table->string('prioridad_cita', 20)->default('');
             $table->tinyInteger('contacto_catalogado')->unsigned()->default(0);
-            $table->unsignedBigInteger('contacto_id')->nullable();
+            $table->unsignedBigInteger('contacto_id')->nullable()->default(0);
             $table->string('persona_nombre', 60)->nullable();
             $table->unsignedBigInteger('persona_tel_fijo')->default(0);
             $table->unsignedBigInteger('persona_tel_movil')->default(0);
@@ -40,7 +40,7 @@ return new class extends Migration
             $table->time('nueva_hora')->nullable();
             $table->tinyInteger('cita_efectuada')->unsigned()->default(0);
             $table->text('notas_finales_cita')->nullable();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->default(1);
             $table->foreign('owner_id')->references('id')->on('owners')->onDelete('cascade');
             $table->foreign('contacto_id')->references('id')->on('contactos')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

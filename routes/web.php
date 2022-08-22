@@ -5,6 +5,7 @@ use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\VisitaController;
 use App\Http\Controllers\ColoniaController;
+use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\DashboardController;
@@ -35,6 +36,12 @@ Route::middleware([
         '/dashboard',
         [DashboardController::class, 'asegun']
     )->name('dashboard');
+
+    Route::resource(
+        'usuarios',
+        UsuarioController::class
+    )
+    ->names('usuarios');
 
     Route::resource(
         'colonias',

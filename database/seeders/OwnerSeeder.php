@@ -38,7 +38,7 @@ class OwnerSeeder extends Seeder
                 'user_id' => 3,
                 'esta_vigente' => 1,
                 'area_o_depto' => 'ASESORIA EXTERNA',
-                'nombre_titular' => 'LORENZO DE LA MORA',
+                'nombre_titular' => 'LIC. FULANO DE TAL',
                 'puesto_titular' => 'TERAPEUTA HUMANITARIO',
             ]
         );

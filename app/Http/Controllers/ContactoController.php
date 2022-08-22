@@ -15,7 +15,7 @@ class ContactoController extends Controller
      */
     public function index()
     {
-        //
+        return view('ejemplo4');
     }
 
     /**
@@ -25,7 +25,7 @@ class ContactoController extends Controller
      */
     public function create()
     {
-        //
+        return view('ejemplo1');
     }
 
     /**

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('clave_tipo', 20)->default('SinTipo');
             $table->string('clave_origen', 20)->default('SinOrigen');
             $table->unsignedBigInteger('categoria_id')->default(1);
-            $table->string('clasificacion', 20)->nullable();
+            $table->string('clasificacion', 20)->nullable()->default('Pendiente');
             $table->string('numero_afiliacion', 20)->nullable();
             $table->date('fecha_afiliacion')->nullable();
             $table->string('comite_base', 20)->default('');
@@ -46,8 +46,8 @@ return new class extends Migration
             $table->integer('domicilio_codpost')->unsigned()->default(0);
             $table->string('domicilio_coordenadas', 60)->nullable();
             $table->tinyInteger('colonia_catalogada')->unsigned()->default(0);
-            $table->unsignedBigInteger('colonia_id')->nullable();
-            $table->unsignedBigInteger('municipio_id')->nullable();
+            $table->unsignedBigInteger('colonia_id')->nullable()->default(0);
+            $table->unsignedBigInteger('municipio_id')->nullable()->default(39);
             $table->unsignedBigInteger('telefono_fijo')->default(0);
             $table->unsignedBigInteger('telefono_movil')->default(0);
             $table->tinyInteger('tiene_watsapp')->unsigned()->default(0);
@@ -74,7 +74,7 @@ return new class extends Migration
             $table->integer('numero_seccion')->unsigned()->default(0);
             $table->tinyInteger('seccion_prioritaria')->unsigned()->default(0);
             $table->string('anotaciones', 120)->nullable();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->default(1);
             $table->foreign('owner_id')->references('id')->on('owners')->onDelete('cascade');
             $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('cascade');
             $table->foreign('colonia_id')->references('id')->on('colonias')->onDelete('cascade');

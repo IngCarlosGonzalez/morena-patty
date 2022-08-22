@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Visita;
-use App\Http\Requests\StoreVisitaRequest;
-use App\Http\Requests\UpdateVisitaRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
 
-class VisitaController extends Controller
+class UsuarioController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +14,7 @@ class VisitaController extends Controller
      */
     public function index()
     {
-        return view('ejemplo5');
+        return view('ejemplo1');
     }
 
     /**
@@ -25,16 +24,16 @@ class VisitaController extends Controller
      */
     public function create()
     {
-        return view('ejemplo1');
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreVisitaRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreVisitaRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -42,10 +41,10 @@ class VisitaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Visita  $visita
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Visita $visita)
+    public function show(User $user)
     {
         //
     }
@@ -53,10 +52,10 @@ class VisitaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Visita  $visita
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(Visita $visita)
+    public function edit(User $user)
     {
         //
     }
@@ -64,11 +63,11 @@ class VisitaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateVisitaRequest  $request
-     * @param  \App\Models\Visita  $visita
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateVisitaRequest $request, Visita $visita)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -76,10 +75,10 @@ class VisitaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Visita  $visita
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Visita $visita)
+    public function destroy(User $user)
     {
         //
     }

@@ -205,5 +205,10 @@ class MunicipioSeeder extends Seeder
                 'nombre_mpio' => 'ZARAGOZA',
             ]
         );
+        Municipio::create(
+            [
+                'nombre_mpio' => 'INDETERMINADO',
+            ]
+        );
     }
 }

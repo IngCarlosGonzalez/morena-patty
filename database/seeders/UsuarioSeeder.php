@@ -22,7 +22,7 @@ class UsuarioSeeder extends Seeder
             [
                 'name' => 'CALIN MX',
                 'email' => 'cegcdeveloper@gmail.com',
-                'password' => Hash::make('12345678'),
+                'password' => Hash::make('rufirufi'),
                 'email_verified_at' => now(),
                 'remember_token' => Str::random(10),
             ]
@@ -31,7 +31,7 @@ class UsuarioSeeder extends Seeder
         $user2 = User::create(
             [
                 'name' => 'PATTY GONZALEZ',
-                'email' => 'calin_mx@hotmail.com',
+                'email' => 'pattygc0330@gmail.com',
                 'password' => Hash::make('12345678'),
                 'email_verified_at' => now(),
                 'remember_token' => Str::random(10),
@@ -40,8 +40,8 @@ class UsuarioSeeder extends Seeder
 
         $user3 = User::create(
             [
-                'name' => 'LORENZO JESUS',
-                'email' => 'calin_mx@yahoo.com',
+                'name' => 'INVITADO',
+                'email' => 'calin_mx@hotmail.com',
                 'password' => Hash::make('12345678'),
                 'email_verified_at' => now(),
                 'remember_token' => Str::random(10),
