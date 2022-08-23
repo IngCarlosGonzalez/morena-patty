@@ -31,20 +31,14 @@
                 </a>
                 <span class="ml-4 text-red-300 text-bold text-2xl">Morena Patty</span>
             </div>
-            {{-- <div class="block lg:hidden pr-4">
-                <button id="nav-toggle" class="flex items-center p-1 text-pink-800 hover:text-gray-900 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-                <svg class="fill-current h-6 w-6" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <title>Menu</title>
-                    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-                </svg>
-                </button>
-            </div> --}}
         </div>
         <hr class="border-b border-gray-100 opacity-25 my-0 py-0" />
     </nav>
 
     <div class="pt-12">
-        <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+
+        <div class="container px-3 mx-auto flex flex-col md:flex-row">
+
             <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
                 <h1 class="my-4 text-5xl font-bold leading-tight">
                 Sistema Morena Patty
@@ -58,24 +52,32 @@
                         @auth
                         <div class="flex flex-col items-center">
                             <span>Hola:&nbsp;&nbsp;{{ Auth::user()->name }}</span>
-                            <button type="button" onclick="window.location.href='{{ url('/dashboard') }}'"  class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-                            EMPEZAR
+                            <button type="button" onclick="window.location.href='{{ url('/dashboard') }}'"  class="mx-4 md:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                            &nbsp;&nbsp;&nbsp;EMPEZAR&nbsp;&nbsp;&nbsp;
                             </button>
                         </div>
                         @else
-                            <button type="button" onclick="window.location.href='{{ route('login') }}'"  class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                            <button type="button" onclick="window.location.href='{{ route('login') }}'"  class="mx-4 md:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
                             Identificarse
                             </button>
                         @endauth
                     </div>
                 @endif
 
-                <p class="leading-normal text-lg italic text-opacity-50 mt-8 mb-16">
+                <p class="hidden md:block ml-6 leading-normal text-sm italic text-opacity-50 mt-4 mb-8">
                     Solo usuarios registrados
                 </p>
 
             </div>
+
+            <div class="flex flex-col z-50 w-full md:w-3/5 items-center">
+                <div class="mt-4 md:mt-12">
+                    <img src="logo4t3.png" alt="logo de la 4t" class="h-24 md:h-48 border-2 border-black rounded-lg shadow-2xl">
+                </div>
+            </div>
+
         </div>
+
     </div>
 
     <div class="relative -mt-12 lg:-mt-24">

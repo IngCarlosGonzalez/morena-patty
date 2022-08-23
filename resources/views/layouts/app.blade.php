@@ -148,55 +148,130 @@
                         </a>
                     </div>
                     <div class="dropdownv">
-                        <button class="dropbtnv" onclick="window.location.href='{{ route('dashboard') }}'">
+                        <button
+                            class="dropbtnv"
+                            @if (request()->routeIs('dashboard'))
+                            style="background-color: #330000;"
+                            @else
+                            style="color: #fff;"
+                            @endif
+                            onclick="window.location.href='{{ route('dashboard') }}'">
                             <i class="fa fa-home"></i>
                             &nbsp;&nbsp;INICIO&nbsp;&nbsp;
                         </button>
                     </div>
                     <!-- Catálogos del Sistema -->
                     <div class="dropdownv">
-                        <button class="dropbtnv">CATALOGOS
+                        <button
+                            class="dropbtnv"
+                            @if (request()->routeIs('catalogos.*'))
+                            style="background-color: #330000;"
+                            @else
+                            style="color: #fff;"
+                            @endif
+                            >CATALOGOS
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdownv-content">
-                            <a href="{{ route('usuarios.index') }}">Usuarios</a>
-                            <a href="{{ route('owners.index') }}">Propietarios</a>
-                            <a href="{{ route('categorias.index') }}">Categorias</a>
+                            <a href="{{ route('catalogos.usuarios.index') }}"
+                            @if (request()->routeIs('catalogos.usuarios.index'))
+                            style="background-color: #800000; color:#fff;"
+                            @endif
+                            >Usuarios</a>
+                            <a href="{{ route('catalogos.owners.index') }}"
+                            @if (request()->routeIs('catalogos.owners.index'))
+                            style="background-color: #800000; color:#fff;"
+                            @endif
+                            >Propietarios</a>
+                            <a href="{{ route('catalogos.categorias.index') }}"
+                            @if (request()->routeIs('catalogos.categorias.index'))
+                            style="background-color: #800000; color:#fff;"
+                            @endif
+                            >Categorias</a>
                         </div>
                     </div>
                     <!-- Manejo de Contactos -->
                     <div class="dropdownv">
-                        <button class="dropbtnv">CONTACTOS
+                        <button
+                            class="dropbtnv"
+                            @if (request()->routeIs('directorios.*'))
+                            style="background-color: #330000;"
+                            @else
+                            style="color: #fff;"
+                            @endif
+                            >CONTACTOS
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdownv-content">
-                            <a href="{{ route('contactos.create') }}">Nuevo Contacto</a>
-                            <a href="{{ route('contactos.index') }}">Mis Contactos</a>
-                            <a href="{{ route('documentos.index') }}">Expedientes</a>
+                            <a href="{{ route('directorios.contactos.create') }}"
+                            @if (request()->routeIs('directorios.contactos.create'))
+                            style="background-color: #800000; color:#fff;"
+                            @endif
+                            >Nuevo Contacto</a>
+                            <a href="{{ route('directorios.contactos.index') }}"
+                            @if (request()->routeIs('directorios.contactos.index'))
+                            style="background-color: #800000; color:#fff;"
+                            @endif
+                            >Mis Contactos</a>
+                            <a href="{{ route('directorios.documentos.index') }}"
+                            @if (request()->routeIs('directorios.documentos.index'))
+                            style="background-color: #800000; color:#fff;"
+                            @endif
+                            >Expedientes</a>
                             <a href="#">Consultas</a>
                         </div>
                     </div>
                     <!-- Control de Visitantes -->
                     <div class="dropdownv">
-                        <button class="dropbtnv">VISITANTES
+                        <button
+                            class="dropbtnv"
+                            @if (request()->routeIs('oficinas.*'))
+                            style="background-color: #330000;"
+                            @else
+                            style="color: #fff;"
+                            @endif
+                            >VISITANTES
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdownv-content">
-                            <a href="{{ route('visitas.create') }}">Registrar Visita</a>
-                            <a href="{{ route('visitas.index') }}">Listado de Visitas</a>
-                            <a href="#">Seguimiento</a>
+                            <a href="{{ route('oficinas.visitas.create') }}"
+                            @if (request()->routeIs('oficinas.visitas.create'))
+                            style="background-color: #800000; color:#fff;"
+                            @endif
+                            >Registrar Visita</a>
+                            <a href="{{ route('oficinas.visitas.index') }}"
+                            @if (request()->routeIs('oficinas.visitas.index'))
+                            style="background-color: #800000; color:#fff;"
+                            @endif
+                            >Listado de Visitas</a>
+                            <a href="#"
+                            >Seguimiento</a>
                         </div>
                     </div>
                     <!-- Manejo de Agenda -->
                     <div class="dropdownv">
-                        <button class="dropbtnv">AGENDA
+                        <button
+                            class="dropbtnv"
+                            @if (request()->routeIs('controles.*'))
+                            style="background-color: #330000;"
+                            @else
+                            style="color: #fff;"
+                            @endif
+                            >AGENDA
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdownv-content">
-                            <a href="{{ route('agendas.index') }}">Mi Agenda</a>
-                            <a href="#">Compromisos</a>
-                            <a href="#">Otra Agenda</a>
-                            <a href="#">Listar Otra</a>
+                            <a href="{{ route('controles.agendas.index') }}"
+                            @if (request()->routeIs('controles.agendas.index'))
+                            style="background-color: #800000; color:#fff;"
+                            @endif
+                            >Mi Agenda</a>
+                            <a href="#"
+                            >Compromisos</a>
+                            <a href="#"
+                            >Otra Agenda</a>
+                            <a href="#"
+                            >Listar Otra</a>
                         </div>
                     </div>
                     <!-- Salir del Sistema -->
@@ -231,22 +306,46 @@
                     </div>
                     <!-- Manejo de Contactos -->
                     <div class="dropdownv">
-                        <button class="dropbtnv">CONTACTOS
+                        <button
+                            class="dropbtnv"
+                            @if (request()->routeIs('directorios.*'))
+                            style="background-color: #330000;"
+                            @else
+                            style="color: #fff;"
+                            @endif
+                            >CONTACTOS
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdownv-content">
-                            <a href="{{ route('contactos.index') }}">Mis Contactos</a>
-                            <a href="#">Exportacion</a>
+                            <a href="{{ route('directorios.contactos.index') }}"
+                            @if (request()->routeIs('directorios.contactos.index'))
+                            style="background-color: #800000; color:#fff;"
+                            @endif
+                            >Mis Contactos</a>
+                            <a href="#"
+                            >Exportacion</a>
                         </div>
                     </div>
                     <!-- Manejo de Agenda -->
                     <div class="dropdownv">
-                        <button class="dropbtnv">AGENDA
+                        <button
+                            class="dropbtnv"
+                            @if (request()->routeIs('controles.*'))
+                            style="background-color: #330000;"
+                            @else
+                            style="color: #fff;"
+                            @endif
+                            >AGENDA
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdownv-content">
-                            <a href="{{ route('agendas.index') }}">Mi Agenda</a>
-                            <a href="#">Compromisos</a>
+                            <a href="{{ route('controles.agendas.index') }}"
+                            @if (request()->routeIs('controles.agendas.index'))
+                            style="background-color: #800000; color:#fff;"
+                            @endif
+                            >Mi Agenda</a>
+                            <a href="#"
+                            >Compromisos</a>
                         </div>
                     </div>
                     <!-- Salir del Sistema -->

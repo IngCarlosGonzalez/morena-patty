@@ -37,49 +37,49 @@ Route::middleware([
         [DashboardController::class, 'asegun']
     )->name('dashboard');
 
-    Route::resource(
+    Route::name('catalogos')->resource(
         'usuarios',
         UsuarioController::class
     )
     ->names('usuarios');
 
-    Route::resource(
+    Route::name('catalogos')->resource(
         'colonias',
         ColoniaController::class
     )
     ->names('colonias');
 
-    Route::resource(
+    Route::name('catalogos')->resource(
         'owners',
         OwnerController::class
     )
     ->names('owners');
 
-    Route::resource(
+    Route::name('catalogos')->resource(
         'categorias',
         CategoriaController::class
     )
     ->names('categorias');
 
-    Route::resource(
+    Route::name('directorios')->resource(
         'contactos',
         ContactoController::class
     )
     ->names('contactos');
 
-    Route::resource(
+    Route::name('directorios')->resource(
         'documentos',
         DocumentoController::class
     )
     ->names('documentos');
 
-    Route::resource(
+    Route::name('oficinas')->resource(
         'visitas',
         VisitaController::class
     )
     ->names('visitas');
 
-    Route::resource(
+    Route::name('controles')->resource(
         'agendas',
         AgendaController::class
     )

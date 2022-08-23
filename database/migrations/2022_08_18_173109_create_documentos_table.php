@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('path_documento', 240)->nullable()->default('');
             $table->foreign('contacto_id')->references('id')->on('contactos')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
