@@ -48,6 +48,14 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'catalogos.categorias.update'])->assignRole($role1);
         Permission::create(['name' => 'catalogos.categorias.destroy'])->assignRole($role1);
 
+        Permission::create(['name' => 'directorios.subscribers.index'])->assignRole($role1);
+        Permission::create(['name' => 'directorios.subscribers.create'])->assignRole($role1);
+        Permission::create(['name' => 'directorios.subscribers.store'])->assignRole($role1);
+        Permission::create(['name' => 'directorios.subscribers.show'])->assignRole($role1);
+        Permission::create(['name' => 'directorios.subscribers.edit'])->assignRole($role1);
+        Permission::create(['name' => 'directorios.subscribers.update'])->assignRole($role1);
+        Permission::create(['name' => 'directorios.subscribers.destroy'])->assignRole($role1);
+
         Permission::create(['name' => 'directorios.contactos.index'])->syncRoles([$role1, $role2]);
         Permission::create(['name' => 'directorios.contactos.create'])->syncRoles([$role1, $role2]);
         Permission::create(['name' => 'directorios.contactos.store'])->syncRoles([$role1, $role2]);

@@ -1,19 +1,24 @@
 <x-app-layout>
 
-    <div class="py-12">
+    <div style="background-color: #000000" class="flex flex-col items-center max-w-7xl mx-auto h-screen mt-2 md:mt-1 pb-4 md:pb-2">
 
-        <div style="background-color: #aa0000" class="max-w-7xl mx-auto h-screen mt-4 md:mt-2 pb-24 md:pb-5">
+        <div class="flex flex-row w-full">
 
-            <div class="w-full bg-gray-800 pt-3">
-                <div class="md:rounded-3xl bg-black p-1 shadow text-2xl md:text-5xl text-white">
-                    <h1 class="font-bold pl-6 pt-6 mb-8"> Damos la bienvenida a:&nbsp;&nbsp;{{ Auth::user()->name }}</h1>
+            <div class="hidden md:block w-1/12">
+                <span></span>
+            </div>
+
+            <div class="flex flex-col w-full md:w-10/12 place-content-center">
+                <div class="mt-12 md:rounded-3xl bg-gray-800 shadow text-2xl md:text-5xl text-white">
+                    <h1 class="font-bold text-center py-4 md:py-12"> Damos la bienvenida a:&nbsp;&nbsp;{{ Auth::user()->name }}</h1>
+                </div>
+                <div style="background-color: #500000" class="mt-8 md:rounded-3xl shadow text-2xl md:text-6xl text-white">
+                    <h1 class="font-bold text-center py-4 md:py-24">Que tengas buen turno!</h1>
                 </div>
             </div>
 
-            <div class="w-full bg-gray-800 pt-8 flex flex-row justify-center ">
-                <div class="md:rounded-3xl pt-8 pb-4 shadow text-2xl md:text-6xl text-white">
-                    <h1 class="font-bold mb-12"> PANEL INICIAL </h1>
-                </div>
+            <div class="hidden md:block w-1/12">
+                <span></span>
             </div>
 
         </div>

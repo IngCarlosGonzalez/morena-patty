@@ -18,7 +18,7 @@
         <style>
             .topnavv {
               overflow: hidden;
-              background-color: #aa0000;
+              background-color: #800000;
             }
 
             .topnavv a {
@@ -32,7 +32,7 @@
             }
 
             .topnavv a:active {
-              background-color: #33362bd8;
+              background-color: #500000;
               color: white;
             }
 
@@ -59,6 +59,7 @@
             .dropdownv-content {
               display: none;
               position: absolute;
+              color: black;
               background-color: #f9f9f9;
               min-width: 160px;
               box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -129,11 +130,11 @@
 
     </head>
 
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased bg-amber-300">
 
         <x-jet-banner />
 
-        <div class="min-h-screen bg-gray-800">
+        <div class="min-h-screen bg-black">
 
             {{-- @livewire('navigation-menu') --}}
 
@@ -173,21 +174,25 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdownv-content">
+
                             <a href="{{ route('catalogos.usuarios.index') }}"
                             @if (request()->routeIs('catalogos.usuarios.index'))
-                            style="background-color: #800000; color:#fff;"
+                            style="background-color: #aa0000; color:#fff;"
                             @endif
                             >Usuarios</a>
+
                             <a href="{{ route('catalogos.owners.index') }}"
                             @if (request()->routeIs('catalogos.owners.index'))
-                            style="background-color: #800000; color:#fff;"
+                            style="background-color: #aa0000; color:#fff;"
                             @endif
                             >Propietarios</a>
+
                             <a href="{{ route('catalogos.categorias.index') }}"
                             @if (request()->routeIs('catalogos.categorias.index'))
-                            style="background-color: #800000; color:#fff;"
+                            style="background-color: #aa0000; color:#fff;"
                             @endif
                             >Categorias</a>
+
                         </div>
                     </div>
                     <!-- Manejo de Contactos -->
@@ -203,22 +208,28 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdownv-content">
+
                             <a href="{{ route('directorios.contactos.create') }}"
                             @if (request()->routeIs('directorios.contactos.create'))
-                            style="background-color: #800000; color:#fff;"
+                            style="background-color: #aa0000; color:#fff;"
                             @endif
                             >Nuevo Contacto</a>
+
                             <a href="{{ route('directorios.contactos.index') }}"
                             @if (request()->routeIs('directorios.contactos.index'))
-                            style="background-color: #800000; color:#fff;"
+                            style="background-color: #aa0000; color:#fff;"
                             @endif
                             >Mis Contactos</a>
+
                             <a href="{{ route('directorios.documentos.index') }}"
                             @if (request()->routeIs('directorios.documentos.index'))
-                            style="background-color: #800000; color:#fff;"
+                            style="background-color: #aa0000; color:#fff;"
                             @endif
                             >Expedientes</a>
-                            <a href="#">Consultas</a>
+
+                            <a href="#"
+                            >Consultas</a>
+
                         </div>
                     </div>
                     <!-- Control de Visitantes -->
@@ -234,18 +245,22 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdownv-content">
+
                             <a href="{{ route('oficinas.visitas.create') }}"
                             @if (request()->routeIs('oficinas.visitas.create'))
-                            style="background-color: #800000; color:#fff;"
+                            style="background-color: #aa0000; color:#fff;"
                             @endif
                             >Registrar Visita</a>
+
                             <a href="{{ route('oficinas.visitas.index') }}"
                             @if (request()->routeIs('oficinas.visitas.index'))
-                            style="background-color: #800000; color:#fff;"
+                            style="background-color: #aa0000; color:#fff;"
                             @endif
                             >Listado de Visitas</a>
+
                             <a href="#"
                             >Seguimiento</a>
+
                         </div>
                     </div>
                     <!-- Manejo de Agenda -->
@@ -261,17 +276,22 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdownv-content">
+
                             <a href="{{ route('controles.agendas.index') }}"
                             @if (request()->routeIs('controles.agendas.index'))
-                            style="background-color: #800000; color:#fff;"
+                            style="background-color: #aa0000; color:#fff;"
                             @endif
                             >Mi Agenda</a>
+
                             <a href="#"
                             >Compromisos</a>
+
                             <a href="#"
                             >Otra Agenda</a>
+
                             <a href="#"
                             >Listar Otra</a>
+
                         </div>
                     </div>
                     <!-- Salir del Sistema -->
@@ -317,13 +337,16 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdownv-content">
+
                             <a href="{{ route('directorios.contactos.index') }}"
                             @if (request()->routeIs('directorios.contactos.index'))
-                            style="background-color: #800000; color:#fff;"
+                            style="background-color: #aa0000; color:#fff;"
                             @endif
                             >Mis Contactos</a>
+
                             <a href="#"
                             >Exportacion</a>
+
                         </div>
                     </div>
                     <!-- Manejo de Agenda -->
@@ -339,13 +362,16 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdownv-content">
+
                             <a href="{{ route('controles.agendas.index') }}"
                             @if (request()->routeIs('controles.agendas.index'))
-                            style="background-color: #800000; color:#fff;"
+                            style="background-color: #aa0000; color:#fff;"
                             @endif
                             >Mi Agenda</a>
+
                             <a href="#"
                             >Compromisos</a>
+
                         </div>
                     </div>
                     <!-- Salir del Sistema -->
@@ -362,20 +388,23 @@
                         <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
                     </div>
                 </div>
+
             @endif
 
             <!-- Page Heading -->
-            @if (isset($header))
+            {{-- @if (isset($header))
                 <header class="bg-white shadow">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>
-            @endif
+            @endif --}}
 
             <!-- Page Content -->
             <main>
+
                 {{ $slot }}
+
             </main>
 
         </div>

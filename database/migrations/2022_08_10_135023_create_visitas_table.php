@@ -31,10 +31,13 @@ return new class extends Migration
             $table->string('dato_num_seccion', 20)->nullable();
             $table->string('dato_del_comite', 20)->nullable();
             $table->string('dato_de_defensa', 20)->nullable();
+            $table->tinyInteger('conocer_al_partido')->unsigned()->default(0);
             $table->tinyInteger('participar_comite')->unsigned()->default(0);
             $table->tinyInteger('participar_defensa')->unsigned()->default(0);
             $table->tinyInteger('invitar_capacitacion')->unsigned()->default(0);
             $table->tinyInteger('invitar_a_reuniones')->unsigned()->default(0);
+            $table->tinyInteger('solicitar_asesorias')->unsigned()->default(0);
+            $table->tinyInteger('requerimiento_apoyo')->unsigned()->default(0);
             $table->string('referencia_visita', 40)->nullable()->default('');
             $table->text('asunto_visita')->nullable();
             $table->string('quien_atiende', 40)->nullable();

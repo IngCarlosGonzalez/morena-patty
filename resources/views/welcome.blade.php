@@ -13,11 +13,16 @@
     <!--Replace with your tailwind.css once created-->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" />
     <!-- Define your gradient here - use online tools to find a gradient matching your branding-->
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <style>
         .gradient {
-        background: linear-gradient(90deg, #650505 0%, #e31212 100%);
+        background: linear-gradient(90deg, #300000 0%, #e31212 100%);
         }
     </style>
+
+    @livewireStyles
 
 </head>
 
@@ -27,7 +32,7 @@
         <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
             <div class="pl-4 flex items-center">
                 <a class="toggleColour text-white no-underline hover:no-underline font-bold text-xl lg:text-2xl" href="#">
-                <img class="w-6 md:w-12 border-2 border-white rounded-full" src="patty.jpg" />
+                <img class="w-6 md:w-12 border-2 border-white rounded-full" src="{{ asset('patty.jpg') }}" />
                 </a>
                 <span class="ml-4 text-red-300 text-bold text-2xl">Morena Patty</span>
             </div>
@@ -40,39 +45,32 @@
         <div class="container px-3 mx-auto flex flex-col md:flex-row">
 
             <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
-                <h1 class="my-4 text-5xl font-bold leading-tight">
-                Sistema Morena Patty
+                <h1 class="mt-4 text-5xl font-bold leading-tight">
+                    Patty González
+                </h1>
+                <h1 class="mb-4 text-5xl font-bold leading-tight">
+                    Morena Coahuila
                 </h1>
                 <p class="leading-normal text-2xl mb-8">
-                Aplicación web auxiliar de mi oficina
+                    Éste es mi sistema web personal
                 </p>
 
-                @if (Route::has('login'))
-                    <div class="block px-6 py-4">
-                        @auth
-                        <div class="flex flex-col items-center">
-                            <span>Hola:&nbsp;&nbsp;{{ Auth::user()->name }}</span>
-                            <button type="button" onclick="window.location.href='{{ url('/dashboard') }}'"  class="mx-4 md:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-                            &nbsp;&nbsp;&nbsp;EMPEZAR&nbsp;&nbsp;&nbsp;
-                            </button>
-                        </div>
-                        @else
-                            <button type="button" onclick="window.location.href='{{ route('login') }}'"  class="mx-4 md:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-                            Identificarse
-                            </button>
-                        @endauth
-                    </div>
-                @endif
+                <div class="flex flex-col items-center mb-2">
+                    <span class="animate-bounce">Te invito a unirte a mi Lista de Contactos</span>
 
-                <p class="hidden md:block ml-6 leading-normal text-sm italic text-opacity-50 mt-4 mb-8">
-                    Solo usuarios registrados
+                    @livewire('hacer-contacto')
+
+                </div>
+
+                <p class="hidden mb-16 md:block ml-16 leading-normal text-sm italic text-opacity-50 mt-1 ">
+                    Gracias por registrarte
                 </p>
 
             </div>
 
-            <div class="flex flex-col z-50 w-full md:w-3/5 items-center">
+            <div class="flex flex-col w-full md:w-3/5 items-center">
                 <div class="mt-4 md:mt-12">
-                    <img src="logo4t3.png" alt="logo de la 4t" class="h-24 md:h-48 border-2 border-black rounded-lg shadow-2xl">
+                    <img src="{{ asset('logo4t3.png') }}" alt="logo de la 4t" class="h-24 md:h-48 border-2 border-black rounded-lg shadow-2xl">
                 </div>
             </div>
 
@@ -110,7 +108,7 @@
             </div>
             <div class="flex flex-wrap justify-center">
                 <div class="w-full p-6">
-                    <img class="w-full border-2 border-black rounded-xl" src="morena.jpg" />
+                    <img class="w-full border-2 border-black rounded-xl" src="{{ asset('morena.jpg') }}" />
                 </div>
             </div>
         </div>
@@ -148,8 +146,8 @@
             <div class="h-1 mx-auto bg-white w-1/6 opacity-25 my-0 py-0 rounded-t"></div>
         </div>
 
-        <h3 class="my-4 text-xl italic leading-tight">
-        Si no estás registrado(a) solicita tu "alta"
+        <h3 class="animate-bounce my-4 text-xl italic leading-tight">
+        Solo para usuarios de mi oficina autorizados
         </h3>
 
         @if (Route::has('login'))
@@ -183,5 +181,8 @@
         </div>
     </footer>
 
+    @livewireScripts
+
 </body>
+
 </html>

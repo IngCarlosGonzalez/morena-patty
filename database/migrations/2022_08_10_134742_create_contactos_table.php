@@ -28,15 +28,14 @@ return new class extends Migration
             $table->string('defensores', 30)->default('');
             $table->string('partido_area', 30)->nullable();
             $table->string('partido_puesto', 30)->nullable();
-            $table->tinyInteger('miembro_fundador')->unsigned()->default(0);
             $table->string('titulo_cargo', 30)->nullable();
             $table->string('gestor_titulo', 30)->nullable();
             $table->string('razon_social', 30)->nullable();
             $table->string('nombre_full', 60)->nullable();
-            $table->string('ap_paterno', 30)->nullable();
-            $table->string('ap_materno', 30)->nullable();
-            $table->string('nombre_uno', 30)->nullable();
-            $table->string('nombre_dos', 30)->nullable();
+            $table->string('ap_paterno', 20)->nullable();
+            $table->string('ap_materno', 20)->nullable();
+            $table->string('nombre_uno', 20)->nullable();
+            $table->string('nombre_dos', 20)->nullable();
             $table->string('localidad_mpio', 60)->nullable();
             $table->string('domicilio_full', 90)->nullable();
             $table->string('domicilio_calle', 60)->nullable();
@@ -63,6 +62,7 @@ return new class extends Migration
             $table->string('contacto_twitter', 60)->nullable();
             $table->string('contacto_otra_red', 60)->nullable();
             $table->date('fecha_nacimiento')->nullable();
+            $table->string('clave_genero', 20)->default('Sin Datos');
             $table->string('dato_de_la_curp', 20)->nullable();
             $table->string('clave_elector', 20)->nullable();
             $table->string('num_credencial_ine', 20)->nullable();

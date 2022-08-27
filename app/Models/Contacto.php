@@ -25,7 +25,6 @@ class Contacto extends Model
         'defensores',
         'partido_area',
         'partido_puesto',
-        'miembro_fundador',
         'titulo_cargo',
         'gestor_titulo',
         'razon_social',
@@ -60,6 +59,7 @@ class Contacto extends Model
         'contacto_twitter',
         'contacto_otra_red',
         'fecha_nacimiento',
+        'clave_genero',
         'dato_de_la_curp',
         'clave_de_elector',
         'num_credencial_ine',
@@ -85,7 +85,15 @@ class Contacto extends Model
         'En la Oficina',
         'En Terrirorio',
         'Redes Sociales',
+        'En mi Página',
         'Otros'
+    ];
+
+    public const CLAVE_GENERO = [
+        'Sin Datos',
+        'Femenino',
+        'Masculino',
+        'Diversidad'
     ];
 
     public const COMITE_BASE = [

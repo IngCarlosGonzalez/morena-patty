@@ -10,6 +10,7 @@ use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentoController;
+use App\Http\Controllers\SubscriberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +61,12 @@ Route::middleware([
         CategoriaController::class
     )
     ->names('categorias');
+
+    Route::name('directorios')->resource(
+        'subscribers',
+        SubscriberController::class
+    )
+    ->names('subscribers');
 
     Route::name('directorios')->resource(
         'contactos',
