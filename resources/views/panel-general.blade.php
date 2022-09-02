@@ -13,7 +13,7 @@
                     <h1 class="font-bold text-center py-4 md:py-12"> Damos la bienvenida a:&nbsp;&nbsp;{{ Auth::user()->name }}</h1>
                 </div>
                 <div style="background-color: #500000" class="mt-8 md:rounded-3xl shadow text-2xl md:text-6xl text-white">
-                    <h1 class="font-bold text-center py-4 md:py-24">Que tengas buen turno!</h1>
+                    <h1 class="font-bold text-center py-4 md:py-24">Inicio del Sistema</h1>
                 </div>
             </div>
 

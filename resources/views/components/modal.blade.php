@@ -1,7 +1,7 @@
 @props(['disparador'])
 
 <div
-     class="flex fixed z-50 top-0 h-full w-full items-center"
+     class="flex fixed z-50 top-0 min-h-screen w-full items-center"
      x-show="{{ $disparador }}"
      x-on:click.self="{{ $disparador }}=false"
      x-on:keydown.escape.window="{{ $disparador }}=false"

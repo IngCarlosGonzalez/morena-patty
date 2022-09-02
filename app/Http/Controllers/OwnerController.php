@@ -15,7 +15,7 @@ class OwnerController extends Controller
      */
     public function index()
     {
-        return view('ejemplo2');
+        return view('catalogos.owners.index');
     }
 
     /**
@@ -25,7 +25,7 @@ class OwnerController extends Controller
      */
     public function create()
     {
-        //
+        return view('catalogos.owners.create');
     }
 
     /**
@@ -58,7 +58,7 @@ class OwnerController extends Controller
      */
     public function edit(Owner $owner)
     {
-        //
+        return view('catalogos.owners.edit');
     }
 
     /**

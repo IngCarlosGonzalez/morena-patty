@@ -15,7 +15,7 @@ class DocumentoController extends Controller
      */
     public function index()
     {
-        return view('ejemplo2');
+        return view('directorios.documentos.index');
     }
 
     /**
@@ -25,7 +25,7 @@ class DocumentoController extends Controller
      */
     public function create()
     {
-        //
+        return view('directorios.documentos.create');
     }
 
     /**
@@ -47,7 +47,7 @@ class DocumentoController extends Controller
      */
     public function show(Documento $documento)
     {
-        //
+        return view('directorios.documentos.show');
     }
 
     /**
@@ -58,7 +58,7 @@ class DocumentoController extends Controller
      */
     public function edit(Documento $documento)
     {
-        //
+        return view('directorios.documentos.edit');
     }
 
     /**

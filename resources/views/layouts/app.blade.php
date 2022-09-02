@@ -130,13 +130,9 @@
 
     </head>
 
-    <body class="font-sans antialiased bg-amber-300">
+    <body class="min-h-screen font-sans antialiased bg-gray-800">
 
-        <x-jet-banner />
-
-        <div class="min-h-screen bg-black">
-
-            {{-- @livewire('navigation-menu') --}}
+        <div class="bg-black">
 
             <!-- Mi top navbar -->
             @if(@Auth::user()->hasRole('superusuario'))
@@ -161,6 +157,7 @@
                             &nbsp;&nbsp;INICIO&nbsp;&nbsp;
                         </button>
                     </div>
+
                     <!-- Catálogos del Sistema -->
                     <div class="dropdownv">
                         <button
@@ -195,6 +192,7 @@
 
                         </div>
                     </div>
+
                     <!-- Manejo de Contactos -->
                     <div class="dropdownv">
                         <button
@@ -208,6 +206,12 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdownv-content">
+
+                            <a href="{{ route('directorios.subscribers.index') }}"
+                            @if (request()->routeIs('directorios.subscribers.index'))
+                            style="background-color: #aa0000; color:#fff;"
+                            @endif
+                            >Prospectos Registrados</a>
 
                             <a href="{{ route('directorios.contactos.create') }}"
                             @if (request()->routeIs('directorios.contactos.create'))
@@ -228,10 +232,14 @@
                             >Expedientes</a>
 
                             <a href="#"
-                            >Consultas</a>
+                            >Otros Contactos</a>
+
+                            <a href="#"
+                            >Lista Global</a>
 
                         </div>
                     </div>
+
                     <!-- Control de Visitantes -->
                     <div class="dropdownv">
                         <button
@@ -263,6 +271,7 @@
 
                         </div>
                     </div>
+
                     <!-- Manejo de Agenda -->
                     <div class="dropdownv">
                         <button
@@ -284,18 +293,19 @@
                             >Mi Agenda</a>
 
                             <a href="#"
-                            >Compromisos</a>
+                            >Mis Compromisos</a>
 
                             <a href="#"
                             >Otra Agenda</a>
 
                             <a href="#"
-                            >Listar Otra</a>
+                            >Lista General</a>
 
                         </div>
                     </div>
+
                     <!-- Salir del Sistema -->
-                    <div class="dropdownv" style="float:right">
+                    <div class="dropdownv">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button class="dropbtnv">
@@ -304,9 +314,46 @@
                             </button>
                         </form>
                     </div>
+
+                    <div class="dropdownv">
+                        <button class="dropbtnv"style="color: #fff;">
+                            <span id="fechadehoy" class="md:pl-12 xl:pl-24 text-yellow-500 text-base"></span>
+                        </button>
+                    </div>
+
+                    <!-- Utilities de Usuario -->
+                    <div class="dropdownv md:pl-12 xl:pl-24">
+                        <button
+                            class="dropbtnv"
+                            @if (request()->routeIs('users.*'))
+                            style="background-color: #330000;"
+                            @else
+                            style="color: #fff;"
+                            @endif
+                            >{{  Auth::user()->name }}
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdownv-content">
+
+                            <a href="#"
+                            @if (request()->routeIs('users.utilities.password'))
+                            style="background-color: #aa0000; color:#fff;"
+                            @endif
+                            >MI PASSWORD</a>
+
+                            <a href="#"
+                            @if (request()->routeIs('users.utilities.refuerzo'))
+                            style="background-color: #aa0000; color:#fff;"
+                            @endif
+                            >SEGURIDAD</a>
+
+                        </div>
+                    </div>
+
                     <div>
                         <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
                     </div>
+
                 </div>
 
             @else
@@ -324,6 +371,7 @@
                             &nbsp;&nbsp;INICIO&nbsp;&nbsp;
                         </button>
                     </div>
+
                     <!-- Manejo de Contactos -->
                     <div class="dropdownv">
                         <button
@@ -349,6 +397,7 @@
 
                         </div>
                     </div>
+
                     <!-- Manejo de Agenda -->
                     <div class="dropdownv">
                         <button
@@ -374,8 +423,9 @@
 
                         </div>
                     </div>
+
                     <!-- Salir del Sistema -->
-                    <div class="dropdownv" style="float:right">
+                    <div class="dropdownv">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button class="dropbtnv">
@@ -384,21 +434,48 @@
                             </button>
                         </form>
                     </div>
+
+                    <div class="dropdownv">
+                        <button class="dropbtnv"style="color: #fff;">
+                            <span id="fechadehoy" class="md:pl-12 xl:pl-24 text-yellow-500 text-base"></span>
+                        </button>
+                    </div>
+
+                    <!-- Utilities de Usuario -->
+                    <div class="dropdownv md:pl-12 xl:pl-24">
+                        <button
+                            class="dropbtnv"
+                            @if (request()->routeIs('users.*'))
+                            style="background-color: #330000;"
+                            @else
+                            style="color: #fff;"
+                            @endif
+                            >{{  Auth::user()->name }}
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdownv-content">
+
+                            <a href="#"
+                            @if (request()->routeIs('users.utilities.password'))
+                            style="background-color: #aa0000; color:#fff;"
+                            @endif
+                            >MI PASSWORD</a>
+
+                            <a href="#"
+                            @if (request()->routeIs('users.utilities.refuerzo'))
+                            style="background-color: #aa0000; color:#fff;"
+                            @endif
+                            >SEGURIDAD</a>
+                        </div>
+                    </div>
+
                     <div>
                         <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
                     </div>
+
                 </div>
 
             @endif
-
-            <!-- Page Heading -->
-            {{-- @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif --}}
 
             <!-- Page Content -->
             <main>
@@ -407,11 +484,24 @@
 
             </main>
 
+            <footer style="background-color: #800000">
+                <div class="container mx-auto px-8">
+                    <div class="w-full flex flex-row py-6">
+                        <div class="flex-1 mb-2">
+                            <a class="text-red-400 no-underline hover:no-underline text-base" href="#">
+                                &copy;calin_mx 2022
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
         </div>
 
         @stack('modals')
 
         <script>
+
             function myFunction() {
               var x = document.getElementById("myTopnav");
               if (x.className === "topnavv") {
@@ -420,6 +510,20 @@
                 x.className = "topnavv";
               }
             }
+
+        </script>
+
+        <script>
+            console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>');
+            const meses = ["Ene.","Feb.","Mar.","Abr.","Mayo","Jun.","Jul.","Ago.","Sep.","Oct.","Nov.","Dic."];
+            const hoydia = new Date();
+            let eldia = hoydia.getDate();
+            let elmes = meses[hoydia.getMonth()];
+            let elano = hoydia.getFullYear();
+            const lafecha = eldia + " de " + elmes + " de " + elano;
+            console.log(lafecha);
+            var xxx = document.getElementById("fechadehoy");
+            xxx.innerHTML = lafecha;
         </script>
 
         @livewireScripts

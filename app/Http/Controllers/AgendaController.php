@@ -15,7 +15,7 @@ class AgendaController extends Controller
      */
     public function index()
     {
-        return view('ejemplo6');
+        return view('controles.agendas.index');
     }
 
     /**
@@ -25,7 +25,7 @@ class AgendaController extends Controller
      */
     public function create()
     {
-        //
+        return view('controles.agendas.create');
     }
 
     /**
@@ -47,7 +47,7 @@ class AgendaController extends Controller
      */
     public function show(Agenda $agenda)
     {
-        //
+        return view('controles.agendas.show');
     }
 
     /**
@@ -58,7 +58,7 @@ class AgendaController extends Controller
      */
     public function edit(Agenda $agenda)
     {
-        //
+        return view('controles.agendas.edit');
     }
 
     /**

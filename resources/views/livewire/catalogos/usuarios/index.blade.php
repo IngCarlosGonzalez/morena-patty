@@ -1,3 +1,5 @@
 <div>
-    {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}
+    <h1 class="text-5xl text-white text-bold">
+        Componente catalogos-usuarios-index
+    </h1>
 </div>

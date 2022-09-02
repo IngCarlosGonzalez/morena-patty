@@ -14,7 +14,7 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        return view('ejemplo1');
+        return view('catalogos.usuarios.index');
     }
 
     /**
@@ -24,7 +24,7 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        //
+        return view('catalogos.usuarios.create');
     }
 
     /**
@@ -57,7 +57,7 @@ class UsuarioController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('catalogos.usuarios.edit');
     }
 
     /**

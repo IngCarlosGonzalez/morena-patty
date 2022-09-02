@@ -15,7 +15,7 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        return view('ejemplo3');
+        return view('catalogos.categorias.index');
     }
 
     /**
@@ -25,7 +25,7 @@ class CategoriaController extends Controller
      */
     public function create()
     {
-        //
+        return view('catalogos.categorias.create');
     }
 
     /**
@@ -58,7 +58,7 @@ class CategoriaController extends Controller
      */
     public function edit(Categoria $categoria)
     {
-        //
+        return view('catalogos.categorias.edit');
     }
 
     /**

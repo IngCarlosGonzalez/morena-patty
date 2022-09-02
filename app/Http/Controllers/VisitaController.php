@@ -15,7 +15,7 @@ class VisitaController extends Controller
      */
     public function index()
     {
-        return view('ejemplo5');
+        return view('oficinas.visitas.index');
     }
 
     /**
@@ -25,7 +25,7 @@ class VisitaController extends Controller
      */
     public function create()
     {
-        return view('ejemplo1');
+        return view('oficinas.visitas.create');
     }
 
     /**
@@ -47,7 +47,7 @@ class VisitaController extends Controller
      */
     public function show(Visita $visita)
     {
-        //
+        return view('oficinas.visitas.show');
     }
 
     /**
@@ -58,7 +58,7 @@ class VisitaController extends Controller
      */
     public function edit(Visita $visita)
     {
-        //
+        return view('oficinas.visitas.edit');
     }
 
     /**

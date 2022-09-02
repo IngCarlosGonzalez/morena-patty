@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\URL;
 
 class HacerContacto extends Component
 {
+
+    public $trampa;
+
     public $nombre_full;
     public $telefono_movil;
     public $tiene_watsapp;
@@ -25,34 +28,36 @@ class HacerContacto extends Component
     public $showSuccess = false;
 
     protected $rules = [
-        'nombre_full' => 'required|string|max:60',
+        'nombre_full' => 'required|string|min:10|max:60',
         'telefono_movil' => 'required',
-        'tiene_watsapp' => 'required',
-        'colonia_o_sector' => 'string|max:40',
-        'localidad_municipio' => 'string|max:50',
-        'entidad_federativa' => 'string|max:30',
-        'correo_electronico' => 'email',
-        'texto_del_mensaje' => 'string|max:255',
     ];
 
     public function subscribe()
     {
         $this->validate();
 
+        if (!is_null($this->trampa)) {
+            return redirect('/');
+        }
+
         $this->mivariable = '';
         $this->mivariable = strtoupper($this->nombre_full);
         $this->nombre_full = $this->mivariable;
         $this->mivariable = strtoupper($this->colonia_o_sector);
-        $this->colonia_o_sector = $this->mivariable;
+        $this->colonia_o_sector = substr($this->mivariable, 0, 40);
         $this->mivariable = strtoupper($this->localidad_municipio);
-        $this->localidad_municipio = $this->mivariable;
+        $this->localidad_municipio = substr($this->mivariable, 0, 50);
         $this->mivariable = strtoupper($this->entidad_federativa);
-        $this->entidad_federativa = $this->mivariable;
+        $this->entidad_federativa = substr($this->mivariable, 0, 30);
         $this->mivariable = strtolower($this->correo_electronico);
         $this->correo_electronico = $this->mivariable;
         $this->mivariable = strtoupper($this->texto_del_mensaje);
-        $this->texto_del_mensaje = $this->mivariable;
+        $this->texto_del_mensaje = substr($this->mivariable, 0, 250);
         $this->mivariable = '';
+
+        if (is_null($this->tiene_watsapp)) {
+            $this->tiene_watsapp = 0;
+        }
 
         DB::transaction(function () {
             $subscriber = Subscriber::create([

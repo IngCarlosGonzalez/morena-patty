@@ -22,7 +22,7 @@ class SubscriberController extends Controller
      */
     public function index()
     {
-        //
+        return view('directorios.prospectos.index');
     }
 
     /**
@@ -54,7 +54,7 @@ class SubscriberController extends Controller
      */
     public function show(Subscriber $subscriber)
     {
-        //
+        return view('directorios.prospectos.show');
     }
 
     /**
