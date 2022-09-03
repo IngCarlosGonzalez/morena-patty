@@ -211,7 +211,7 @@
                             @if (request()->routeIs('directorios.subscribers.index'))
                             style="background-color: #aa0000; color:#fff;"
                             @endif
-                            >Prospectos Registrados</a>
+                            >Lista de Prospectos</a>
 
                             <a href="{{ route('directorios.contactos.create') }}"
                             @if (request()->routeIs('directorios.contactos.create'))
@@ -477,6 +477,8 @@
 
             @endif
 
+            @livewireScripts
+
             <!-- Page Content -->
             <main>
 
@@ -525,8 +527,6 @@
             var xxx = document.getElementById("fechadehoy");
             xxx.innerHTML = lafecha;
         </script>
-
-        @livewireScripts
 
     </body>
 

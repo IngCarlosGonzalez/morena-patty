@@ -12,6 +12,10 @@ class Index extends Component
 
     protected $listeners = ['delete'];
 
+    public $quiereBorrar = false;
+    public $aCualId = 0;
+    public $deleteOk = false;
+
     public $search = '';
 
     protected $queryString = [
