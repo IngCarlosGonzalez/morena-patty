@@ -19,6 +19,7 @@
 
         <div class="flex flex-row w-full">
             @livewire('directorios.subscribers.index')
+            {{-- esta es de pruebas de PowerGrid @livewire('subscriber-table') --}}
         </div>
 
     </div>

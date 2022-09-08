@@ -40,6 +40,8 @@
         <hr class="border-b border-gray-100 opacity-25 my-0 py-0" />
     </nav>
 
+    @livewireScripts
+
     <div class="pt-12">
 
         <div class="container px-3 mx-auto flex flex-col md:flex-row">
@@ -180,8 +182,6 @@
             </div>
         </div>
     </footer>
-
-    @livewireScripts
 
 </body>
 

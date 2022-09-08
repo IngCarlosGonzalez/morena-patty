@@ -5,7 +5,6 @@
         showSuccess: @entangle('showSuccess'),
         mensaje: 'Developed by: calin_mx @2022'
     }"
-    wire:loading="$toggle('showSuccess')"
 >
 
     <div class="m-4" >
@@ -13,7 +12,7 @@
         class="w-full bg-black text-lg justify-center py-4 px-8 hover:bg-yellow-700"
         x-on:click="showSubscribe=true"
         >
-        Deja tus Datos
+        Ponte en Contacto
         </x-jet-button>
     </div>
 
