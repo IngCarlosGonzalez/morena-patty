@@ -16,7 +16,7 @@
         </x-jet-button>
     </div>
 
-    <x-modal class="bg-black" disparador="showSubscribe">
+    <x-dialogo x-data="" x-cloak class="bg-black" disparador="showSubscribe">
 
     	<div class="h-auto md:container mb-6 md:mx-auto w-full max-w-6xl text-white rounded-lg overflow-hidden shadow-xl transform transition-all">
 
@@ -63,8 +63,8 @@
                             placeholder="0000000000"
                             wire:model.defer="telefono_movil"
                         >
-                        <div class="block justify-center items-center mb-4">
-                            <label for="tiene_watsapp" class="ml-0 md:ml-4 pr-2 md:mb-4 text-left md:text-right font-normal text-base leading-none text-gray-300">
+                        <div class="flex flex-row mb-3 justify-center">
+                            <label for="tiene_watsapp" class="ml-0 mr-4 md:ml-4 text-left md:text-right font-normal text-base leading-none text-gray-300">
                                 Teléfono con Watsapp...
                             </label>
                             <input
@@ -157,7 +157,7 @@
                         ></textarea>
                     </div>
 
-                    <div class="hidden">
+                    <div class="invisible">
                         <input
                             type="checkbox"
                             id="trampa"
@@ -168,7 +168,7 @@
 
                     <div class="flex flex-col mx-auto px-4 mb-12">
                         {{-- Este es el botón para submit de datos con animación --}}
-                        <button class="mt-4 px-12 py-3 bg-orange-600 border border-orange-200 rounded-lg hover:bg-orange-400">
+                        <button class="hover:scale-110 mt-4 px-12 py-3 bg-orange-600 border border-orange-200 rounded-lg hover:bg-orange-400">
                             <span wire:loading wire:target="subscribe" class="animate-spin text-extrabold text-4xl">
                                 &#9696;
                             </span>
@@ -184,9 +184,10 @@
 
         </div>
 
-    </x-modal>
+    </x-dialogo>
 
-    <x-modal class="bg-green-500" disparador="showSuccess">
+
+    <x-dialogo x-data="" x-cloak class="bg-green-500" disparador="showSuccess">
 
         <div class="h-auto md:container md:mx-auto w-full max-w-6xl text-white rounded-lg overflow-hidden shadow-xl transform transition-all">
 
@@ -211,6 +212,8 @@
 
         </div>
 
-    </x-modal>
+    </x-dialogo>
+
+
 
 </div>

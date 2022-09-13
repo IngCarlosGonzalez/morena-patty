@@ -10,10 +10,15 @@ class Index extends Component
 {
     use WithPagination;
 
-    protected $listeners = ['delete'];
+    protected $listeners = [
+        'delete',
+        'limpiar'
+    ];
 
-    public $quiereBorrar = false;
-    public $aCualId = 0;
+    public $deCuantos = 6;
+
+    public $cantidad = 0;
+
     public $deleteOk = false;
 
     public $search = '';
@@ -27,6 +32,11 @@ class Index extends Component
         $this->resetPage();
     }
 
+    public function limpiar()
+    {
+        $this->search = '';
+    }
+
     public function delete(Subscriber $subscriber)
     {
         $subscriber->delete();
@@ -36,7 +46,17 @@ class Index extends Component
 
     public function render()
     {
-        $subscribers = Subscriber::where('nombre_full', 'like', "%{$this->search}%")->paginate(6);
+        $this->cantidad = Subscriber::count();
+
+        $subscribers = Subscriber::where(
+            'nombre_full',
+            'like',
+            "%{$this->search}%"
+        )->paginate(
+            $perPage = $this->deCuantos,
+            $columns = ['*'],
+            $pageName = 'prospectos'
+        );
 
         return view('livewire.directorios.subscribers.index')
             ->with(

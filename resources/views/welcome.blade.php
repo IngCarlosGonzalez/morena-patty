@@ -20,6 +20,9 @@
         .gradient {
         background: linear-gradient(90deg, #300000 0%, #e31212 100%);
         }
+
+        [x-cloak] { display: none !important;}
+
     </style>
 
     @livewireStyles
@@ -72,7 +75,7 @@
 
             <div class="flex flex-col w-full md:w-3/5 items-center">
                 <div class="animate-pulse mt-4 md:mt-12">
-                    <img src="{{ asset('logo4t3.png') }}" alt="logo de la 4t" class="h-24 md:h-48 border-2 border-black rounded-lg shadow-2xl">
+                    <img src="{{ asset('logo4t3.png') }}" alt="logo de la 4t" class="hover:scale-125 h-24 md:h-48 border-2 border-black rounded-lg shadow-2xl">
                 </div>
             </div>
 
