@@ -20,7 +20,7 @@
                 <option value="6">de 6 en 6</option>
                 <option value="20">de 20 en 20</option>
                 <option value="50">de 50 en 50</option>
-                <option value="1000">verlos todos</option>
+                <option value="1000">ver por miles</option>
             </select>
             <h4 class="text-white text-lg font-normal ml-16 mt-1 mr-4">
                 Buscar nombre:
@@ -37,6 +37,9 @@
             >
                 <x-heroicon-o-arrow-left/>
             </button>
+            <span class="ml-6 text-black text-2xl">{{ $sortear }}</span>
+            <span class="ml-6 text-black text-2xl">{{ $elOrden }}</span>
+            <span class="ml-6 text-white text-2xl">{{ $elAviso }}</span>
         </div>
 
         <div class="px-8">
@@ -50,13 +53,45 @@
                 <table class="border-collapse table-fixed">
                     <thead class="text-white bg-gray-800 h-12 border-t-4 border-l-2 border-r-2 border-gray-500">
                         <tr class="text-left uppercase">
-                            <th class="w-3/12 pl-4">Nombre Completo</th>
-                            <th class="w-1/12 pl-4">Teléfono</th>
-                            <th class="w-1/12 ">WatsApp</th>
-                            <th class="w-3/12 pl-4">Ubicación</th>
-                            <th class="w-1/12 pl-4">Alta</th>
-                            <th class="w-1/12 ">Contacto</th>
-                            <th class="w-2/12 pl-16">Acciones</th>
+                            <th wire:click="clasifica('nombre_full')" class="cursor-pointer w-3/12 pl-4">
+                                Nombre
+                                @if ($sortear == 'nombre_full')
+                                    @if ($elOrden == 'asc')
+                                        <x-heroicon-o-sort-descending class="float-right w-6 h-6" />
+                                    @else
+                                        <x-heroicon-o-sort-ascending class="float-right w-6 h-6" />
+                                    @endif
+                                @else
+                                    <x-heroicon-o-sort-descending class="float-right w-6 h-6" />
+                                @endif
+                            </th>
+                            <th wire:click="clasifica('telefono_movil')" class="cursor-pointer w-1/12 pl-4">
+                                Móvil
+                                @if ($sortear == 'telefono_movil')
+                                    @if ($elOrden == 'asc')
+                                        <x-heroicon-o-sort-descending class="float-right w-6 h-6" />
+                                    @else
+                                        <x-heroicon-o-sort-ascending class="float-right w-6 h-6" />
+                                    @endif
+                                @else
+                                    <x-heroicon-o-sort-descending class="float-right w-6 h-6" />
+                                @endif
+                            </th>
+                            <th class="w-1/12 ">
+                                WatsApp
+                            </th>
+                            <th class="w-3/12 pl-4">
+                                Ubicación
+                            </th>
+                            <th class="w-1/12 pl-4">
+                                Alta
+                            </th>
+                            <th class="w-1/12 ">
+                                Contacto
+                            </th>
+                            <th class="w-2/12 pl-16">
+                                Acciones
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="text-white">
@@ -120,12 +155,16 @@
 
                             <td class="py-2 px-4">
                                 <div class="flex flew-row">
-                                    <button
+
+                                    {{-- <button
                                             class="border-2 px-2 py-0 border-blue-800 rounded-md bg-gray-800 hover:bg-blue-500"
                                             wire:click="$emit('checarDatos', {{ $subscriber->id }})"
                                     >
                                         CHECAR
-                                    </button>
+                                    </button> --}}
+
+                                    @livewire('editar-prospecto', ['subscriber' => $subscriber], key($subscriber->id))
+
                                     <button
                                             class="border-2 mx-2 px-2 py-0 border-red-800 rounded-md bg-gray-800 hover:bg-red-500"
                                             wire:click="$emit('confirmarDelete', {{ $subscriber->id }})"

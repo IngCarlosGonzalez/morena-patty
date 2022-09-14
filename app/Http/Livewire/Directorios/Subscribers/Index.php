@@ -11,8 +11,9 @@ class Index extends Component
     use WithPagination;
 
     protected $listeners = [
-        'delete',
-        'limpiar'
+        'delete' => 'deleteRegis',
+        'limpiar' => 'limpiarBusca',
+        'porfisRefresh' => 'refrescar'
     ];
 
     public $deCuantos = 6;
@@ -23,6 +24,11 @@ class Index extends Component
 
     public $search = '';
 
+    public $sortear = 'id';
+    public $elOrden = 'asc';
+
+    public $elAviso = '';
+
     protected $queryString = [
         'search' => ['except' => '']
     ];
@@ -32,16 +38,36 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function limpiar()
+    public function limpiarBusca()
     {
         $this->search = '';
     }
 
-    public function delete(Subscriber $subscriber)
+    public function deleteRegis(Subscriber $subscriber)
     {
         $subscriber->delete();
         $this->resetPage();
         $this->emit('deleteOk');
+    }
+
+    public function refrescar()
+    {
+        $this->elAviso = 'recargando...';
+        $this->render();
+    }
+
+    public function clasifica($porCual)
+    {
+        if ($this->sortear == $porCual) {
+            if ($this->elOrden == 'asc') {
+                $this->elOrden = 'desc';
+            } else {
+                $this->elOrden = 'asc';
+            }
+        } else {
+            $this->sortear = $porCual;
+            $this->elOrden = 'asc';
+        }
     }
 
     public function render()
@@ -51,7 +77,10 @@ class Index extends Component
         $subscribers = Subscriber::where(
             'nombre_full',
             'like',
-            "%{$this->search}%"
+            '%' . $this->search . '%'
+        )->orderBy(
+            $this->sortear,
+            $this->elOrden
         )->paginate(
             $perPage = $this->deCuantos,
             $columns = ['*'],
