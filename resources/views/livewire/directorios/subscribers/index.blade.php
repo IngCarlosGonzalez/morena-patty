@@ -32,24 +32,33 @@
                 wire:model="search"
             >
             <button
-                class="border-2 ml-2 mt-1.5 px-1 w-8 h-8 py-1 border-indigo-800 rounded-md bg-gray-300 hover:bg-red-500"
+                class="border-2 ml-2 mt-0 px-1 w-10 h-10 py-1 border-indigo-800 rounded-md bg-gray-300 hover:bg-red-500"
                 wire:click="$emit('limpiar')"
             >
                 <x-heroicon-o-arrow-left/>
             </button>
             <button
                 class="ml-36 text-bold text-xl text-white border-2 mt-0 px-1 w-48 h-10 py-1 border-red-800 rounded-md bg-red-600 hover:bg-red-400"
-                wire:click="$emit('bulkdelete')"
+                wire:click="$emit('confirmarBulk')"
             >
                 Eliminar Marcados
             </button>
         </div>
 
-        <div class="flex flex-row justify-end mb-3">
+        <div class="flex flex-row justify-end mb-4">
+            @if ( flash()->message )
+                <div class="{{ flash()->class }}">
+                    {{ flash()->message }}
+                </div>
+            @endif
+            <span class="mr-4 text-md text-gray-500">Ocultar Convertidos</span>
+            <input
+            class="w-6 h-6 mr-40 border rounded bg-orange-600 border-gray-500 focus:ring-orange-700 ring-offset-gray-800"
+            wire:model="ocultar" type="checkbox" name="ocultar" id="ocultar"
+            >
             <span class="mr-4 text-md text-gray-500">Seleccionar Todos</span>
             <input
             class="w-6 h-6 mr-16 border rounded bg-orange-600 border-gray-500 focus:ring-orange-700 ring-offset-gray-800"
-            {{-- onclick="MarcarTodos(this)" --}}
             wire:model="todos" type="checkbox" name="todos" id="todos"
             >
         </div>
@@ -57,9 +66,9 @@
         <div class="px-8">
             @if ($subscribers->isEmpty())
                 <div class="p-5">
-                    <h1 class="text-red-800 bg-black texl-3xl font-bold">
+                    <span class="text-red-800 bg-black texl-3xl font-bold">
                         No hay registros ....
-                    </h1>
+                    </span>
                 </div>
             @else
                 <table class="border-collapse table-fixed">
@@ -169,12 +178,7 @@
                             <td class="py-2 px-4">
                                 <div class="flex flew-row">
 
-                                    {{-- <a
-                                        href="{{ route('directorios.subscribers.show', $subscriber->id) }}"
-                                        class="border-2 px-2 py-0 border-blue-800 rounded-md bg-gray-800 hover:bg-blue-500"
-                                    >
-                                        CHECAR
-                                    </a> --}}
+                                    {{-- <a href="{{ route('directorios.subscribers.show', $subscriber->id) }}" class="border-2 px-2 py-0 border-blue-800 rounded-md bg-gray-800 hover:bg-blue-500">CHECAR</a> --}}
 
                                     <button
                                             class="border-2 mx-2 px-2 py-0 border-green-800 rounded-md bg-gray-800 hover:bg-green-500"
@@ -192,10 +196,12 @@
 
                                     <div class="ml-4 mr-2 rounded-full bg-orange-800 hover:bg-orange-600 border border-gray-200">
                                         <input
-                                        class="casillas w-6 h-6 px-12 py-8 mt-1 mx-2 cursor-pointer border rounded bg-orange-800 border-gray-500 focus:ring-orange-700 ring-offset-gray-800 hover:bg-red-800"
-                                        wire:model.defer="itemsMarcados"
-                                        type="checkbox"
-                                        value="{{ $subscriber->id }}"
+                                            wire:model.defer="itemsMarcados"
+                                            id="itemsMarcados"
+                                            name="itemsMarcados"
+                                            type="checkbox"
+                                            value="{{ $subscriber->id }}"
+                                            class="casillas w-6 h-6 px-12 py-8 mt-1 mx-2 cursor-pointer border rounded bg-orange-800 border-gray-500 focus:ring-orange-700 ring-offset-gray-800 hover:bg-red-800"
                                         >
                                     </div>
                                 </div>
@@ -212,10 +218,6 @@
             <div class="w-2/3">{{ $subscribers->links() }}</div>
             <div class="mr-8 mt-1 text-gray-500">Registros:&nbsp;&nbsp;{{ $cantidad }}</div>
         </div>
-
-        {{-- <div class="mt-6 text-xl font-bold font-mono text-white ">
-            {{ $itemsMarcados }}
-        </div> --}}
 
     </div>
 
@@ -349,8 +351,8 @@
                 icon: 'success',
                 width: 600,
                 padding: '3em',
-                color: '#ffffff',
-                background: '#006600',
+                color: '#000000',
+                background: '#00aa00',
                 showConfirmButton: true,
                 confirmButtonText: 'O K'
             })
@@ -381,7 +383,7 @@
                 width: 600,
                 padding: '3em',
                 color: '#000000',
-                background: '#bbbbbb',
+                background: '#cccc00',
                 showCancelButton: true,
                 showConfirmButton: true,
                 confirmButtonText: '<i class="fa fa-thumbs-down"></i>&nbsp;&nbsp;Si, borralo!',
@@ -417,55 +419,13 @@
                 icon: 'success',
                 width: 600,
                 padding: '3em',
-                color: '#ffffff',
-                background: '#800000',
+                color: '#000000',
+                background: '#00aa00',
                 showConfirmButton: true,
                 confirmButtonText: 'O K'
             })
         })
 
-    </script>
-
-    {{-- mensaje de editado ok --}}
-    <script>
-
-        Livewire.on('editadoOk', () => {
-
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'px-12 py-3 my-8 text-black text-3xl font-extrabold border-2 rounded-md border-gray-600 bg-gray-400 hover:bg-gray-200'
-                },
-                buttonsStyling: false
-            })
-
-            swalWithBootstrapButtons.fire({
-                title: 'Actualizado!',
-                text: 'El registro fué editado y almacenado.',
-                icon: 'success',
-                width: 600,
-                padding: '3em',
-                color: '#ffffff',
-                background: '#800000',
-                showConfirmButton: true,
-                confirmButtonText: 'O K'
-            })
-        })
-
-    </script>
-
-    {{-- para marcar/desmarcar todos --}}
-    <script>
-        function MarcarTodos(casilla)
-        {
-            miscasillas=document.getElementsByClassName('casillas'); //Rescatamos controles clase Casillas
-            for(i=0;i<miscasillas.length;i++) //Ejecutamos y recorremos los controles
-            {
-                if(miscasillas[i].type == "checkbox") // Ejecutamos si es una casilla de verificacion
-                {
-                    miscasillas[i].checked=casilla.checked; // Si el input es CheckBox se aplica la funcion ActivarCasilla
-                }
-            }
-        }
     </script>
 
     {{-- aqui se desmarcan todos --}}
@@ -502,6 +462,147 @@
                 }
             }
 
+        })
+
+    </script>
+
+    {{-- mensaje de bulk action ok --}}
+    <script>
+
+        Livewire.on('bulkOk', () => {
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'px-12 py-3 my-8 text-black text-3xl font-extrabold border-2 rounded-md border-gray-600 bg-gray-400 hover:bg-gray-200'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Completado!',
+                text: 'El proceso de Eliminación se terminó OK.',
+                icon: 'success',
+                width: 600,
+                padding: '3em',
+                color: '#000000',
+                background: '#00aa00',
+                showConfirmButton: true,
+                confirmButtonText: 'O K'
+            })
+        })
+
+    </script>
+
+    {{-- mensaje de no se pudo bulk action --}}
+    <script>
+
+        Livewire.on('bulkNope', () => {
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'px-12 py-3 my-8 text-black text-3xl font-extrabold border-2 rounded-md border-gray-600 bg-gray-400 hover:bg-gray-200'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'No se Hizo!',
+                text: 'El proceso global no fué realizado.',
+                icon: 'error',
+                width: 600,
+                padding: '3em',
+                color: '#ffffff',
+                background: '#aa0000',
+                showConfirmButton: true,
+                confirmButtonText: 'O K'
+            })
+
+        })
+
+    </script>
+
+    {{-- pregunta si confirma la ejecución del bulk --}}
+    <script>
+
+        Livewire.on('confirmarBulk', () => {
+
+            // console.log('>>>>> Entra a pregunta por Bulk...');
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'px-6 py-2 mx-4 text-black text-xl font-extrabold border-2 rounded-md border-red-700 bg-red-500 hover:bg-red-300',
+                    cancelButton: 'px-3 py-2 mr-4 text-black text-xl font-extrabold border-2 rounded-md border-blue-700 bg-blue-500 hover:bg-blue-300'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                imageUrl: '{{ asset('logos/Warning.png') }}',
+                imageHeight: 200,
+                imageWidth: 200,
+                imageAlt: 'Imagen del aviso',
+                title: '¿ Seguro que quieres continuar ?',
+                text: 'La eliminación global no tiene reversa!',
+                width: 600,
+                padding: '3em',
+                color: '#000000',
+                background: '#cccc00',
+                showCancelButton: true,
+                showConfirmButton: true,
+                confirmButtonText: '<i class="fa fa-thumbs-down"></i>&nbsp;&nbsp;Si, Ejecutar!',
+                cancelButtonText: '<i class="fa fa-thumbs-up"></i>&nbsp;&nbsp;No, mejor no!',
+                reverseButtons: true,
+                footer: 'conste que te avisamos...'
+            }).then((result) => {
+                if (result.value) {
+                    Livewire.emitTo('directorios.subscribers.index', 'ejecutaBulk' )
+                } else {
+                    Swal.fire('OK, el proceso global no se ejecutó...')
+                }
+            })
+
+        })
+    </script>
+
+    {{-- para marcar/desmarcar todos --}}
+    <script>
+        function MarcarTodos(casilla)
+        {
+            miscasillas=document.getElementsByClassName('casillas'); //Rescatamos controles clase Casillas
+            for(i=0;i<miscasillas.length;i++) //Ejecutamos y recorremos los controles
+            {
+                if(miscasillas[i].type == "checkbox") // Ejecutamos si es una casilla de verificacion
+                {
+                    miscasillas[i].checked=casilla.checked; // Si el input es CheckBox se aplica la funcion ActivarCasilla
+                }
+            }
+        }
+    </script>
+
+
+    {{-- mensaje de editado ok --}}
+    <script>
+
+        Livewire.on('editadoOk', () => {
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'px-12 py-3 my-8 text-black text-3xl font-extrabold border-2 rounded-md border-gray-600 bg-gray-400 hover:bg-gray-200'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Actualizado!',
+                text: 'El registro fué editado y almacenado.',
+                icon: 'success',
+                width: 600,
+                padding: '3em',
+                color: '#ffffff',
+                background: '#800000',
+                showConfirmButton: true,
+                confirmButtonText: 'O K'
+            })
         })
 
     </script>
