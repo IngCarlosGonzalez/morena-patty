@@ -2,14 +2,14 @@
     x-data="{
         cantidad: @entangle('cantidad'),
         deCuantos: @entangle('deCuantos'),
-        deleteOk: @entangle('deleteOk'),
+        search: @entangle('search'),
         mensaje: 'Developed by: calin_mx @2022'
     }"
 >
 
     <div class="p-3 bg-black w-full overflow-hidden">
 
-        <div class="flex flex-row justify-start mb-2">
+        <div class="flex flex-row justify-start mb-0">
             <h4 class="text-white text-lg font-normal ml-8 mt-1 mr-4">
                 Cuántos por Página:
             </h4>
@@ -33,13 +33,25 @@
             >
             <button
                 class="border-2 ml-2 mt-1.5 px-1 w-8 h-8 py-1 border-indigo-800 rounded-md bg-gray-300 hover:bg-red-500"
-                wire:click="$emit('limpiaBuscador')"
+                wire:click="$emit('limpiar')"
             >
                 <x-heroicon-o-arrow-left/>
             </button>
-            <span class="ml-6 text-black text-2xl">{{ $sortear }}</span>
-            <span class="ml-6 text-black text-2xl">{{ $elOrden }}</span>
-            <span class="ml-6 text-white text-2xl">{{ $elAviso }}</span>
+            <button
+                class="ml-36 text-bold text-xl text-white border-2 mt-0 px-1 w-48 h-10 py-1 border-red-800 rounded-md bg-red-600 hover:bg-red-400"
+                wire:click="$emit('bulkdelete')"
+            >
+                Eliminar Marcados
+            </button>
+        </div>
+
+        <div class="flex flex-row justify-end mb-3">
+            <span class="mr-4 text-md text-gray-500">Seleccionar Todos</span>
+            <input
+            class="w-6 h-6 mr-16 border rounded bg-orange-600 border-gray-500 focus:ring-orange-700 ring-offset-gray-800"
+            {{-- onclick="MarcarTodos(this)" --}}
+            wire:model="todos" type="checkbox" name="todos" id="todos"
+            >
         </div>
 
         <div class="px-8">
@@ -89,8 +101,9 @@
                             <th class="w-1/12 ">
                                 Contacto
                             </th>
-                            <th class="w-2/12 pl-16">
-                                Acciones
+                            <th class="w-2/12">
+                                <span class="ml-20">Acciones</span>
+                                <span class="ml-20">sel</span>
                             </th>
                         </tr>
                     </thead>
@@ -156,14 +169,19 @@
                             <td class="py-2 px-4">
                                 <div class="flex flew-row">
 
-                                    {{-- <button
-                                            class="border-2 px-2 py-0 border-blue-800 rounded-md bg-gray-800 hover:bg-blue-500"
-                                            wire:click="$emit('checarDatos', {{ $subscriber->id }})"
+                                    {{-- <a
+                                        href="{{ route('directorios.subscribers.show', $subscriber->id) }}"
+                                        class="border-2 px-2 py-0 border-blue-800 rounded-md bg-gray-800 hover:bg-blue-500"
                                     >
                                         CHECAR
-                                    </button> --}}
+                                    </a> --}}
 
-                                    @livewire('editar-prospecto', ['subscriber' => $subscriber], key($subscriber->id))
+                                    <button
+                                            class="border-2 mx-2 px-2 py-0 border-green-800 rounded-md bg-gray-800 hover:bg-green-500"
+                                            wire:click="editar({{ $subscriber }})"
+                                    >
+                                        CHECAR
+                                    </button>
 
                                     <button
                                             class="border-2 mx-2 px-2 py-0 border-red-800 rounded-md bg-gray-800 hover:bg-red-500"
@@ -171,6 +189,15 @@
                                     >
                                         BORRAR
                                     </button>
+
+                                    <div class="ml-4 mr-2 rounded-full bg-orange-800 hover:bg-orange-600 border border-gray-200">
+                                        <input
+                                        class="casillas w-6 h-6 px-12 py-8 mt-1 mx-2 cursor-pointer border rounded bg-orange-800 border-gray-500 focus:ring-orange-700 ring-offset-gray-800 hover:bg-red-800"
+                                        wire:model.defer="itemsMarcados"
+                                        type="checkbox"
+                                        value="{{ $subscriber->id }}"
+                                        >
+                                    </div>
                                 </div>
                             </td>
 
@@ -186,16 +213,152 @@
             <div class="mr-8 mt-1 text-gray-500">Registros:&nbsp;&nbsp;{{ $cantidad }}</div>
         </div>
 
+        {{-- <div class="mt-6 text-xl font-bold font-mono text-white ">
+            {{ $itemsMarcados }}
+        </div> --}}
+
     </div>
 
+    {{-- DIALOG MODAL PARA CHECAR y PROCESAR --}}
+    <x-jet-dialog-modal wire:model="abrir">
+
+        <x-slot name="title">
+            <div class="text-center">
+                Datos del Prospecto <span class="ml-4">{{ $editando->id }}</span>
+            </div>
+        </x-slot>
+
+        <x-slot name="content">
+            <div class="text-white">
+
+                <div class="mt-4">
+
+                    <div class="flex flex-col md:flex-row md:items-center border-t-4 border-gray-600">
+                        <span class="text-left w-24 mt-6 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
+                            Nombre:
+                        </span>
+                        <span class="text-left w-full mt-6 ont-bold text-xl mb-4 px-2 py-1 mr-4 brder rounded-md shadow-sm border-gray-300">
+                            {{ $editando->nombre_full }}
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center ">
+                        <span class="text-left w-24 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
+                            Teléfono:
+                        </span>
+                        <span class="text-left w-32 ont-bold text-xl mb-4 px-2 py-1 mr-4 brder rounded-md shadow-sm border-gray-300">
+                            {{ $editando->telefono_movil }}
+                        </span>
+                        <span class="text-right w-48 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
+                            Con watsapp?
+                        </span>
+                        @if ($editando->tiene_watsapp == 1)
+                        <span class="text-left w-48 md:mr-4 md:ml-4 md:mb-4 font-normal text-base leading-none text-gray-300">
+                            <x-heroicon-o-check class="w-8 text-bold h-8 text-bold text-green-600"></x-heroicon-o-check>
+                        </span>
+                        @else
+                        <span class="text-left w-48 md:mr-4 md:ml-4 md:mb-4 font-normal text-base leading-none text-gray-300">
+                            <x-heroicon-o-x class="w-8 text-bold h-8 text-bold text-red-600"></x-heroicon-o-x>
+                        </span>
+                        @endif
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center ">
+                        <span class="text-left w-24 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
+                            Colonia:
+                        </span>
+                        <span class="text-left w-full ont-bold text-xl mb-4 px-2 py-1 mr-4 brder rounded-md shadow-sm border-gray-300">
+                            {{ $editando->colonia_o_sector }}
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center ">
+                        <span class="text-left w-24 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
+                            Municipio:
+                        </span>
+                        <span class="text-left w-full ont-bold text-xl mb-4 px-2 py-1 mr-4 brder rounded-md shadow-sm border-gray-300">
+                            {{ $editando->localidad_municipio }}
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center ">
+                        <span class="text-left w-24 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
+                            Entidad:
+                        </span>
+                        <span class="text-left w-full ont-bold text-xl mb-4 px-2 py-1 mr-4 brder rounded-md shadow-sm border-gray-300">
+                            {{ $editando->entidad_federativa }}
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center ">
+                        <span class="text-left w-24 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
+                            Correo:
+                        </span>
+                        <span class="text-left w-full ont-bold text-xl mb-4 px-2 py-1 mr-4 brder rounded-md shadow-sm border-gray-300">
+                            {{ $editando->correo_electronico }}
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center border-b-4 border-gray-600">
+                        <span class="text-left w-24 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
+                            Mensaje:
+                        </span>
+                        <span class="break-all text-left w-full ont-bold text-xl mb-4 px-2 py-1 mr-4 brder rounded-md shadow-sm border-gray-300">
+                            {{ $editando->texto_del_mensaje }}
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+        </x-slot>
+
+        <x-slot name="footer">
+            <div class="my-6 mr-6">
+                <a href="#" wire:click="$set('abrir', false)" class="px-12 py-2 text-black text-bold text-lg border-2 border-orange-700 bg-orange-500 hover:bg-orange-300">
+                CERRAR
+                </a>
+                <a href="#" wire:click="procesar({{  $editando }})" class="ml-6 px-8 py-2 text-black text-bold text-lg border-2 border-green-700 bg-green-500 hover:bg-green-300">
+                    <span wire:loading wire:target="procesar" class="px-12 animate-spin text-extrabold text-xl">
+                        &#9696;
+                    </span>
+                    <span wire:loading.remove wire:target="procesar" class="text-xl">
+                        CONVERTIR
+                    </span>
+                </a>
+            </div>
+        </x-slot>
+
+    </x-jet-dialog-modal>
+
+    {{-- mensaje de procesado ok --}}
     <script>
 
-        Livewire.on('limpiaBuscador', () => {
-            Livewire.emitTo('directorios.subscribers.index', 'limpiar')
+        Livewire.on('procesaOk', () => {
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'px-12 py-3 my-8 text-black text-3xl font-extrabold border-2 rounded-md border-gray-600 bg-gray-400 hover:bg-gray-200'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Procesado!',
+                text: 'El Prospecto fué Cvonvertido en Contacto.',
+                icon: 'success',
+                width: 600,
+                padding: '3em',
+                color: '#ffffff',
+                background: '#006600',
+                showConfirmButton: true,
+                confirmButtonText: 'O K'
+            })
         })
 
     </script>
 
+    {{-- pregunta antes de eliminar --}}
     <script>
 
         Livewire.on('confirmarDelete', (suscriberId) => {
@@ -236,6 +399,7 @@
         })
     </script>
 
+    {{-- mensaje de eliminado ok --}}
     <script>
 
         Livewire.on('deleteOk', () => {
@@ -258,6 +422,86 @@
                 showConfirmButton: true,
                 confirmButtonText: 'O K'
             })
+        })
+
+    </script>
+
+    {{-- mensaje de editado ok --}}
+    <script>
+
+        Livewire.on('editadoOk', () => {
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'px-12 py-3 my-8 text-black text-3xl font-extrabold border-2 rounded-md border-gray-600 bg-gray-400 hover:bg-gray-200'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Actualizado!',
+                text: 'El registro fué editado y almacenado.',
+                icon: 'success',
+                width: 600,
+                padding: '3em',
+                color: '#ffffff',
+                background: '#800000',
+                showConfirmButton: true,
+                confirmButtonText: 'O K'
+            })
+        })
+
+    </script>
+
+    {{-- para marcar/desmarcar todos --}}
+    <script>
+        function MarcarTodos(casilla)
+        {
+            miscasillas=document.getElementsByClassName('casillas'); //Rescatamos controles clase Casillas
+            for(i=0;i<miscasillas.length;i++) //Ejecutamos y recorremos los controles
+            {
+                if(miscasillas[i].type == "checkbox") // Ejecutamos si es una casilla de verificacion
+                {
+                    miscasillas[i].checked=casilla.checked; // Si el input es CheckBox se aplica la funcion ActivarCasilla
+                }
+            }
+        }
+    </script>
+
+    {{-- aqui se desmarcan todos --}}
+    <script>
+
+        Livewire.on('desmarcar', () => {
+
+            miscasillas=document.getElementsByClassName('casillas');
+
+            for(i=0;i<miscasillas.length;i++)
+            {
+                if(miscasillas[i].type == "checkbox")
+                {
+                    miscasillas[i].checked=0;
+                }
+            }
+
+        })
+
+    </script>
+
+    {{-- aqui se marcan todos --}}
+    <script>
+
+        Livewire.on('marcarall', () => {
+
+            miscasillas=document.getElementsByClassName('casillas');
+
+            for(i=0;i<miscasillas.length;i++)
+            {
+                if(miscasillas[i].type == "checkbox")
+                {
+                    miscasillas[i].checked=1;
+                }
+            }
+
         })
 
     </script>

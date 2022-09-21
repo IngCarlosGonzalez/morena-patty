@@ -134,7 +134,7 @@
                 width: 600,
                 padding: '3em',
                 color: '#ffffff',
-                background: '#aaaaaa',
+                background: '#006600',
                 showConfirmButton: true,
                 confirmButtonText: 'O K'
             })

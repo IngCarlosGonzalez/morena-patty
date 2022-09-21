@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use App\Models\Subscriber;
 
 class EditarProspecto extends Component
 {
@@ -12,13 +13,18 @@ class EditarProspecto extends Component
 
     public $procesado = '';
 
+    public function mount(Subscriber $subscriber)
+    {
+        $this->subscriber = $subscriber;
+    }
+
     public function procesar()
     {
         $this->procesado = "Procesado ID  " . $this->subscriber->id;
         $this->subscriber->paso_a_contacto = 1;
         $this->subscriber->save();
+        $this->emitUp('refrescar');
         $this->emit('procesaOk');
-        $this->emitUp('porfisRefresh');
         $this->abrir = false;
     }
 
