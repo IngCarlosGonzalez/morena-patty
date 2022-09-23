@@ -67,7 +67,7 @@
 
                 </div>
 
-                <p class="hidden mb-16 md:block ml-16 leading-normal text-sm italic text-opacity-50 mt-1 ">
+                <p class="hidden mb-16 md:block ml-20 leading-normal text-sm italic text-opacity-50 mt-1 ">
                     Gracias por registrarte
                 </p>
 

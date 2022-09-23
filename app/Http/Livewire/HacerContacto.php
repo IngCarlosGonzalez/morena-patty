@@ -7,6 +7,7 @@ use App\Models\Subscriber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Log;
 
 class HacerContacto extends Component
 {
@@ -22,7 +23,7 @@ class HacerContacto extends Component
     public $correo_electronico;
     public $texto_del_mensaje;
 
-    public $tokenCaptcha;
+    public $recaptcha;
 
     public $mivariable;
 
@@ -32,11 +33,12 @@ class HacerContacto extends Component
     protected $rules = [
         'nombre_full' => 'required|string|min:10|max:60',
         'telefono_movil' => 'required',
-        'g-recaptcha-response' => 'required|captcha',
+        'recaptcha' => 'required|captcha',
     ];
 
     public function subscribe()
     {
+        Log::debug('>>>>> valor del recaptcha >>>>>' . $this->recaptcha . ' <<<<<');
         $this->validate();
 
         if (!is_null($this->trampa)) {
@@ -87,8 +89,13 @@ class HacerContacto extends Component
         $this->reset('correo_electronico');
         $this->reset('texto_del_mensaje');
 
+        $this->reset('recaptcha');
+        $this->emit('limpieza');
+
         $this->showSubscribe = false;
         $this->showSuccess = true;
+
+        return redirect('/');
     }
 
     public function render()

@@ -3,20 +3,22 @@
     x-data="{
         showSubscribe: @entangle('showSubscribe'),
         showSuccess: @entangle('showSuccess'),
-        tokenCaptcha: @entangle('tokenCaptcha'),
+        recaptcha: @entangle('recaptcha'),
         mensaje: 'Developed by: calin_mx @2022'
     }"
 >
 
+    {{-- Este botón es el que se inserta en la vista LandingPage --}}
     <div class="m-4" >
         <x-jet-button
-        class="w-full bg-black text-lg justify-center py-4 px-8 hover:bg-yellow-700"
+        class="w-full bg-green-600 text-lg justify-center py-4 px-8 hover:bg-yellow-700"
         x-on:click="showSubscribe=true"
         >
         Ponte en Contacto
         </x-jet-button>
     </div>
 
+    {{-- Modal con formato para registrar al prospecto --}}
     <x-dialogo x-data="" x-cloak class="bg-black" disparador="showSubscribe">
 
     	<div class="h-auto md:container mb-6 md:mx-auto w-full max-w-6xl text-white rounded-lg overflow-hidden shadow-xl transform transition-all">
@@ -158,6 +160,7 @@
                         ></textarea>
                     </div>
 
+                    {{-- Este es un honeypot rístico --}}
                     <div class="invisible">
                         <input
                             type="checkbox"
@@ -167,14 +170,15 @@
                         >
                     </div>
 
-                    <div class="flex w-4/5 -ml-4 items-center justify-end mt-1 mb-8 py-1 ">
-                        <div  wire:model.defer="g-recaptcha-response" class="g-recaptcha">
+                    {{-- Aqui se incluye el widget de recaptchav2 --}}
+                    <div class="flex flex-col bg-black w-4/5 ml-24 items-center justify-end mt-1 mb-8 py-1 ">
+                        <div  wire:ignore>
                             {!! NoCaptcha::renderJs() !!}
-                            {!! NoCaptcha::display(['data-theme' => 'dark', 'data-callback' => 'captchaCallback']) !!}
+                            {!! NoCaptcha::display(['data-size' => 'normal', 'data-theme' => 'dark', 'data-callback' => 'captchaCallback']) !!}
                         </div>
-                        @if($errors->has('g-recaptcha-response'))
+                        @if($errors->has('recaptcha'))
                             <div class="animate-pulse mb-8 md:w-96 md:ml-8 md:mb-8 text-center text-extrabold text-xl text-white bg-red-800">
-                                {{ $errors->first('g-recaptcha-response') }}
+                                {{ $errors->first('recaptcha') }}
                             </div>
                         @endif
                     </div>
@@ -199,10 +203,10 @@
 
     </x-dialogo>
 
+    {{-- Este modal avisa que el registro fué exitoso --}}
+    <x-dialogo x-data="" x-cloak class="bg-green-700" disparador="showSuccess">
 
-    <x-dialogo x-data="" x-cloak class="bg-green-500" disparador="showSuccess">
-
-        <div class="h-auto md:container md:mx-auto w-full max-w-6xl text-white rounded-lg overflow-hidden shadow-xl transform transition-all">
+        <div class="h-auto md:container md:mx-auto w-full max-w-6xl text-yellow-500 rounded-lg overflow-hidden shadow-xl transform transition-all">
 
             <p class="mt-12 animate-bounce text-white font-extrabold text-9xl text-center">
                 &check;
@@ -227,12 +231,24 @@
 
     </x-dialogo>
 
-
+    {{-- Este script enlaza al modal con la clase para cachar el response --}}
     <script>
-        console.log('--- funcion de captcha');
-        var captchaCallback = function(response) {
-            console.log(response);
+        var captchaCallback = function() {
+            @this.
+            set('recaptcha', grecaptcha.getResponse());
+            console.log('---------------------');
         };
+    </script>
+
+    {{-- mensaje para limpieza despues de registrar --}}
+    <script>
+
+        Livewire.on('limpieza', () => {
+            @this.
+            set('recaptcha', 0);
+            console.log('-------cleaned---------');
+        })
+
     </script>
 
 </div>
