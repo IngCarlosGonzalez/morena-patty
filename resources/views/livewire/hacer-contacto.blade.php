@@ -3,6 +3,7 @@
     x-data="{
         showSubscribe: @entangle('showSubscribe'),
         showSuccess: @entangle('showSuccess'),
+        tokenCaptcha: @entangle('tokenCaptcha'),
         mensaje: 'Developed by: calin_mx @2022'
     }"
 >
@@ -24,9 +25,9 @@
 	            class="flex flex-1 flex-col items-center p-1"
 	            wire:submit.prevent="subscribe"
 	        >
-                <div class="mt-4">
+                <div class="mt-4 mx-24">
 
-                    <div class="text-center mb-8 text-orange-500 font-semibold text-xl md:text-3xl">
+                    <div class="uppercase text-left ml-6 mb-4 mt-4 text-gray-300 font-normal text-xl md:text-3xl">
                         Estos son mis datos ...
                     </div>
 
@@ -166,9 +167,21 @@
                         >
                     </div>
 
+                    <div class="flex w-4/5 -ml-4 items-center justify-end mt-1 mb-8 py-1 ">
+                        <div  wire:model.defer="g-recaptcha-response" class="g-recaptcha">
+                            {!! NoCaptcha::renderJs() !!}
+                            {!! NoCaptcha::display(['data-theme' => 'dark', 'data-callback' => 'captchaCallback']) !!}
+                        </div>
+                        @if($errors->has('g-recaptcha-response'))
+                            <div class="animate-pulse mb-8 md:w-96 md:ml-8 md:mb-8 text-center text-extrabold text-xl text-white bg-red-800">
+                                {{ $errors->first('g-recaptcha-response') }}
+                            </div>
+                        @endif
+                    </div>
+
                     <div class="flex flex-col mx-auto px-4 mb-12">
                         {{-- Este es el botón para submit de datos con animación --}}
-                        <button class="hover:scale-110 mt-4 px-12 py-3 bg-orange-600 border border-orange-200 rounded-lg hover:bg-orange-400">
+                        <button class="hover:scale-90 mt-4 px-12 py-3 bg-orange-600 border border-orange-200 rounded-lg hover:bg-orange-400">
                             <span wire:loading wire:target="subscribe" class="animate-spin text-extrabold text-4xl">
                                 &#9696;
                             </span>
@@ -215,5 +228,11 @@
     </x-dialogo>
 
 
+    <script>
+        console.log('--- funcion de captcha');
+        var captchaCallback = function(response) {
+            console.log(response);
+        };
+    </script>
 
 </div>

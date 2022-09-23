@@ -32,7 +32,12 @@
                 </label>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
+            <div class="flex items-center justify-center mt-4 py-1 bg-white border-2 border-gray-400">
+                {!! NoCaptcha::renderJs() !!}
+                {!! NoCaptcha::display() !!}
+            </div>
+
+            <div class="flex items-center justify-end mt-6 mb-6">
                 @if (Route::has('password.request'))
                     <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
                         ¿ Se te olvidó tu password ?
@@ -44,5 +49,7 @@
                 </x-jet-button>
             </div>
         </form>
+
     </x-jet-authentication-card>
+
 </x-guest-layout>

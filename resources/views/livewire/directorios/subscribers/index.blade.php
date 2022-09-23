@@ -9,6 +9,7 @@
 
     <div class="p-3 bg-black w-full overflow-hidden">
 
+        {{-- Esta fila e para controles, busqueda y comandos --}}
         <div class="flex flex-row justify-start mb-0">
             <h4 class="text-white text-lg font-normal ml-8 mt-1 mr-4">
                 Cuántos por Página:
@@ -45,6 +46,7 @@
             </button>
         </div>
 
+        {{-- Esta fila es para flash, filtros y select all --}}
         <div class="flex flex-row justify-end mb-4">
             @if ( flash()->message )
                 <div class="{{ flash()->class }}">
@@ -63,17 +65,23 @@
             >
         </div>
 
+        {{-- Aqi empieza la lista de registros mostrados --}}
         <div class="px-8">
+
             @if ($subscribers->isEmpty())
                 <div class="p-5">
-                    <span class="text-red-800 bg-black texl-3xl font-bold">
+                    <span class="text-red-600 bg-black texl-5xl font-bold">
                         No hay registros ....
                     </span>
                 </div>
             @else
+
                 <table class="border-collapse table-fixed">
+
                     <thead class="text-white bg-gray-800 h-12 border-t-4 border-l-2 border-r-2 border-gray-500">
+
                         <tr class="text-left uppercase">
+
                             <th wire:click="clasifica('nombre_full')" class="cursor-pointer w-3/12 pl-4">
                                 Nombre
                                 @if ($sortear == 'nombre_full')
@@ -86,6 +94,7 @@
                                     <x-heroicon-o-sort-descending class="float-right w-6 h-6" />
                                 @endif
                             </th>
+
                             <th wire:click="clasifica('telefono_movil')" class="cursor-pointer w-1/12 pl-4">
                                 Móvil
                                 @if ($sortear == 'telefono_movil')
@@ -98,25 +107,34 @@
                                     <x-heroicon-o-sort-descending class="float-right w-6 h-6" />
                                 @endif
                             </th>
+
                             <th class="w-1/12 ">
                                 WatsApp
                             </th>
+
                             <th class="w-3/12 pl-4">
                                 Ubicación
                             </th>
+
                             <th class="w-1/12 pl-4">
                                 Alta
                             </th>
+
                             <th class="w-1/12 ">
                                 Contacto
                             </th>
+
                             <th class="w-2/12">
                                 <span class="ml-20">Acciones</span>
                                 <span class="ml-20">sel</span>
                             </th>
+
                         </tr>
+
                     </thead>
+
                     <tbody class="text-white">
+
                         @foreach ($subscribers as $subscriber)
                         @php
                             $ubicacion = "";
@@ -209,11 +227,16 @@
 
                         </tr>
                         @endforeach
+
                     </tbody>
+
                 </table>
+
             @endif
+
         </div>
 
+        {{-- Aqui se muestran los lonks de paginación y asi --}}
         <div class="bg-black inline-flex justify-between md:w-full font-bold text-xl text-white" style="padding: 20px 30px 20px 50px;">
             <div class="w-2/3">{{ $subscribers->links() }}</div>
             <div class="mr-8 mt-1 text-gray-500">Registros:&nbsp;&nbsp;{{ $cantidad }}</div>
@@ -233,7 +256,7 @@
         <x-slot name="content">
             <div class="text-white">
 
-                <div class="mt-4">
+                <div class="mt-2">
 
                     <div class="flex flex-col md:flex-row md:items-center border-t-4 border-gray-600">
                         <span class="text-left w-24 mt-6 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
@@ -317,17 +340,21 @@
 
         <x-slot name="footer">
             <div class="my-6 mr-6">
-                <a href="#" wire:click="$set('abrir', false)" class="px-12 py-2 text-black text-bold text-lg border-2 border-orange-700 bg-orange-500 hover:bg-orange-300">
-                CERRAR
+                <a href="#" wire:click="$set('abrir', false)" class="px-12 py-2 text-black font-bold text-lg border-2 border-orange-700 bg-orange-500 hover:bg-orange-300">
+                    CERRAR
                 </a>
-                <a href="#" wire:click="procesar({{  $editando }})" class="ml-6 px-8 py-2 text-black text-bold text-lg border-2 border-green-700 bg-green-500 hover:bg-green-300">
-                    <span wire:loading wire:target="procesar" class="px-12 animate-spin text-extrabold text-xl">
+                @if ($editando->aso_a_contacto == 0)
+                <a href="#" wire:click="procesar({{ $editando }})" class="ml-6 px-8 py-2 text-black font-bold text-xl border-2 border-green-700 bg-green-500 hover:bg-green-300">
+                    <span wire:loading wire:target="procesar" class="px-12 animate-spin font-extrabold text-xl">
                         &#9696;
                     </span>
                     <span wire:loading.remove wire:target="procesar" class="text-xl">
                         CONVERTIR
                     </span>
                 </a>
+                @else
+                    <span class="cursor-not-allowed ml-6 px-8 py-2 text-black font-bold text-xl border-2 border-green-700 bg-green-500 hover:bg-green-300">Ya Convertido</span>
+                @endif
             </div>
         </x-slot>
 

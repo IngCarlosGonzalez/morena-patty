@@ -22,6 +22,8 @@ class HacerContacto extends Component
     public $correo_electronico;
     public $texto_del_mensaje;
 
+    public $tokenCaptcha;
+
     public $mivariable;
 
     public $showSubscribe = false;
@@ -30,6 +32,7 @@ class HacerContacto extends Component
     protected $rules = [
         'nombre_full' => 'required|string|min:10|max:60',
         'telefono_movil' => 'required',
+        'g-recaptcha-response' => 'required|captcha',
     ];
 
     public function subscribe()
