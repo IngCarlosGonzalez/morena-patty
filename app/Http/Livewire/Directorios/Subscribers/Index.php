@@ -91,7 +91,7 @@ class Index extends Component
         $this->resetPage();
     }
 
-    // Controla el cambio en array de Items MArcados
+    // Controla el cambio en array de Items Marcados
     public function updatedItemsMarcados($id)
     {
         Log::debug('... Se marcó el Item... ' . count($id) . ' --- ' . $this->itemsMarcados[count($id) - 1]);

@@ -7,15 +7,15 @@
     }"
 >
 
-    <div class="p-3 bg-black w-full overflow-hidden">
+    <div class="w-full p-3 overflow-hidden bg-black">
 
-        {{-- Esta fila e para controles, busqueda y comandos --}}
+        {{-- Esta fila es para controles, busqueda y comandos --}}
         <div class="flex flex-row justify-start mb-0">
-            <h4 class="text-white text-lg font-normal ml-8 mt-1 mr-4">
+            <h4 class="mt-1 ml-8 mr-4 text-lg font-normal text-white">
                 Cuántos por Página:
             </h4>
             <select
-                class="h-10 font-bold text-xl p-1 border-2 border-gray-700 focus:border-orange-600 rounded-md bg-gray-200 text-black mb-4"
+                class="h-10 p-1 mb-4 text-xl font-bold text-black bg-gray-200 border-2 border-gray-700 rounded-md focus:border-orange-600"
                 wire:model="deCuantos"
             >
                 <option value="6">de 6 en 6</option>
@@ -23,23 +23,23 @@
                 <option value="50">de 50 en 50</option>
                 <option value="1000">ver por miles</option>
             </select>
-            <h4 class="text-white text-lg font-normal ml-16 mt-1 mr-4">
+            <h4 class="mt-1 ml-16 mr-4 text-lg font-normal text-white">
                 Buscar nombre:
             </h4>
             <input
                 type="text"
-                class="h-10 font-bold text-xl p-1 border-2 border-gray-700 focus:border-orange-600 rounded-md bg-gray-200 text-black mb-4"
+                class="h-10 p-1 mb-4 text-xl font-bold text-black bg-gray-200 border-2 border-gray-700 rounded-md focus:border-orange-600"
                 placeholder="cual buscas..."
                 wire:model="search"
             >
             <button
-                class="border-2 ml-2 mt-0 px-1 w-10 h-10 py-1 border-indigo-800 rounded-md bg-gray-300 hover:bg-red-500"
+                class="w-10 h-10 px-1 py-1 mt-0 ml-2 bg-gray-300 border-2 border-indigo-800 rounded-md hover:bg-red-500"
                 wire:click="$emit('limpiar')"
             >
                 <x-heroicon-o-arrow-left/>
             </button>
             <button
-                class="ml-36 text-bold text-xl text-white border-2 mt-0 px-1 w-48 h-10 py-1 border-red-800 rounded-md bg-red-600 hover:bg-red-400"
+                class="w-48 h-10 px-1 py-1 mt-0 text-xl text-white bg-red-600 border-2 border-red-800 rounded-md ml-36 text-bold hover:bg-red-400"
                 wire:click="$emit('confirmarBulk')"
             >
                 Eliminar Marcados
@@ -53,14 +53,14 @@
                     {{ flash()->message }}
                 </div>
             @endif
-            <span class="mr-4 text-md text-gray-500">Ocultar Convertidos</span>
+            <span class="mr-4 text-gray-500 text-md">Ocultar Convertidos</span>
             <input
-            class="w-6 h-6 mr-40 border rounded bg-orange-600 border-gray-500 focus:ring-orange-700 ring-offset-gray-800"
+            class="w-6 h-6 mr-40 bg-orange-600 border border-gray-500 rounded focus:ring-orange-700 ring-offset-gray-800"
             wire:model="ocultar" type="checkbox" name="ocultar" id="ocultar"
             >
-            <span class="mr-4 text-md text-gray-500">Seleccionar Todos</span>
+            <span class="mr-4 text-gray-500 text-md">Seleccionar Todos</span>
             <input
-            class="w-6 h-6 mr-16 border rounded bg-orange-600 border-gray-500 focus:ring-orange-700 ring-offset-gray-800"
+            class="w-6 h-6 mr-16 bg-orange-600 border border-gray-500 rounded focus:ring-orange-700 ring-offset-gray-800"
             wire:model="todos" type="checkbox" name="todos" id="todos"
             >
         </div>
@@ -70,7 +70,7 @@
 
             @if ($subscribers->isEmpty())
                 <div class="p-5">
-                    <span class="text-red-600 bg-black texl-5xl font-bold">
+                    <span class="text-5xl font-bold text-red-600 bg-black">
                         No hay registros ....
                     </span>
                 </div>
@@ -78,11 +78,11 @@
 
                 <table class="border-collapse table-fixed">
 
-                    <thead class="text-white bg-gray-800 h-12 border-t-4 border-l-2 border-r-2 border-gray-500">
+                    <thead class="h-12 text-white bg-gray-800 border-t-4 border-l-2 border-r-2 border-gray-500">
 
                         <tr class="text-left uppercase">
 
-                            <th wire:click="clasifica('nombre_full')" class="cursor-pointer w-3/12 pl-4">
+                            <th wire:click="clasifica('nombre_full')" class="w-3/12 pl-4 cursor-pointer">
                                 Nombre
                                 @if ($sortear == 'nombre_full')
                                     @if ($elOrden == 'asc')
@@ -95,7 +95,7 @@
                                 @endif
                             </th>
 
-                            <th wire:click="clasifica('telefono_movil')" class="cursor-pointer w-1/12 pl-4">
+                            <th wire:click="clasifica('telefono_movil')" class="w-1/12 pl-4 cursor-pointer">
                                 Móvil
                                 @if ($sortear == 'telefono_movil')
                                     @if ($elOrden == 'asc')
@@ -165,9 +165,9 @@
                         @endphp
                         <tr class="border-2 border-gray-500">
 
-                            <td class="py-2 px-4 break-all tracking-tighter">{{ $subscriber->nombre_full }}</td>
+                            <td class="px-4 py-2 tracking-tighter break-all">{{ $subscriber->nombre_full }}</td>
 
-                            <td class="py-2 px-4">{{ $subscriber->telefono_movil }}</td>
+                            <td class="px-4 py-2">{{ $subscriber->telefono_movil }}</td>
 
                             @if ($conwatsap == 1)
                                 <td class="py-0 pl-6">
@@ -179,9 +179,9 @@
                                 </td>
                             @endif
 
-                            <td class="py-2 px-4 break-all tracking-tighter">{{ $ubicacion }}</td>
+                            <td class="px-4 py-2 tracking-tighter break-all">{{ $ubicacion }}</td>
 
-                            <td class="py-2 px-4">{{ $subscriber->created_at->diffForHumans() }}</td>
+                            <td class="px-4 py-2">{{ $subscriber->created_at->diffForHumans() }}</td>
 
                             @if ($convertido == 1)
                                 <td class="py-0 pl-6">
@@ -193,33 +193,33 @@
                                 </td>
                             @endif
 
-                            <td class="py-2 px-4">
+                            <td class="px-4 py-2">
                                 <div class="flex flew-row">
 
-                                    {{-- <a href="{{ route('directorios.subscribers.show', $subscriber->id) }}" class="border-2 px-2 py-0 border-blue-800 rounded-md bg-gray-800 hover:bg-blue-500">CHECAR</a> --}}
+                                    {{-- <a href="{{ route('directorios.subscribers.show', $subscriber->id) }}" class="px-2 py-0 bg-gray-800 border-2 border-blue-800 rounded-md hover:bg-blue-500">CHECAR</a> --}}
 
                                     <button
-                                            class="border-2 mx-2 px-2 py-0 border-green-800 rounded-md bg-gray-800 hover:bg-green-500"
+                                            class="px-2 py-0 mx-2 bg-gray-800 border-2 border-green-800 rounded-md hover:bg-green-500"
                                             wire:click="editar({{ $subscriber }})"
                                     >
                                         CHECAR
                                     </button>
 
                                     <button
-                                            class="border-2 mx-2 px-2 py-0 border-red-800 rounded-md bg-gray-800 hover:bg-red-500"
+                                            class="px-2 py-0 mx-2 bg-gray-800 border-2 border-red-800 rounded-md hover:bg-red-500"
                                             wire:click="$emit('confirmarDelete', {{ $subscriber->id }})"
                                     >
                                         BORRAR
                                     </button>
 
-                                    <div class="ml-4 mr-2 rounded-full bg-orange-800 hover:bg-orange-600 border border-gray-200">
+                                    <div class="ml-4 mr-2 bg-orange-800 border border-gray-200 rounded-full hover:bg-orange-600">
                                         <input
                                             wire:model.defer="itemsMarcados"
                                             id="itemsMarcados"
                                             name="itemsMarcados"
                                             type="checkbox"
                                             value="{{ $subscriber->id }}"
-                                            class="casillas w-6 h-6 px-12 py-8 mt-1 mx-2 cursor-pointer border rounded bg-orange-800 border-gray-500 focus:ring-orange-700 ring-offset-gray-800 hover:bg-red-800"
+                                            class="w-6 h-6 px-12 py-8 mx-2 mt-1 bg-orange-800 border border-gray-500 rounded cursor-pointer casillas focus:ring-orange-700 ring-offset-gray-800 hover:bg-red-800"
                                         >
                                     </div>
                                 </div>
@@ -236,10 +236,10 @@
 
         </div>
 
-        {{-- Aqui se muestran los lonks de paginación y asi --}}
-        <div class="bg-black inline-flex justify-between md:w-full font-bold text-xl text-white" style="padding: 20px 30px 20px 50px;">
+        {{-- Aqui se muestran los links de paginación y asi --}}
+        <div class="inline-flex justify-between text-xl font-bold text-white bg-black md:w-full" style="padding: 20px 30px 20px 50px;">
             <div class="w-2/3">{{ $subscribers->links() }}</div>
-            <div class="mr-8 mt-1 text-gray-500">Registros:&nbsp;&nbsp;{{ $cantidad }}</div>
+            <div class="mt-1 mr-8 text-gray-500">Registros:&nbsp;&nbsp;{{ $cantidad }}</div>
         </div>
 
     </div>
@@ -258,77 +258,77 @@
 
                 <div class="mt-2">
 
-                    <div class="flex flex-col md:flex-row md:items-center border-t-4 border-gray-600">
-                        <span class="text-left w-24 mt-6 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
+                    <div class="flex flex-col border-t-4 border-gray-600 md:flex-row md:items-center">
+                        <span class="w-24 mt-6 text-base font-normal leading-none text-left text-gray-300 md:mr-4 md:ml-6 md:mb-4">
                             Nombre:
                         </span>
-                        <span class="text-left w-full mt-6 ont-bold text-xl mb-4 px-2 py-1 mr-4 brder rounded-md shadow-sm border-gray-300">
+                        <span class="w-full px-2 py-1 mt-6 mb-4 mr-4 text-xl text-left border-gray-300 rounded-md shadow-sm ont-bold brder">
                             {{ $editando->nombre_full }}
                         </span>
                     </div>
 
                     <div class="flex flex-col md:flex-row md:items-center ">
-                        <span class="text-left w-24 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
+                        <span class="w-24 text-base font-normal leading-none text-left text-gray-300 md:mr-4 md:ml-6 md:mb-4">
                             Teléfono:
                         </span>
-                        <span class="text-left w-32 ont-bold text-xl mb-4 px-2 py-1 mr-4 brder rounded-md shadow-sm border-gray-300">
+                        <span class="w-32 px-2 py-1 mb-4 mr-4 text-xl text-left border-gray-300 rounded-md shadow-sm ont-bold brder">
                             {{ $editando->telefono_movil }}
                         </span>
-                        <span class="text-right w-48 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
+                        <span class="w-48 text-base font-normal leading-none text-right text-gray-300 md:mr-4 md:ml-6 md:mb-4">
                             Con watsapp?
                         </span>
                         @if ($editando->tiene_watsapp == 1)
-                        <span class="text-left w-48 md:mr-4 md:ml-4 md:mb-4 font-normal text-base leading-none text-gray-300">
-                            <x-heroicon-o-check class="w-8 text-bold h-8 text-bold text-green-600"></x-heroicon-o-check>
+                        <span class="w-48 text-base font-normal leading-none text-left text-gray-300 md:mr-4 md:ml-4 md:mb-4">
+                            <x-heroicon-o-check class="w-8 h-8 text-green-600 text-bold"></x-heroicon-o-check>
                         </span>
                         @else
-                        <span class="text-left w-48 md:mr-4 md:ml-4 md:mb-4 font-normal text-base leading-none text-gray-300">
-                            <x-heroicon-o-x class="w-8 text-bold h-8 text-bold text-red-600"></x-heroicon-o-x>
+                        <span class="w-48 text-base font-normal leading-none text-left text-gray-300 md:mr-4 md:ml-4 md:mb-4">
+                            <x-heroicon-o-x class="w-8 h-8 text-red-600 text-bold"></x-heroicon-o-x>
                         </span>
                         @endif
                     </div>
 
                     <div class="flex flex-col md:flex-row md:items-center ">
-                        <span class="text-left w-24 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
+                        <span class="w-24 text-base font-normal leading-none text-left text-gray-300 md:mr-4 md:ml-6 md:mb-4">
                             Colonia:
                         </span>
-                        <span class="text-left w-full ont-bold text-xl mb-4 px-2 py-1 mr-4 brder rounded-md shadow-sm border-gray-300">
+                        <span class="w-full px-2 py-1 mb-4 mr-4 text-xl text-left border-gray-300 rounded-md shadow-sm ont-bold brder">
                             {{ $editando->colonia_o_sector }}
                         </span>
                     </div>
 
                     <div class="flex flex-col md:flex-row md:items-center ">
-                        <span class="text-left w-24 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
+                        <span class="w-24 text-base font-normal leading-none text-left text-gray-300 md:mr-4 md:ml-6 md:mb-4">
                             Municipio:
                         </span>
-                        <span class="text-left w-full ont-bold text-xl mb-4 px-2 py-1 mr-4 brder rounded-md shadow-sm border-gray-300">
+                        <span class="w-full px-2 py-1 mb-4 mr-4 text-xl text-left border-gray-300 rounded-md shadow-sm ont-bold brder">
                             {{ $editando->localidad_municipio }}
                         </span>
                     </div>
 
                     <div class="flex flex-col md:flex-row md:items-center ">
-                        <span class="text-left w-24 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
+                        <span class="w-24 text-base font-normal leading-none text-left text-gray-300 md:mr-4 md:ml-6 md:mb-4">
                             Entidad:
                         </span>
-                        <span class="text-left w-full ont-bold text-xl mb-4 px-2 py-1 mr-4 brder rounded-md shadow-sm border-gray-300">
+                        <span class="w-full px-2 py-1 mb-4 mr-4 text-xl text-left border-gray-300 rounded-md shadow-sm ont-bold brder">
                             {{ $editando->entidad_federativa }}
                         </span>
                     </div>
 
                     <div class="flex flex-col md:flex-row md:items-center ">
-                        <span class="text-left w-24 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
+                        <span class="w-24 text-base font-normal leading-none text-left text-gray-300 md:mr-4 md:ml-6 md:mb-4">
                             Correo:
                         </span>
-                        <span class="text-left w-full ont-bold text-xl mb-4 px-2 py-1 mr-4 brder rounded-md shadow-sm border-gray-300">
+                        <span class="w-full px-2 py-1 mb-4 mr-4 text-xl text-left border-gray-300 rounded-md shadow-sm ont-bold brder">
                             {{ $editando->correo_electronico }}
                         </span>
                     </div>
 
-                    <div class="flex flex-col md:flex-row md:items-center border-b-4 border-gray-600">
-                        <span class="text-left w-24 md:mr-4 md:ml-6 md:mb-4 font-normal text-base leading-none text-gray-300">
+                    <div class="flex flex-col border-b-4 border-gray-600 md:flex-row md:items-center">
+                        <span class="w-24 text-base font-normal leading-none text-left text-gray-300 md:mr-4 md:ml-6 md:mb-4">
                             Mensaje:
                         </span>
-                        <span class="break-all text-left w-full ont-bold text-xl mb-4 px-2 py-1 mr-4 brder rounded-md shadow-sm border-gray-300">
+                        <span class="w-full px-2 py-1 mb-4 mr-4 text-xl text-left break-all border-gray-300 rounded-md shadow-sm ont-bold brder">
                             {{ $editando->texto_del_mensaje }}
                         </span>
                     </div>
@@ -340,12 +340,12 @@
 
         <x-slot name="footer">
             <div class="my-6 mr-6">
-                <a href="#" wire:click="$set('abrir', false)" class="px-12 py-2 text-black font-bold text-lg border-2 border-orange-700 bg-orange-500 hover:bg-orange-300">
+                <a href="#" wire:click="$set('abrir', false)" class="px-12 py-2 text-lg font-bold text-black bg-orange-500 border-2 border-orange-700 hover:bg-orange-300">
                     CERRAR
                 </a>
                 @if ($editando->aso_a_contacto == 0)
-                <a href="#" wire:click="procesar({{ $editando }})" class="ml-6 px-8 py-2 text-black font-bold text-xl border-2 border-green-700 bg-green-500 hover:bg-green-300">
-                    <span wire:loading wire:target="procesar" class="px-12 animate-spin font-extrabold text-xl">
+                <a href="#" wire:click="procesar({{ $editando }})" class="px-8 py-2 ml-6 text-xl font-bold text-black bg-green-500 border-2 border-green-700 hover:bg-green-300">
+                    <span wire:loading wire:target="procesar" class="px-12 text-xl font-extrabold animate-spin">
                         &#9696;
                     </span>
                     <span wire:loading.remove wire:target="procesar" class="text-xl">
@@ -353,7 +353,7 @@
                     </span>
                 </a>
                 @else
-                    <span class="cursor-not-allowed ml-6 px-8 py-2 text-black font-bold text-xl border-2 border-green-700 bg-green-500 hover:bg-green-300">Ya Convertido</span>
+                    <span class="px-8 py-2 ml-6 text-xl font-bold text-black bg-green-500 border-2 border-green-700 cursor-not-allowed hover:bg-green-300">Ya Convertido</span>
                 @endif
             </div>
         </x-slot>
