@@ -97,7 +97,7 @@
                                 Alta
                             </th>
 
-                            <th class="w-1/12 pl-10">
+                            <th class="w-1/12 pl-4">
                                 Role
                             </th>
 
@@ -113,10 +113,15 @@
 
                         @foreach ($users as $usuario)
                         @php
-                            $privilegios = "";
-                            $privilegios = $usuario->roles()->first()->name;
-                            if (is_null($privilegios) ) {
-                                $privilegios = "*sin role*";
+                            $privilegio = "";
+                            $privilegio = $usuario->roles()->first()->name;
+                            if (is_null($privilegio) ) {
+                                $privilegio = "";
+                            }
+                            if ($privilegio == 'superusuario') {
+                                $privilegio = "ADMIN";
+                            } else {
+                                $privilegio = "Normal";
                             }
                         @endphp
                         <tr class="border-2 border-gray-500">
@@ -129,10 +134,10 @@
 
                             <td class="px-4 py-2 tracking-tighter break-all">{{ $usuario->created_at->diffForHumans() }}</td>
 
-                            <td class="px-4 py-2">{{ $privilegios }}</td>
+                            <td class="px-4 py-2">{{ $privilegio }}</td>
 
                             <td class="px-4 py-2">
-                                <div class="flex flew-row">
+                                <div class="flex flex-row">
 
                                     <button
                                             class="px-4 py-0 mx-4 bg-gray-800 border-2 border-blue-800 rounded-md hover:bg-blue-500"
@@ -182,7 +187,7 @@
         </x-slot>
 
         <x-slot name="content">
-            <div class="text-white">
+            <div class="text-white ">
 
                 <div class="mt-2">
 
@@ -191,7 +196,7 @@
                         wire:submit.prevent="procesar"
                     >
                         <div class="mx-24 mt-4">
-        
+
                             <div class="flex flex-col md:flex-row md:items-center ">
                                 {{-- Aquí entra el nombre del usuario --}}
                                 <label for="name" class="w-48 mt-2 mb-8 text-base font-normal leading-none text-gray-300 ">
@@ -259,7 +264,7 @@
                                         Es un SuperUsuario ?
                                     </label>
                                     <input
-                                        class="w-6 h-6 bg-orange-600 border border-gray-500 rounded md:mr-8 focus:ring-orange-700 ring-offset-gray-800"
+                                        class="w-6 h-6 mt-1 bg-orange-600 border border-gray-500 rounded md:mr-8 focus:ring-orange-700 ring-offset-gray-800"
                                         type="checkbox"
                                         id="clave_role"
                                         name="clave_role"
@@ -267,7 +272,51 @@
                                     >
                                 </div>
                             </div>
-
+        
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-start">
+                                {{-- Aquí se carga la imagen "avatar" del usuario --}}
+                                <div class="flex flex-row justify-center mb-6">
+                                    <input
+                                        class="text-xl font-bold"
+                                        type="file"
+                                        id="numerin"
+                                        wire:model="imagen"
+                                    >
+                                </div>
+                            </div>
+                            @if($errors->has('imagen'))
+                                <div class="mb-8 text-xl text-center text-white bg-red-800 animate-pulse md:w-96 md:ml-8 md:mb-6 text-extrabold">
+                                    {{ $errors->first('imagen') }}
+                                </div>
+                            @endif
+                            
+                            <div wire:loading wire:target="imagen">
+                                <div class="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-24 max-w-7xl">
+                                    <div class="p-6 border-l-4 border-yellow-600 rounded-r-xl bg-yellow-50">
+                                        <div class="flex">
+                                            <div class="ml-3">
+                                                <h3 class="text-2xl font-bold text-yellow-800">Cargando la imagen...</h3>
+                                                <div class="mt-2 text-xl text-yellow-600">
+                                                    <p> Espere un momento en lo que se carga la imagen seleccionada </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div wire:loading.remove wire:target="imagen">
+                                @if ($imagen)
+                                    <div class="flex flex-row justify-center">
+                                        <img class="w-48 h-64" src="{{ $imagen->temporaryUrl() }}">
+                                    </div>
+                                @else
+                                    <div class="flex flex-row justify-center">
+                                        <x-heroicon-o-user-add class="w-32 h-48"/>
+                                    </div>
+                                @endif
+                            </div>
+                            
                             {{-- Este es un honeypot rístico --}}
                             <div class="invisible">
                                 <input
@@ -288,7 +337,7 @@
                                     <span wire:loading wire:target="procesar" class="px-12 text-xl font-extrabold animate-spin">
                                         &#9696;
                                     </span>
-                                    <span wire:loading.remove wire:target="procesar" class="text-xl">
+                                    <span wire:loading.remove wire:target="procesar, imagen" class="text-xl">
                                         ALMACENAR
                                     </span>
                                 </a>
@@ -321,7 +370,7 @@
 
         <x-slot name="title">
             <div class="text-center">
-                Editando Datos del Usuario 
+                Editando el Usuario <span class="ml-4"> {{ $editando->name }} </span>
             </div>
         </x-slot>
 
@@ -335,7 +384,7 @@
                         wire:submit.prevent="procesar"
                     >
                         <div class="mx-24 mt-4">
-        
+
                             <div class="flex flex-col md:flex-row md:items-center ">
                                 {{-- Aquí entra el nombre del usuario --}}
                                 <label for="name" class="w-48 mt-2 mb-8 text-base font-normal leading-none text-gray-300 ">
@@ -346,8 +395,7 @@
                                     type="text"
                                     id="name"
                                     name="name"
-                                    placeholder="{{ $editando->name }}"
-                                    wire:model.defer="name"
+                                    wire:model="name"
                                 >
                             </div>
                             @if($errors->has('name'))
@@ -359,15 +407,15 @@
                             <div class="flex flex-col md:flex-row md:items-center ">
                                 {{-- Aquí entra la password del usuario --}}
                                 <label for="password" class="w-48 mt-2 mb-8 text-base font-normal leading-none text-gray-300 ">
-                                    Password:
+                                    Nueva Password:
                                 </label>
                                 <input
                                     class="w-64 px-2 py-1 mb-4 mr-4 text-xl font-bold text-black placeholder-orange-400 border-gray-300 rounded-md shadow-sm brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
                                     type="text"
                                     id="password"
                                     name="password"
-                                    placeholder="{{ $editando->password }}"
-                                    wire:model.defer="password"
+                                    placeholder="TECLEAR NUEVA PASSWORD"
+                                    wire:model="password"
                                 >
                             </div>
                             @if($errors->has('password'))
@@ -386,8 +434,7 @@
                                     type="email"
                                     id="email"
                                     name="email"
-                                    placeholder="{{ $editando->email }}"
-                                    wire:model.defer="email"
+                                    wire:model="email"
                                 >
                             </div>
                             @if($errors->has('email'))
@@ -403,22 +450,70 @@
                                         Es un SuperUsuario ?
                                     </label>
                                     <input
-                                        class="w-6 h-6 bg-orange-600 border border-gray-500 rounded md:mr-8 focus:ring-orange-700 ring-offset-gray-800"
+                                        class="w-6 h-6 mt-1 bg-orange-600 border border-gray-500 rounded md:mr-8 focus:ring-orange-700 ring-offset-gray-800"
                                         type="checkbox"
-                                        id="clave_role"
-                                        name="clave_role"
-                                        wire:model.defer="clave_role"
+                                        wire:model="clave_role"
                                     >
                                 </div>
                             </div>
-
+                
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-start">
+                                {{-- Aquí se carga la imagen "avatar" del usuario --}}
+                                <div class="flex flex-row justify-center mb-6">
+                                    <input
+                                        class="text-xl font-bold"
+                                        type="file"
+                                        id="numerin"
+                                        wire:model="imagen"
+                                    >
+                                </div>
+                            </div>
+                            @if($errors->has('imagen'))
+                                <div class="mb-8 text-xl text-center text-white bg-red-800 animate-pulse md:w-96 md:ml-8 md:mb-6 text-extrabold">
+                                    {{ $errors->first('imagen') }}
+                                </div>
+                            @endif
+                            
+                            <div wire:loading wire:target="imagen">
+                                <div class="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-24 max-w-7xl">
+                                    <div class="p-6 border-l-4 border-yellow-600 rounded-r-xl bg-yellow-50">
+                                        <div class="flex">
+                                            <div class="ml-3">
+                                                <h3 class="text-2xl font-bold text-yellow-800">Cargando la imagen...</h3>
+                                                <div class="mt-2 text-xl text-yellow-600">
+                                                    <p> Espere un momento en lo que se carga la imagen seleccionada </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div wire:loading.remove wire:target="imagen">
+                                @if ($imagen)
+                                    <div class="flex flex-row justify-center">
+                                        <img class="w-48 h-64" src="{{ $imagen->temporaryUrl() }}">
+                                    </div>
+                                @else
+                                    @if ($lafoto)
+                                        <div class="flex flex-row justify-center">
+                                            <img class="w-48 h-64" src="{{ Storage::disk('digitalocean')->url($urlfoto) }}" alt="aqui va una foto">
+                                        </div>
+                                    @else
+                                        <div class="flex flex-row justify-center">
+                                            <x-heroicon-o-user-add class="w-32 h-48"/>
+                                        </div>
+                                    @endif
+                                @endif
+                            </div>
+                            
                             {{-- Este es un honeypot rístico --}}
                             <div class="invisible">
                                 <input
                                     type="checkbox"
                                     id="trampa"
                                     name="trampa"
-                                    wire:model.defer="trampa"
+                                    wire:model="trampa"
                                 >
                             </div>
         
@@ -574,7 +669,7 @@
                 width: 600,
                 padding: '3em',
                 color: '#ffffff',
-                background: '#800000',
+                background: '#008000',
                 showConfirmButton: true,
                 confirmButtonText: 'O K'
             })

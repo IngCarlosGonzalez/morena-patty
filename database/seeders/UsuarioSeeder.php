@@ -20,7 +20,7 @@ class UsuarioSeeder extends Seeder
     {
         $user1 = User::create(
             [
-                'name' => 'CALIN MX',
+                'name' => 'CALINMX',
                 'email' => 'cegcdeveloper@gmail.com',
                 'password' => Hash::make('rufirufi'),
                 'email_verified_at' => now(),
@@ -28,24 +28,5 @@ class UsuarioSeeder extends Seeder
             ]
         )->assignRole('superusuario');
 
-        $user2 = User::create(
-            [
-                'name' => 'PATTY GONZALEZ',
-                'email' => 'pattygc0330@gmail.com',
-                'password' => Hash::make('12345678'),
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10),
-            ]
-        )->assignRole('superusuario');
-
-        $user3 = User::create(
-            [
-                'name' => 'INVITADO',
-                'email' => 'calin_mx@hotmail.com',
-                'password' => Hash::make('12345678'),
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10),
-            ]
-        )->assignRole('usuariocomun');
     }
 }
