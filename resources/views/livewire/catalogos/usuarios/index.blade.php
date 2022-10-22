@@ -260,8 +260,8 @@
         
                             <div class="flex flex-col md:flex-row md:items-center md:justify-start">
                                 {{-- Aquí se indica la clave de role --}}
-                                <div class="flex flex-row justify-center mb-6">
-                                    <label for="clave_role" class="w-48 mt-2 mb-8 text-base font-normal leading-none text-gray-300 ">
+                                <div class="flex flex-row justify-center mb-4">
+                                    <label for="clave_role" class="w-48 mt-2 mb-4 text-base font-normal leading-none text-gray-300 ">
                                         Es un SuperUsuario ?
                                     </label>
                                     <input
@@ -276,13 +276,18 @@
         
                             <div class="flex flex-col md:flex-row md:items-center md:justify-start">
                                 {{-- Aquí se carga la imagen "avatar" del usuario --}}
-                                <div class="flex flex-row justify-center mb-6">
-                                    <input
-                                        class="text-xl font-bold"
-                                        type="file"
-                                        id="numerin"
-                                        wire:model="imagen"
-                                    >
+                                <div class="flex flex-row justify-center mb-1">
+
+                                    <label class="block">
+                                        <span class="mb-1 text-base font-normal">Foto de Perfil tipo JPG</span>
+                                        <input 
+                                            type="file" 
+                                            id="numerin"
+                                            wire:model="imagen"
+                                            class="block w-full text-xl text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-base file:font-semibold file:bg-blue-200 file:text-blue-800 hover:file:bg-blue-400"
+                                        />
+                                      </label>
+
                                 </div>
                             </div>
                             @if($errors->has('imagen'))
@@ -290,6 +295,10 @@
                                     {{ $errors->first('imagen') }}
                                 </div>
                             @endif
+
+                            <div class="flex flex-row justify-start mb-6 ml-4 text-sm font-bold text-blue-500">
+                                <span>Solo se aceptan JPGs</span>
+                            </div>
                             
                             <div wire:loading wire:target="imagen">
                                 <div class="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-24 max-w-7xl">
@@ -366,7 +375,8 @@
 
     </x-jet-dialog-modal>
 
-    {{-- DIALOG MODAL PARA EDITAR REGISTRO DE USUARIO --}}
+
+    {{-- DIALOG MODAL PARA EDITAR Y ACTUALIZAR UN USUARIO --}}
     <x-jet-dialog-modal wire:model="abrir">
 
         <x-slot name="title">
@@ -459,13 +469,18 @@
                 
                             <div class="flex flex-col md:flex-row md:items-center md:justify-start">
                                 {{-- Aquí se carga la imagen "avatar" del usuario --}}
-                                <div class="flex flex-row justify-center mb-6">
-                                    <input
-                                        class="text-xl font-bold"
-                                        type="file"
-                                        id="numerin"
-                                        wire:model="imagen"
-                                    >
+                                <div class="flex flex-row justify-center mb-1">
+
+                                    <label class="block">
+                                        <span class="mb-1 text-base font-normal">Foto de Perfil tipo JPG</span>
+                                        <input 
+                                            type="file" 
+                                            id="numerin"
+                                            wire:model="imagen"
+                                            class="block w-full text-xl text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-base file:font-semibold file:bg-blue-200 file:text-blue-800 hover:file:bg-blue-400"
+                                        />
+                                      </label>
+
                                 </div>
                             </div>
                             @if($errors->has('imagen'))
@@ -473,6 +488,10 @@
                                     {{ $errors->first('imagen') }}
                                 </div>
                             @endif
+
+                            <div class="flex flex-row justify-start mb-6 ml-4 text-sm font-bold text-blue-500">
+                                <span>Solo se aceptan JPGs</span>
+                            </div>
                             
                             <div wire:loading wire:target="imagen">
                                 <div class="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-24 max-w-7xl">
@@ -566,6 +585,7 @@
 
     </x-jet-dialog-modal>
 
+    
     {{-- mensaje de procesado ok --}}
     <script>
 

@@ -2,15 +2,15 @@
 
 namespace App\Http\Livewire\Catalogos\Usuarios;
 
+// use Illuminate\Support\Str;
 use App\Models\User;
 use Livewire\Component;
-use Illuminate\Support\Str;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 
 class Index extends Component
@@ -163,17 +163,23 @@ class Index extends Component
             $this->clave_role = 0;
         }
 
-        Log::debug('prepara foto');
-        $ajustada = Image::make($this->imagen)->resize(144, 192);
+        // procsamiento de foto
+        //Log::debug('prepara foto');
+        $paquete = new ImageManager();
+        $ajustada = $paquete->make($this->imagen)->resize(144, 192)->encode('jpg');
 
         $size = $ajustada->filesize();
         Log::debug("tamaño:  " . $size);
 
         $this->folder = 'morena-patty/usuarios';
-        $this->path = Storage::disk('digitalocean')->put($this->folder, $ajustada, 'public');
-        
-        //$visibility = Storage::disk('digitalocean')->getVisibility($this->path);
-        //Log::debug('alta foto: ' . $this->path . '  ' . $visibility);
+        $archivo = $this->folder . "/" . $this->imagen->hashName();
+        //Log::debug('nombre archivo: ' . $archivo);
+
+        $this->path = $archivo;
+
+        Storage::disk('digitalocean')->put($archivo, (string) $ajustada, 'public');
+
+        //Log::debug('alta foto: ' . $this->path . ' --- ' );
 
         DB::transaction(function () {
             $nuevo = User::create(
@@ -267,10 +273,23 @@ class Index extends Component
                 }
             }
 
-            // arma el path de la nueva imagen
+            // procsamiento de nueva foto
+            $paquete = new ImageManager();
+            $ajustada = $paquete->make($this->imagen)->resize(144, 192)->encode('jpg');
+
+            $size = $ajustada->filesize();
+            Log::debug("tamaño new:  " . $size);
+
             $this->folder = 'morena-patty/usuarios';
-            $this->path = Storage::disk('digitalocean')->put($this->folder, $this->imagen, 'public');
-        
+            $archivo = $this->folder . "/" . $this->imagen->hashName();
+            //Log::debug('nombre archivo: ' . $archivo);
+
+            $this->path = $archivo;
+
+            Storage::disk('digitalocean')->put($archivo, (string) $ajustada, 'public');
+
+            //Log::debug('nueva foto: ' . $this->path . ' --- ' );
+            
         } else {
 
             // deja el mismo path actual, en su caso
