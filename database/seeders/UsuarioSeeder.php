@@ -25,6 +25,7 @@ class UsuarioSeeder extends Seeder
                 'password' => Hash::make('rufirufi'),
                 'email_verified_at' => now(),
                 'remember_token' => Str::random(10),
+                'profile_photo_path' => 'morena-patty/usuarios/CALINMX.jpg',
             ]
         )->assignRole('superusuario');
 

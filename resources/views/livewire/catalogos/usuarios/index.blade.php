@@ -7,6 +7,7 @@
     }"
 >
 
+    {{-- Cuerpo del listado de indice --}}
     <div class="w-full p-3 overflow-hidden bg-black">
 
         {{-- Esta fila es para controles, busqueda y comandos --}}
@@ -292,7 +293,7 @@
                             
                             <div wire:loading wire:target="imagen">
                                 <div class="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-24 max-w-7xl">
-                                    <div class="p-6 border-l-4 border-yellow-600 rounded-r-xl bg-yellow-50">
+                                    <div class="p-6 border-4 border-yellow-600 animate-pulse rounded-xl bg-yellow-50">
                                         <div class="flex">
                                             <div class="ml-3">
                                                 <h3 class="text-2xl font-bold text-yellow-800">Cargando la imagen...</h3>
@@ -377,13 +378,13 @@
         <x-slot name="content">
             <div class="text-white">
 
-                <div class="mt-2">
+                <div class="mt-0">
 
                     <form
                         class="flex flex-col items-center flex-1 p-1"
                         wire:submit.prevent="procesar"
                     >
-                        <div class="mx-24 mt-4">
+                        <div class="mx-24 mt-1">
 
                             <div class="flex flex-col md:flex-row md:items-center ">
                                 {{-- Aquí entra el nombre del usuario --}}
@@ -414,7 +415,6 @@
                                     type="text"
                                     id="password"
                                     name="password"
-                                    placeholder="TECLEAR NUEVA PASSWORD"
                                     wire:model="password"
                                 >
                             </div>
@@ -445,7 +445,7 @@
         
                             <div class="flex flex-col md:flex-row md:items-center md:justify-start">
                                 {{-- Aquí se indica la clave de role --}}
-                                <div class="flex flex-row justify-center mb-6">
+                                <div class="flex flex-row justify-center mb-2">
                                     <label for="clave_role" class="w-48 mt-2 mb-8 text-base font-normal leading-none text-gray-300 ">
                                         Es un SuperUsuario ?
                                     </label>
@@ -476,7 +476,7 @@
                             
                             <div wire:loading wire:target="imagen">
                                 <div class="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-24 max-w-7xl">
-                                    <div class="p-6 border-l-4 border-yellow-600 rounded-r-xl bg-yellow-50">
+                                    <div class="p-6 border-4 border-yellow-600 animate-pulse rounded-xl bg-yellow-50">
                                         <div class="flex">
                                             <div class="ml-3">
                                                 <h3 class="text-2xl font-bold text-yellow-800">Cargando la imagen...</h3>
@@ -497,7 +497,18 @@
                                 @else
                                     @if ($lafoto)
                                         <div class="flex flex-row justify-center">
-                                            <img class="w-48 h-64" src="{{ Storage::disk('digitalocean')->url($urlfoto) }}" alt="aqui va una foto">
+                                            <img class="w-48 h-64" src="{{ $lafoto }}" alt="aqui va la foto actual">
+                                        </div>
+                                        {{-- Aquí se da opcion a conserver foto --}}
+                                        <div class="flex flex-row justify-center my-2">
+                                            <label for="opcional" class="w-48 mt-2 text-base font-normal leading-none text-gray-300 ">
+                                                Conservar misma foto
+                                            </label>
+                                            <input
+                                                class="w-6 h-6 mt-1 bg-orange-600 border border-gray-500 rounded focus:ring-orange-700 ring-offset-gray-800"
+                                                type="checkbox"
+                                                wire:model="opcional"
+                                            >
                                         </div>
                                     @else
                                         <div class="flex flex-row justify-center">

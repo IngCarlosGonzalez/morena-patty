@@ -10,6 +10,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 
 class Index extends Component
@@ -61,6 +62,7 @@ class Index extends Component
     public $numerin;
     public $urlfoto;
     public $lafoto;
+    public $opcional;
 
     // Ejecuta método MOUNT cuando inicia el componente
     public function mount()
@@ -86,6 +88,7 @@ class Index extends Component
     public function agregar(User $user)
     {
         $this->editando = $user;
+        $this->resetValidation();
         $this->crear = true;
     }
 
@@ -93,19 +96,31 @@ class Index extends Component
     public function editar(User $user)
     {
         $this->editando = $user;
-        Log::debug('Editando id... ' . $this->editando->id );
+        //Log::debug('Editando id... ' . $this->editando->id );
+
+        $this->numerin = rand();
+        $this->resetValidation();
 
         $this->folio = $this->editando->id;
         $this->name = $this->editando->name;
-        $this->password = "";
+        $this->password = "aqui nueva password";
         $this->encriptada = $this->editando->password;
         $this->email = $this->editando->email;
-        $this->imagen = "";
+        $this->imagen = null;
         $this->urlfoto = $this->editando->profile_photo_path;
         $this->lafoto = null;
+        $this->opcional = 0;
 
-        // la foto actual se va a eliminar
-        Log::debug('path foto... ' . $this->urlfoto );
+        // la foto actual se puede sustituir
+        //Log::debug('path foto actual... ' . $this->urlfoto );
+
+        // se arma link a la imagen actual
+        if (!is_null($this->urlfoto) ) {
+            if (Storage::disk('digitalocean')->exists($this->urlfoto)) {
+                $this->lafoto = "https://archivosdoctorsmate.nyc3.digitaloceanspaces.com/" . $this->urlfoto;
+                //Log::debug('Se debe mostrar... ' . $this->lafoto);
+            }
+        }
 
         $privilegio = $this->editando->roles()->first()->name;
         if (is_null($privilegio) ) {
@@ -124,11 +139,11 @@ class Index extends Component
     protected $rules = [
         'name' => 'required|string|min:4|max:30',
         'password' => 'required|string|min:8|max:20',
-        'email' => 'required|email',
+        'email' => 'required|email|unique:users',
         'imagen' => 'required|image|max:2048',
     ];
 
-    // Procesa accion de insertar nuevo registro
+    // Procesa accion de INSERCIÓN del nuevo registro
     public function procesar()
     {
 
@@ -148,9 +163,17 @@ class Index extends Component
             $this->clave_role = 0;
         }
 
-        $this->folder = 'morena-patty/usuarios/';
-        $this->path = Storage::disk('digitalocean')->put($this->folder, $this->imagen);
-        Log::debug('nueva foto: ' . $this->path . '  ');
+        Log::debug('prepara foto');
+        $ajustada = Image::make($this->imagen)->resize(144, 192);
+
+        $size = $ajustada->filesize();
+        Log::debug("tamaño:  " . $size);
+
+        $this->folder = 'morena-patty/usuarios';
+        $this->path = Storage::disk('digitalocean')->put($this->folder, $ajustada, 'public');
+        
+        //$visibility = Storage::disk('digitalocean')->getVisibility($this->path);
+        //Log::debug('alta foto: ' . $this->path . '  ' . $visibility);
 
         DB::transaction(function () {
             $nuevo = User::create(
@@ -159,7 +182,7 @@ class Index extends Component
                     'email' => $this->email,
                     'password' => Hash::make($this->password),
                     'email_verified_at' => now(),
-                    'remember_token' => Str::random(10),
+                    'remember_token' => '',
                     'profile_photo_path' => $this->path,
                 ]
             );
@@ -189,11 +212,27 @@ class Index extends Component
     // Procesa accion de ACTUALIZAR nuevo registro
     public function cambios()
     {
+        //Log::debug('Actualizando registro... ' . $this->folio . '   opción: ' . $this->opcional);
 
-        Log::debug('Actualizando registro... ' . $this->folio);
+        if (is_null($this->opcional)) {
+            $this->opcional = 0;
+        }
 
-        $this->validate();
-
+        if ($this->opcional == 0) {
+            $this->validate([
+                'name' => 'required|string|min:4|max:30',
+                'password' => 'required|string|min:8|max:20',
+                'email' => 'required|email|unique:users,email,' . $this->folio,
+                'imagen' => 'required|image|max:2048',
+            ]);
+        } else {
+            $this->validate([
+                'name' => 'required|string|min:4|max:30',
+                'password' => 'required|string|min:8|max:20',
+                'email' => 'required|email|unique:users,email,' . $this->folio,
+            ]);
+        }
+        
         if (!is_null($this->trampa)) {
             return redirect('/');
         }
@@ -205,18 +244,44 @@ class Index extends Component
         if (is_null($this->clave_role)) {
             $this->clave_role = 0;
         }
-
+        
+        // solo se cambia pwd ya encriptada si trae nuevo valor:
+        //Log::debug('La password contiene... <' . $this->password . '>.   '); 
         if (!empty($this->password)) {
-            $this->encriptada = Hash::make($this->password);
+            //Log::debug('La password tecleada... <' . $this->password . '>.   ');  
+            if ($this->password == "aqui nueva password") {
+                //Log::debug('No se cambia la password... '); 
+            } else {
+                //Log::debug('Actualizando con password... ' . $this->password); 
+                $this->encriptada = bcrypt($this->password);
+            }
         }
         
-        if (!is_null($this->urlfoto) ) {
-            Storage::disk('digitalocean')->delete($this->urlfoto);
-        }
+        if ($this->imagen) {
 
-        $this->folder = 'morena-patty/usuarios/';
-        $this->path = Storage::disk('digitalocean')->put($this->folder, $this->imagen);
-        Log::debug('la foto: ' . $this->path . '  ');
+            // se elimina la foto anterior
+            if (!is_null($this->urlfoto) ) {
+                if (Storage::disk('digitalocean')->exists($this->urlfoto)) {
+                    //Log::debug('Eliminando... ' . $this->urlfoto );
+                    Storage::disk('digitalocean')->delete($this->urlfoto);
+                }
+            }
+
+            // arma el path de la nueva imagen
+            $this->folder = 'morena-patty/usuarios';
+            $this->path = Storage::disk('digitalocean')->put($this->folder, $this->imagen, 'public');
+        
+        } else {
+
+            // deja el mismo path actual, en su caso
+            if (!is_null($this->urlfoto) ) {
+                $this->path = $this->urlfoto;
+            }
+
+        }
+                
+        //$visibility = Storage::disk('digitalocean')->getVisibility($this->path);
+        //Log::debug('sustituye con foto: ' . $this->path . '  ' . $visibility);
 
         $this->registro = User::find($this->folio);
 
@@ -237,15 +302,43 @@ class Index extends Component
             $this->registro->assignRole('usuariocomun');
         }
 
+        $this->reset('name');
+        $this->reset('password');
+        $this->reset('email');
+        $this->reset('clave_role');
+        $this->reset('imagen');
+
+        $this->numerin = rand();
+
         $this->refrescar();
         $this->emit('editadoOk');
         $this->abrir = false;
     }
 
-    // Aplica la acción de DELETE al renglón
+    // Aplica la acción de ELIMINACIÓN al renglón
     public function delete(User $user)
     {
+        $this->editando = $user;
+        //Log::debug('Eliminando id... ' . $this->editando->id );
+
+        $this->folio = $this->editando->id;
+        $this->urlfoto = $this->editando->profile_photo_path;
+
+        // se elimina la imagen actual
+        if (!is_null($this->urlfoto) ) {
+            if (Storage::disk('digitalocean')->exists($this->urlfoto)) {
+                //Log::debug('Eliminando... ' . $this->urlfoto );
+                Storage::disk('digitalocean')->delete($this->urlfoto);
+            }
+        }
+
+        // elimina el role
+        DB::table('model_has_roles')->where('model_id',$this->folio)->delete();
+
+        // ahora si... elimina usuario
         $user->delete();
+
+        // refresca y avisa
         $this->resetPage();
         $this->emit('deleteOk');
     }
