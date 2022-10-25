@@ -140,7 +140,7 @@ class Index extends Component
         'name' => 'required|string|min:4|max:30',
         'password' => 'required|string|min:8|max:20',
         'email' => 'required|email|unique:users',
-        'imagen' => 'required|image|max:2048',
+        'imagen' => 'required|image|mimes:jpeg,bmp,png|max:2048',
     ];
 
     // Procesa accion de INSERCIÓN del nuevo registro
@@ -166,10 +166,11 @@ class Index extends Component
         // procsamiento de foto
         //Log::debug('prepara foto');
         $paquete = new ImageManager();
-        $ajustada = $paquete->make($this->imagen)->resize(144, 192)->encode('jpg');
+        $ajustada = $paquete->make($this->imagen)->resize(144, 192);
 
         $size = $ajustada->filesize();
-        Log::debug("tamaño:  " . $size);
+        $mime = $ajustada->mime();
+        Log::debug("tamaño img:  " . $size . "   tipo: " . $mime);
 
         $this->folder = 'morena-patty/usuarios';
         $archivo = $this->folder . "/" . $this->imagen->hashName();
@@ -229,7 +230,7 @@ class Index extends Component
                 'name' => 'required|string|min:4|max:30',
                 'password' => 'required|string|min:8|max:20',
                 'email' => 'required|email|unique:users,email,' . $this->folio,
-                'imagen' => 'required|image|max:2048',
+                'imagen' => 'required|image|mimes:jpeg,bmp,png|max:2048',
             ]);
         } else {
             $this->validate([
@@ -275,10 +276,11 @@ class Index extends Component
 
             // procsamiento de nueva foto
             $paquete = new ImageManager();
-            $ajustada = $paquete->make($this->imagen)->resize(144, 192)->encode('jpg');
+            $ajustada = $paquete->make($this->imagen)->resize(144, 192);
 
             $size = $ajustada->filesize();
-            Log::debug("tamaño new:  " . $size);
+            $mime = $ajustada->mime();
+            Log::debug("tamaño new:  " . $size . "   tipo: " . $mime);
 
             $this->folder = 'morena-patty/usuarios';
             $archivo = $this->folder . "/" . $this->imagen->hashName();
