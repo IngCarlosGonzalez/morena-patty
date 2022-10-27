@@ -104,6 +104,7 @@ class Index extends Component
         $this->abrir = true;
     }
 
+    
     // Controla el Reset de campos al cerrar el modal de EDITAR
     public function updatedAbrir()
     {
@@ -116,6 +117,7 @@ class Index extends Component
             $this->reset('user_name');
         }
     }
+
 
     // Procesa accion de INSERCIÓN del nuevo registro
     public function procesar()
@@ -169,7 +171,7 @@ class Index extends Component
     }
 
 
-    // Procesa accion de ACTUALIZAR nuevo registro
+    // Procesa accion de ACTUALIZAR el registro
     public function cambios()
     {
         Log::debug('Actualizando registro... ' . $this->folio);

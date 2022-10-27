@@ -383,7 +383,7 @@
     </x-jet-dialog-modal>
 
 
-    {{-- DIALOG MODAL PARA EDITAR Y ACTUALIZAR UN USUARIO --}}
+    {{-- DIALOG MODAL PARA EDITAR Y ACTUALIZAR UN REGISTRO --}}
     <x-jet-dialog-modal wire:model="abrir">
 
         <x-slot name="title">
@@ -612,7 +612,7 @@
                 footer: 'conste que te avisamos...'
             }).then((result) => {
                 if (result.value) {
-                    Livewire.emitTo('catalogos.owners.index', 'delete', userId )
+                    Livewire.emitTo('catalogos.owners.index', 'delete', propiet )
                 } else {
                     Swal.fire('OK, el registro sigue existiendo...')
                 }

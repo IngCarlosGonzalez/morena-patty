@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -510,18 +511,7 @@
 
         @stack('modals')
 
-        {{-- ste es el script para prueba de select2 --}}
-        {{-- <script>
-            $(document).ready(function() {
-                $('.select2').select2({
-                    placeholder: : {
-                        id: '-1', 
-                        text: 'Selecciona usuario...'
-                    },
-                    allowClear: true
-                });
-            });
-        </script> --}}
+        {{-- mas scripts --}}
 
         <script>
             function myFunction() {

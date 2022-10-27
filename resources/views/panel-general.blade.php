@@ -26,7 +26,7 @@
                     </h1>
                     <div class="mx-8 my-4">
                         @if ($lafoto)
-                            <img class="w-32 h-48" src="{{ $lafoto }}" alt="aqui va la foto actual">
+                            <img class="h-48" src="{{ $lafoto }}" alt="foto del usuario">
                         @else
                             <x-heroicon-o-user-add class="w-32 h-48"/>
                         @endif
@@ -34,7 +34,7 @@
                 </div>
 
                 <div style="background-color: #500000" class="mt-8 text-2xl text-white shadow md:rounded-3xl md:text-6xl">
-                    <h1 class="py-4 font-bold text-center md:py-24">Inicio del Sistema</h1>
+                    <h1 class="py-4 font-bold text-center md:py-6">Indicadores del Sistema</h1>
                 </div>
 
             </div>
