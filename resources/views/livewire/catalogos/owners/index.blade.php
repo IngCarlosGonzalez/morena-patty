@@ -216,7 +216,7 @@
 
 
     {{-- DIALOG MODAL PARA CAPTURAR NUEVO y PROCESAR INSERT --}}
-    <x-jet-dialog-modal wire:model="crear">
+    <x-jet-dialog-modal wire:model="crear" id="modal_crear">
 
         <x-slot name="title">
             <div class="text-center">
@@ -235,26 +235,28 @@
                     >
                         <div class="mx-24 mt-4">
 
-                            @php
-                                $opciones = DB::table('users')->select('id as ident', 'name as nombre')->get();
-                            @endphp
-                            
                             <div class="flex flex-col md:flex-row md:items-center ">
                                 {{-- Aquí entra el usuario registrado --}}
                                 <label for="user_id" class="w-48 mt-2 mb-8 text-base font-normal leading-none text-gray-300 ">
                                     Usuario Registrado:
                                 </label>
                                 <select
-                                    class="w-64 px-2 py-1 mb-4 mr-4 text-xl font-bold text-black placeholder-orange-400 uppercase border-gray-300 rounded-md shadow-sm brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
-                                    id="user_id"
+                                    class="select2 w-64 px-2 py-1 mb-4 mr-4 text-xl font-bold text-black placeholder-orange-400 border-gray-300 rounded-md shadow-sm brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    id="select2_user_id"
                                     name="user_id"
                                     wire:model.defer="user_id"
                                 >
-                                    @foreach ($opciones as $opcion)
+                                    <option value="0" class="text-orange-500">seleccionar..,.</option>
+                                    @foreach ($libres as $opcion)
                                     <option value="{{ $opcion->ident }}">{{ $opcion->nombre }}</option>
                                     @endforeach
                                 </select>
                             </div>
+                            @if($errors->has('user_id'))
+                                <div class="mb-8 text-xl text-center text-white bg-red-800 animate-pulse md:w-96 md:ml-8 md:mb-6 text-extrabold">
+                                    {{ $errors->first('user_id') }}
+                                </div>
+                            @endif
 
                             <div class="flex flex-col md:flex-row md:items-center ">
                                 {{-- Aquí entra el area o departamento --}}
@@ -407,9 +409,9 @@
                                     Usuario Registrado:
                                 </span>
                                 <span
-                                    class="w-64 px-2 py-1 mb-4 mr-4 text-xl font-bold text-white placeholder-orange-400 uppercase border-gray-300 rounded-md shadow-sm brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    class="w-64 px-2 py-1 -mt-2 mb-4 mr-4 text-xl font-bold text-white placeholder-orange-400 uppercase border-gray-300 rounded-md shadow-sm brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
                                 >
-                                {{ $editando->user_id }}
+                                {{ $editando->user_id }}&nbsp;&nbsp;{{ $user_name }}
                                 </span>
                             </div>
 
@@ -537,7 +539,20 @@
 
     </x-jet-dialog-modal>
 
-    
+        
+    {{-- aqui se llama al Select2 de modal_crear --}}
+    <script>
+        document.addEventListener('livewire:load', function(){
+            $('#select2_user_id').select2({
+                dropdownParent: $('#modal_crear')
+            });
+            // console.log('°°°°°°°°°°°° select2');
+            $('#select2_user_id').on('change', function(){
+                console.log('seleccionado: ', this.value);
+            });
+        });
+    </script>
+
     {{-- mensaje de procesado ok --}}
     <script>
 

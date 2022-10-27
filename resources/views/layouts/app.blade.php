@@ -5,16 +5,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'SistemaMorenaPatty') }}</title>
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-        <!-- Scripts -->
+        <!-- recursos básicos -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-        <!-- Styles -->
+        <!-- Styles propios -->
         <style>
 
             .topnavv {
@@ -128,6 +128,13 @@
         </style>
 
         @livewireStyles
+
+        <!-- estilos para Select2 -->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        
+        <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     </head>
 
@@ -503,8 +510,20 @@
 
         @stack('modals')
 
-        <script>
+        {{-- ste es el script para prueba de select2 --}}
+        {{-- <script>
+            $(document).ready(function() {
+                $('.select2').select2({
+                    placeholder: : {
+                        id: '-1', 
+                        text: 'Selecciona usuario...'
+                    },
+                    allowClear: true
+                });
+            });
+        </script> --}}
 
+        <script>
             function myFunction() {
               var x = document.getElementById("myTopnav");
               if (x.className === "topnavv") {
@@ -513,7 +532,6 @@
                 x.className = "topnavv";
               }
             }
-
         </script>
 
         <script>

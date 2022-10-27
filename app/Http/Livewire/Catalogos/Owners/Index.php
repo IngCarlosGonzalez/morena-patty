@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Catalogos\Owners;
 
+use App\Models\User;
 use App\Models\Owner;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -15,6 +16,7 @@ class Index extends Component
     public $usuario;
     public $editando;
     public $registro;
+    public $catalogado;
 
     public $crear = false;
     public $abrir = false;
@@ -42,6 +44,7 @@ class Index extends Component
 
     public $folio;
     public $user_id;
+    public $user_name;
     public $esta_vigente;
     public $area_o_depto;
     public $nombre_titular;
@@ -54,6 +57,7 @@ class Index extends Component
     {
         $this->editando = new Owner();
         $this->registro = new Owner();
+        $this->catalogado = new User();
     }
 
     // Controla el ResetPage al modificar el buscador
@@ -94,7 +98,23 @@ class Index extends Component
         $this->nombre_titular = $this->editando->nombre_titular;
         $this->puesto_titular = $this->editando->puesto_titular;
 
+        $this->catalogado = User::find($this->user_id);
+        $this->user_name = $this->catalogado->name;
+
         $this->abrir = true;
+    }
+
+    // Controla el Reset de campos al cerrar el modal de EDITAR
+    public function updatedAbrir()
+    {
+        if (!$this->abrir) {
+            $this->reset('user_id');
+            $this->reset('esta_vigente');
+            $this->reset('area_o_depto');
+            $this->reset('nombre_titular');
+            $this->reset('puesto_titular');
+            $this->reset('user_name');
+        }
     }
 
     // Procesa accion de INSERCIÓN del nuevo registro
@@ -103,7 +123,7 @@ class Index extends Component
         // Log::debug('Registrando nuevo... ');
 
         $this->validate([
-            'user_id' => 'required',
+            'user_id' => 'required|integer|min:1|not_in:0,-1',
             'area_o_depto' => 'required|string|min:6|max:40',
             'nombre_titular' => 'required|string|min:6|max:40',
             'puesto_titular' => 'required|string|min:6|max:40',
@@ -194,6 +214,8 @@ class Index extends Component
         $this->reset('nombre_titular');
         $this->reset('puesto_titular');
 
+        $this->reset('user_name');
+
         $this->refrescar();
         $this->emit('editadoOk');
         $this->abrir = false;
@@ -244,6 +266,14 @@ class Index extends Component
 
     public function render()
     {
+        $libres = DB::table('users')
+            ->whereNotExists(function ($query) {
+                $query->select(DB::raw(1))
+                      ->from('owners')
+                      ->whereColumn('owners.user_id', 'users.id');
+            })
+            ->select('id as ident', 'name as nombre')
+            ->get();
 
         $this->cantidad = Owner::where(
             "nombre_titular",
@@ -268,6 +298,7 @@ class Index extends Component
             ->with(
                 [
                     'acuales' => $acuales,
+                    'libres' => $libres,
                 ]
             );
     }
