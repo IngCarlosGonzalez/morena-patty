@@ -21,25 +21,7 @@ class OwnerSeeder extends Seeder
                 'esta_vigente' => 1,
                 'area_o_depto' => 'SISTEMAS',
                 'nombre_titular' => 'CARLOS GONZALEZ',
-                'puesto_titular' => 'DESARROLLADOR',
-            ]
-        );
-        Owner::create(
-            [
-                'user_id' => 2,
-                'esta_vigente' => 1,
-                'area_o_depto' => 'COMITE EJECUTIVO',
-                'nombre_titular' => 'PATRICIA GONZALEZ',
-                'puesto_titular' => 'ATENCION CIUDADANA',
-            ]
-        );
-        Owner::create(
-            [
-                'user_id' => 3,
-                'esta_vigente' => 1,
-                'area_o_depto' => 'ASESORIA EXTERNA',
-                'nombre_titular' => 'LIC. FULANO DE TAL',
-                'puesto_titular' => 'TERAPEUTA HUMANITARIO',
+                'puesto_titular' => 'PROGRAMADOR',
             ]
         );
     }

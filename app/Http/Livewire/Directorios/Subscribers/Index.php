@@ -162,7 +162,7 @@ class Index extends Component
 
             DB::transaction(function () {
                 $contacto = Contacto::create([
-                    'owner_id'              => 2,
+                    'owner_id'              => 1,
                     'esta_vigente'          => 1,
                     'clave_tipo'            => 'General',
                     'clave_origen'          => 'En mi Página',

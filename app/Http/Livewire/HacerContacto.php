@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Subscriber;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Log;
@@ -34,6 +33,7 @@ class HacerContacto extends Component
         'nombre_full' => 'required|string|min:10|max:60',
         'telefono_movil' => 'required',
         'recaptcha' => 'required|captcha',
+        'correo_electronico' => 'email',
     ];
 
     public function subscribe()

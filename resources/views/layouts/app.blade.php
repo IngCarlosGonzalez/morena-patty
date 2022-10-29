@@ -326,7 +326,7 @@
 
                     <div class="dropdownv">
                         <button class="dropbtnv"style="color: #fff;">
-                            <span id="fechadehoy" class="md:pl-12 xl:pl-24 text-yellow-500 text-base"></span>
+                            <span id="fechadehoy" class="text-base text-yellow-500 md:pl-12 xl:pl-24"></span>
                         </button>
                     </div>
 
@@ -395,6 +395,12 @@
                         </button>
                         <div class="dropdownv-content">
 
+                            <a href="{{ route('directorios.contactos.create') }}"
+                            @if (request()->routeIs('directorios.contactos.create'))
+                            style="background-color: #aa0000; color:#fff;"
+                            @endif
+                            >Nuevo Contacto</a>
+
                             <a href="{{ route('directorios.contactos.index') }}"
                             @if (request()->routeIs('directorios.contactos.index'))
                             style="background-color: #aa0000; color:#fff;"
@@ -446,7 +452,7 @@
 
                     <div class="dropdownv">
                         <button class="dropbtnv"style="color: #fff;">
-                            <span id="fechadehoy" class="md:pl-12 xl:pl-24 text-yellow-500 text-base"></span>
+                            <span id="fechadehoy" class="text-base text-yellow-500 md:pl-12 xl:pl-24"></span>
                         </button>
                     </div>
 
@@ -496,10 +502,10 @@
             </main>
 
             <footer style="background-color: #800000">
-                <div class="container mx-auto px-8">
-                    <div class="w-full flex flex-row py-6">
+                <div class="container px-8 mx-auto">
+                    <div class="flex flex-row w-full py-6">
                         <div class="flex-1 mb-2">
-                            <a class="text-red-400 no-underline hover:no-underline text-base" href="#">
+                            <a class="text-base text-red-400 no-underline hover:no-underline" href="#">
                                 &copy;calin_mx 2022
                             </a>
                         </div>

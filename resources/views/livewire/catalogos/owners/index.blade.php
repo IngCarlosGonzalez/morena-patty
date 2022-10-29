@@ -241,12 +241,12 @@
                                     Usuario Registrado:
                                 </label>
                                 <select
-                                    class="select2 w-64 px-2 py-1 mb-4 mr-4 text-xl font-bold text-black placeholder-orange-400 border-gray-300 rounded-md shadow-sm brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    class="w-64 px-2 py-1 mb-4 mr-4 text-xl font-bold text-black placeholder-orange-400 border-gray-300 rounded-md shadow-sm select2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
                                     id="select2_user_id"
                                     name="user_id"
                                     wire:model.defer="user_id"
                                 >
-                                    <option value="0" class="text-orange-500">seleccionar..,.</option>
+                                    <option value="0" class="text-orange-500">seleccionar...</option>
                                     @foreach ($libres as $opcion)
                                     <option value="{{ $opcion->ident }}">{{ $opcion->nombre }}</option>
                                     @endforeach
@@ -409,7 +409,7 @@
                                     Usuario Registrado:
                                 </span>
                                 <span
-                                    class="w-64 px-2 py-1 -mt-2 mb-4 mr-4 text-xl font-bold text-white placeholder-orange-400 uppercase border-gray-300 rounded-md shadow-sm brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    class="w-64 px-2 py-1 mb-4 mr-4 -mt-2 text-xl font-bold text-white placeholder-orange-400 uppercase border-gray-300 rounded-md shadow-sm brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
                                 >
                                 {{ $editando->user_id }}&nbsp;&nbsp;{{ $user_name }}
                                 </span>
