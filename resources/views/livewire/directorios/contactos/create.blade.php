@@ -2,9 +2,6 @@
     class="flex flex-col h-auto"
     x-data="{
         crear: @entangle('crear'),
-        leyenda_top: @entangle('leyenda_top'),
-        owner_nombre: @entangle('owner_nombre'),
-        rechazado: @entangle('rechazado'),
         mensaje: 'Developed by: calin_mx @2022'
     }"
 >
@@ -12,6 +9,14 @@
     <h1 class="mt-10 text-xl text-white md:mt-20 md:text-3xl text-bold">
         Creación de Contactos
     </h1>
+
+    <div>
+        @if (session()->has('nosepuede'))
+            <div class="my-12 ml-8 text-xl font-bold text-yellow-600">
+                {{ session('nosepuede') }}
+            </div>
+        @endif
+    </div>
 
     <div class="flex flex-col items-start justify-center w-full text-left">
         
@@ -27,20 +32,24 @@
 
             @if ($mostrar_boton)
 
-            <div class="m-4" >
-                <x-jet-button
-                class="justify-center w-32 px-4 py-2 text-base bg-green-600 md:w-64 md:px-8 md:py-4 md:text-lg hover:bg-yellow-700"
-                wire:click="$set('crear', true)"
-                >
-                Agregar Otro
-                </x-jet-button>
-            </div>
+                <div class="m-4" >
+                    <x-jet-button
+                    class="justify-center w-32 px-4 py-2 text-base bg-green-600 md:w-64 md:px-8 md:py-4 md:text-lg hover:bg-yellow-700"
+                    wire:click="agregar"
+                    >
+                    Agregar Otro
+                    </x-jet-button>
+                </div>
 
-            <p class="mb-8 text-base leading-normal text-gray-400">
-                Completar datos adicionales en lista general.
-            </p>
-                            
+                <p class="mt-2 mb-8 text-base leading-normal text-gray-400">
+                    Completar datos adicionales en lista general.
+                </p>
+         
             @endif
+            
+            {{-- <div wire:poll.visible class="mt-8 text-base leading-normal text-gray-400">
+                Current time: {{ now() }}
+            </div> --}}
 
         </div>
 
@@ -67,13 +76,13 @@
                     >
                         <div class="w-full">
 
-                            <div class="flex flex-col md:mx-24 md:flex-row md:items-center ">
+                            <div class="flex flex-col mb-6 wire:ignore md:mx-24 md:flex-row md:items-center ">
                                 {{-- Aquí va la CATEGORÍA del contacto --}}
-                                <label for="categoria_id" class="w-48 mt-4 mb-4 text-base font-normal leading-none text-gray-300 ">
+                                <label for="categoria_id" class="w-48 text-base font-normal leading-none text-gray-300 ">
                                     Categoría Asignada:
                                 </label>
                                 <select
-                                    class="w-64 px-2 py-1 mb-4 mr-4 text-xl font-extrabold text-black border-gray-300 rounded-md shadow-sm select2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    class="w-64 px-2 py-1 mr-4 text-xl font-extrabold text-black border-gray-300 rounded-md shadow-sm select2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
                                     id="select2_cat_id"
                                     name="categoria_id"
                                     wire:model="categoria_id"
@@ -90,13 +99,13 @@
                                 </div>
                             @endif
 
-                            <div class="flex flex-col md:mx-24 md:flex-row md:items-center ">
+                            <div class="flex flex-col mb-6 wire:ignore md:mx-24 md:flex-row md:items-center ">
                                 {{-- Aquí va el TIPO de contacto --}}
-                                <label for="clave_tipo" class="w-48 mt-4 mb-4 text-base font-normal leading-none text-gray-300 ">
+                                <label for="clave_tipo" class="w-48 text-base font-normal leading-none text-gray-300 ">
                                     Tipo de Contacto:
                                 </label>
                                 <select
-                                    class="w-64 px-2 py-1 mb-4 mr-4 text-xl font-extrabold text-black border-gray-300 rounded-md shadow-sm select2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    class="w-64 px-2 py-1 mr-4 text-xl font-extrabold text-black border-gray-300 rounded-md shadow-sm select2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
                                     id="select2_tip_id"
                                     name="clave_tipo"
                                     wire:model="clave_tipo"
@@ -113,13 +122,13 @@
                                 </div>
                             @endif
 
-                            <div class="flex flex-col md:mx-24 md:flex-row md:items-center ">
+                            <div class="flex flex-col mb-6 wire:ignore md:mx-24 md:flex-row md:items-center ">
                                 {{-- Aquí va el ORIGEN del registro --}}
-                                <label for="clave_origen" class="w-48 mt-4 mb-4 text-base font-normal leading-none text-gray-300 ">
+                                <label for="clave_origen" class="w-48 text-base font-normal leading-none text-gray-300 ">
                                     Origen del Registro:
                                 </label>
                                 <select
-                                    class="w-64 px-2 py-1 mb-4 mr-4 text-xl font-extrabold text-black border-gray-300 rounded-md shadow-sm select2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    class="w-64 px-2 py-1 mr-4 text-xl font-extrabold text-black border-gray-300 rounded-md shadow-sm select2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
                                     id="select2_ori_id"
                                     name="clave_origen"
                                     wire:model="clave_origen"
@@ -136,13 +145,13 @@
                                 </div>
                             @endif
 
-                            <div class="flex flex-col mb-4 md:mx-24 md:flex-row md:items-center ">
+                            <div class="flex flex-col mb-6 wire:ignore md:mx-24 md:flex-row md:items-center ">
                                 {{-- Aquí va el GENERO de la PERSONA --}}
-                                <label for="clave_genero" class="w-48 mt-4 mb-4 text-base font-normal leading-none text-gray-300 ">
+                                <label for="clave_genero" class="w-48 text-base font-normal leading-none text-gray-300 ">
                                     Género del Contacto:
                                 </label>
                                 <select
-                                    class="w-64 px-2 py-1 mb-12 mr-4 text-xl font-extrabold text-black border-gray-300 rounded-md shadow-sm select2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    class="w-64 px-2 py-1 mr-4 text-xl font-extrabold text-black border-gray-300 rounded-md shadow-sm select2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
                                     id="select2_gen_id"
                                     name="clave_genero"
                                     wire:model="clave_genero"
@@ -159,7 +168,7 @@
                                 </div>
                             @endif
 
-                            <div class="flex flex-col md:flex-row md:items-center ">
+                            <div class="flex flex-col mt-4 md:flex-row md:items-center ">
                                 {{-- Aquí entra el nombre completo del contacto --}}
                                 <label for="nombre_full" class="w-48 mt-2 mb-4 text-base font-normal leading-none text-gray-300 ">
                                     Nombre del Contacto:
@@ -323,6 +332,7 @@
     </x-jet-dialog-modal>
 
 
+    {{-- listeners de los select's  --}}
     <script>
         document.addEventListener('livewire:load', function(){
 
@@ -333,6 +343,7 @@
             });
             $('#select2_cat_id').on('change', function(){
                 console.log('C-sel: ', this.value);
+                @this.categoria_id = this.value;
             });
 
             $('#select2_tip_id').select2({
@@ -340,6 +351,7 @@
             });
             $('#select2_tip_id').on('change', function(){
                 console.log('T-sel: ', this.value);
+                @this.clave_tipo = this.value;
             });
 
             $('#select2_ori_id').select2({
@@ -347,6 +359,7 @@
             });
             $('#select2_ori_id').on('change', function(){
                 console.log('O-sel: ', this.value);
+                @this.clave_origen = this.value;
             });
 
             $('#select2_gen_id').select2({
@@ -354,9 +367,11 @@
             });
             $('#select2_gen_id').on('change', function(){
                 console.log('G-sel: ', this.value);
+                @this.clave_genero = this.value;
             });
             
         });
+        
     </script>
 
 
@@ -364,6 +379,28 @@
     <script>
 
         Livewire.on('procesaOk', () => {
+
+            // const Toast = Swal.mixin({
+            // toast: true,
+            // position: 'center',
+            // showConfirmButton: true,
+            // timer: 30000,
+            // width: 600,
+            // padding: '3em',
+            // color: '#000000',
+            // background: '#00aa00',
+            // showConfirmButton: true,
+            // confirmButtonText: 'O K',
+            // timerProgressBar: true,
+            // didOpen: (toast) => {
+            //     toast.addEventListener('mouseenter', Swal.stopTimer)
+            //     toast.addEventListener('mouseleave', Swal.resumeTimer)
+            // }
+            // })
+            // Toast.fire({
+            // icon: 'success',
+            // title: 'El nuevo contacto se creó correctamante.'
+            // })
 
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
@@ -376,6 +413,7 @@
                 title: 'Procesado!',
                 text: 'El Contacto fué Agregado Correctamente.',
                 icon: 'success',
+                timer: 3000,
                 width: 600,
                 padding: '3em',
                 color: '#000000',
@@ -388,32 +426,56 @@
     </script>
 
     
-    {{-- mensaje de user rechazado --}}
+    {{-- swal que rechaza proceso por no ser propietario --}}
     <script>
 
         Livewire.on('rechazado', () => {
-
+            console.log('<< rechazado >>');
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'px-12 py-3 my-8 text-black text-3xl font-extrabold border-2 rounded-md border-gray-600 bg-gray-400 hover:bg-gray-200'
                 },
                 buttonsStyling: false
             })
-
             swalWithBootstrapButtons.fire({
                 title: 'Rechazado!',
                 text: 'El Usuario Actual Debe ser Propietario.',
                 icon: 'error',
                 width: 600,
                 padding: '3em',
-                color: '#000000',
+                color: '#ffff00',
                 background: '#ff0000',
                 showConfirmButton: true,
-                confirmButtonText: 'CERRAR'
+                confirmButtonText: 'CERRAR',
+                timer: 2000
             })
         })
 
     </script>
 
+
+    {{-- este es un toast de rechazo  --}}
+    <script>
+
+        window.addEventListener('ejecuta', () => {
+            console.log('<< rechazado >>');
+            const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+            })
+            Toast.fire({
+            icon: 'information',
+            title: 'Usted no tiene opcion de crear nuevo'
+            })
+        })
+
+    </script>
 
 </div>

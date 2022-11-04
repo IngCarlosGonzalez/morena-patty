@@ -25,6 +25,7 @@ class Create extends Component
     public $owner_nombre;
     public $owner_status;
     public $mostrar_boton;
+    public $condicionador;
     
     public $cvetipos = [];
     public $origenes = [];
@@ -45,18 +46,19 @@ class Create extends Component
     public $domicilio_full;
     public $telefono_fijo;
     public $telefono_movil;
-    public $tiene_watsapp;
+    public $tiene_watsapp = 0;
     public $correo_electronico;
 
     public $trampa;
     public $mivariable;
 
 
-    //--- al iniciar la ejecución.-  
+    //--- Preparativos al iniciar la ejecución.-  
     //
     public function mount()
     {
-        Log::debug('Usuario actual... ' . Auth::user()->id);
+        $this->condicionador = false;
+        // Log::debug('Usuario actual... ' . Auth::user()->id);
 
         $this->datos_user = new User();
         $this->datos_owner = new Owner();
@@ -64,44 +66,47 @@ class Create extends Component
         $this->user_ident = Auth::user()->id;
         $this->datos_user = User::find($this->user_ident);
 
-        Log::debug('Usuario nombre... ' . $this->datos_user->name);
-
-        // $this->ident_owner = $this->datos_user->owner->id;
+        // Log::debug('Usuario nombre... ' . $this->datos_user->name);
 
         $data = DB::table('owners')
                 ->where('user_id', $this->user_ident)
                 ->first();
 
         if ($data == null) {
-            // User not found in owners
             $this->ident_owner = 0;
         } else {
             $this->ident_owner = $data->id;
-            Log::debug('Identificacion de owner... ' . $this->ident_owner);
+            //Log::debug('Identificacion de owner... ' . $this->ident_owner);
         }
 
         if (is_null($this->ident_owner)) {
 
-            Log::debug('User: ' . $this->user_ident . ' el owner es nlo...');
+            //Log::debug('User: ' . $this->user_ident . ' el owner es nulo...');
             $this->mostrar_boton = false;
+            $this->condicionador = true;
             $this->leyenda_top = "No se puede procesar...";
             $this->owner_nombre = "*NO ES PROPIETARIO*";
-            $this->refrescar();
-            $this->emit('rechazar');
             $this->crear = false;
+
+            $this->emit('rechazado');
+            $this->dispatchBrowserEvent('ejecuta');
 
         } else {
 
             if ($this->ident_owner < 1) {
 
-                Log::debug('User: ' . $this->user_ident . ' No es Owner...');
+                //Log::debug('User: ' . $this->user_ident . ' No es un Owner...');
                 $this->mostrar_boton = false;
+                $this->condicionador = true;
                 $this->leyenda_top = "No se puede procesar...";
                 $this->owner_nombre = "-NO ES PROPIETARIO-";
-                $this->refrescar();
-                $this->emit('rechazar');
                 $this->crear = false;
-    
+
+                session()->flash('nosepuede', 'Función no permitida.');
+
+                $this->emitSelf('rechazado');
+                $this->dispatchBrowserEvent('ejecuta');
+
             } else {
     
                 $this->datos_owner = $this->datos_user->owner;
@@ -113,20 +118,27 @@ class Create extends Component
                 }
 
                 if ($this->owner_status < 1) {
-                    Log::debug('User: ' . $this->user_ident . ' es el Owner: ' . $this->ident_owner . ' pero está INACTIVO!!!');
+
+                    //Log::debug('User: ' . $this->user_ident . ' es el Owner: ' . $this->ident_owner . ' pero está INACTIVO!!!');
                     $this->mostrar_boton = false;
+                    $this->condicionador = true;
                     $this->leyenda_top = "No se puede procesar...";
                     $this->owner_nombre = "*ESTÁ INACTIVO*";
-                    $this->refrescar();
-                    $this->emit('rechazar');
                     $this->crear = false;
+
+                    $this->emit('rechazado');
+                    $this->dispatchBrowserEvent('ejecuta');
+
                 } else {
-                    Log::debug('User: ' . $this->user_ident . ' es el Owner: ' . $this->ident_owner . ' activo...');
+
+                    //Log::debug('User: ' . $this->user_ident . ' es el Owner: ' . $this->ident_owner . ' activo...');
                     $this->mostrar_boton = true;
+                    $this->condicionador = false;
                     $this->leyenda_top = "Procesando con Propietario...";
                     $this->owner_nombre = $this->datos_owner->nombre_titular;
-                    $this->refrescar();
+
                     $this->agregar();
+
                 }
 
             }
@@ -134,8 +146,13 @@ class Create extends Component
         }
     }
 
+    //--- Aplica la acción de RECHAZAR procesamiento.-
+    //
+    public function rechazar(){
+        $this->emitSelf('rechazado');
+    }
 
-    //--- Aplica la acción de CREAR un nuevo registro.-
+    //--- Aplica la acción de INSERTAR un nuevo registro.-
     //
     public function agregar()
     {
@@ -153,7 +170,7 @@ class Create extends Component
         $this->domicilio_full = '';
         $this->telefono_fijo = '';
         $this->telefono_movil = '';
-        $this->tiene_watsapp = '';
+        $this->tiene_watsapp = 0;
         $this->correo_electronico = '';
 
         $this->crear = true;
@@ -164,7 +181,7 @@ class Create extends Component
     //
     public function procesar()
     {
-        Log::debug('Registrando nuevo... ');
+        //Log::debug('Registrando nuevo... ');
 
         $this->validate([
             'clave_tipo' => 'required|string',
@@ -173,12 +190,13 @@ class Create extends Component
             'categoria_id' => 'required|integer|min:1|not_in:0,-1',
             'nombre_full' => 'required|string|min:10|max:60',
             'domicilio_full' => 'required|string|min:10|max:90',
-            'telefono_fijo' => 'required|numeric',
+            'telefono_fijo' => 'numeric',
             'telefono_movil' => 'required|numeric',
             'correo_electronico' => 'email|max:80',
         ]);
 
         if (!is_null($this->trampa)) {
+            Log::debug('Trapped... ');
             return redirect('/');
         }
 
@@ -193,10 +211,6 @@ class Create extends Component
         $this->domicilio_full = $this->mivariable;
         $this->mivariable = strtolower($this->correo_electronico);
         $this->correo_electronico = $this->mivariable;
-
-        if (is_null($this->tiene_watsapp)) {
-            $this->tiene_watsapp = 0;
-        }
 
         DB::transaction(function () {
             $nuevo = Contacto::create([
@@ -234,10 +248,9 @@ class Create extends Component
                 'anotaciones'           => 'Contacto recién agregado',
                 'user_id'               => Auth::user()->id
             ]);
-            Log::debug('Se dió de alta contacto con ID: ' . $nuevo->id);
+            //Log::debug('on: ' . $nuevo->id);
         }, $deadlockRetries = 5);
 
-        $this->reset('owner_id');
         $this->reset('clave_tipo');
         $this->reset('clave_origen');
         $this->reset('clave_genero');
@@ -254,7 +267,10 @@ class Create extends Component
         $this->refrescar();
         $this->emit('procesaOk');
         $this->crear = false;
+
+        return redirect()->route('directorios.contactos.create');
     }
+
 
     // Hace refresh del componente visual.-
     //
