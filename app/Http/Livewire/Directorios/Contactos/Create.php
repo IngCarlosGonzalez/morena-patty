@@ -87,9 +87,7 @@ class Create extends Component
             $this->leyenda_top = "No se puede procesar...";
             $this->owner_nombre = "*NO ES PROPIETARIO*";
             $this->crear = false;
-
-            $this->emit('rechazado');
-            $this->dispatchBrowserEvent('ejecuta');
+            session()->flash('nosepuede', 'Función no permitida.');
 
         } else {
 
@@ -101,11 +99,7 @@ class Create extends Component
                 $this->leyenda_top = "No se puede procesar...";
                 $this->owner_nombre = "-NO ES PROPIETARIO-";
                 $this->crear = false;
-
                 session()->flash('nosepuede', 'Función no permitida.');
-
-                $this->emitSelf('rechazado');
-                $this->dispatchBrowserEvent('ejecuta');
 
             } else {
     
@@ -125,9 +119,7 @@ class Create extends Component
                     $this->leyenda_top = "No se puede procesar...";
                     $this->owner_nombre = "*ESTÁ INACTIVO*";
                     $this->crear = false;
-
-                    $this->emit('rechazado');
-                    $this->dispatchBrowserEvent('ejecuta');
+                    session()->flash('nosepuede', 'Función no permitida.');
 
                 } else {
 
@@ -146,11 +138,15 @@ class Create extends Component
         }
     }
 
-    //--- Aplica la acción de RECHAZAR procesamiento.-
+
+    //--- Aplica la acción de EVALUAR procesamiento.-
     //
-    public function rechazar(){
-        $this->emitSelf('rechazado');
+    public function evaluar(){
+        if ($this->mostrar_boton == false) {
+            $this->dispatchBrowserEvent('ejecuta');
+        }
     }
+
 
     //--- Aplica la acción de INSERTAR un nuevo registro.-
     //

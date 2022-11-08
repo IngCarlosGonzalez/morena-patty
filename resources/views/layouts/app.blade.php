@@ -234,11 +234,11 @@
                             @endif
                             >Mis Contactos</a>
 
-                            <a href="{{ route('directorios.documentos.index') }}"
+                            {{-- <a href="{{ route('directorios.documentos.index') }}"
                             @if (request()->routeIs('directorios.documentos.index'))
                             style="background-color: #aa0000; color:#fff;"
                             @endif
-                            >Expedientes</a>
+                            >Expedientes</a> --}}
 
                             <a href="#"
                             >Otros Contactos</a>
@@ -275,8 +275,8 @@
                             @endif
                             >Listado de Visitas</a>
 
-                            <a href="#"
-                            >Seguimiento</a>
+                            {{-- <a href="#"
+                            >Seguimiento</a> --}}
 
                         </div>
                     </div>
@@ -301,14 +301,14 @@
                             @endif
                             >Mi Agenda</a>
 
-                            <a href="#"
+                            {{-- <a href="#"
                             >Mis Compromisos</a>
 
                             <a href="#"
                             >Otra Agenda</a>
 
                             <a href="#"
-                            >Lista General</a>
+                            >Lista General</a> --}}
 
                         </div>
                     </div>
@@ -325,9 +325,11 @@
                     </div>
 
                     <div class="dropdownv">
-                        <button class="dropbtnv"style="color: #fff;">
-                            <span id="fechadehoy" class="text-base text-yellow-500 md:pl-12 xl:pl-24"></span>
-                        </button>
+                        <div class="dropbtnv"style="color: #fff;">
+                            <div class="flex flex-col md:pl-12 xl:pl-24">
+                                <span id="fechadehoy" class="text-base text-yellow-500 "></span>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Utilities de Usuario -->
@@ -407,8 +409,8 @@
                             @endif
                             >Mis Contactos</a>
 
-                            <a href="#"
-                            >Exportacion</a>
+                            {{-- <a href="#"
+                            >Exportacion</a> --}}
 
                         </div>
                     </div>
@@ -433,8 +435,8 @@
                             @endif
                             >Mi Agenda</a>
 
-                            <a href="#"
-                            >Compromisos</a>
+                            {{-- <a href="#"
+                            >Compromisos</a> --}}
 
                         </div>
                     </div>

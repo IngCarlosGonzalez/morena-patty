@@ -1,4 +1,4 @@
-<div
+<div wire:init="evaluar"
     class="flex flex-col h-auto"
     x-data="{
         crear: @entangle('crear'),
@@ -426,39 +426,13 @@
     </script>
 
     
-    {{-- swal que rechaza proceso por no ser propietario --}}
+    {{-- toast que rechaza proceso por no ser propietario --}}
     <script>
 
         Livewire.on('rechazado', () => {
+
             console.log('<< rechazado >>');
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'px-12 py-3 my-8 text-black text-3xl font-extrabold border-2 rounded-md border-gray-600 bg-gray-400 hover:bg-gray-200'
-                },
-                buttonsStyling: false
-            })
-            swalWithBootstrapButtons.fire({
-                title: 'Rechazado!',
-                text: 'El Usuario Actual Debe ser Propietario.',
-                icon: 'error',
-                width: 600,
-                padding: '3em',
-                color: '#ffff00',
-                background: '#ff0000',
-                showConfirmButton: true,
-                confirmButtonText: 'CERRAR',
-                timer: 2000
-            })
-        })
-
-    </script>
-
-
-    {{-- este es un toast de rechazo  --}}
-    <script>
-
-        window.addEventListener('ejecuta', () => {
-            console.log('<< rechazado >>');
+            
             const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -471,9 +445,41 @@
             }
             })
             Toast.fire({
-            icon: 'information',
+            icon: 'warning',
             title: 'Usted no tiene opcion de crear nuevo'
             })
+
+        })
+
+    </script>
+
+
+    {{-- este es un swal de rechazo  --}}
+    <script>
+
+        window.addEventListener('ejecuta', () => {
+
+            console.log('<< se rechaza >>');
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'px-12 py-3 my-8 text-black text-3xl font-extrabold border-2 rounded-md border-gray-600 bg-gray-400 hover:bg-gray-200'
+                },
+                buttonsStyling: false
+            })
+            swalWithBootstrapButtons.fire({
+                title: 'Deshabilitado!',
+                text: 'El Usuario Actual Debe ser Propietario.',
+                icon: 'error',
+                width: 600,
+                padding: '3em',
+                color: '#ffff00',
+                background: '#ff0000',
+                showConfirmButton: true,
+                confirmButtonText: 'CERRAR',
+                timer: 5000
+            })
+
         })
 
     </script>
