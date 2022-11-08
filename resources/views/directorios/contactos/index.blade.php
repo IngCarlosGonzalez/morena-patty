@@ -8,7 +8,7 @@
             <div class="flex flex-col w-full md:w-10/12 place-content-center">
                 <div style="background-color: rgb(86, 13, 13);" class="px-4 mt-2 mb-2 md:mt-4 md:rounded-3xl shadow-2xl shadow-outline text-xl md:text-2xl text-white">
                     <h1 class="font-sans font-light text-center tracking-widest">
-                    Indice de Contactos Registrados
+                    Indice Global de Contactos Registrados
                     </h1>
                 </div>
             </div>

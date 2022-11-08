@@ -38,7 +38,7 @@
                         <span class="font-bold text-white">{{ $paginator->lastItem() }}</span>
                         <span>de:</span>
                         <span class="font-bold text-white">{{ $paginator->total() }}</span>
-                        <span>registros</span>
+                        <span> </span>
                     </p>
                 </div>
 

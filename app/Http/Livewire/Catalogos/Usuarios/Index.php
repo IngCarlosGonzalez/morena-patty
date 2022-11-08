@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Catalogos\Usuarios;
 
-// use Illuminate\Support\Str;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -84,7 +83,7 @@ class Index extends Component
         $this->search = '';
     }
 
-    // Aplica la acción de CREAR un nuevo registro
+    // Aplica metodo de AGREGAR un nuevo registro
     public function agregar(User $user)
     {
         $this->editando = $user;
