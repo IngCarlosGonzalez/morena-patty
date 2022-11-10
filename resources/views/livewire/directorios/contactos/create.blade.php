@@ -217,7 +217,9 @@
                                 </label>
                                 <input
                                     class="px-2 py-1 mb-4 text-xl font-bold text-black placeholder-orange-400 border-gray-300 rounded-md shadow-sm md:w-48 md:mr-2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
-                                    type="text"
+                                    type="number"
+                                    size="10"
+                                    maxlength="10"
                                     id="telefono_fijo"
                                     name="telefono_fijo"
                                     placeholder="obligatorio"
@@ -237,7 +239,9 @@
                                 </label>
                                 <input
                                     class="px-2 py-1 mb-4 mr-0 text-xl font-bold text-black placeholder-orange-400 border-gray-300 rounded-md shadow-sm md:w-48 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
-                                    type="text"
+                                    type="number"
+                                    size="10"
+                                    maxlength="10"
                                     id="telefono_movil"
                                     name="telefono_movil"
                                     placeholder="obligatorio"

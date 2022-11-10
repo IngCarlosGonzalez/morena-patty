@@ -67,9 +67,22 @@ class Create extends Component
 
         // Log::debug('Usuario nombre... ' . $this->datos_user->name);
 
+        $data = DB::table('owners')
+                ->where('user_id', $this->user_ident)
+                ->first();
+
+        if ($data == null) {
+            $this->ident_owner = 0;
+            $this->owner_nombre = "¿¿¿¿¿¿¿ x ???????";
+        } else {
+            $this->ident_owner = $data->id;
+            $this->owner_nombre = $data->nombre_titular;
+            // Log::debug('Datos de owner... ' . $this->ident_owner . '    ' . $this->owner_nombre);
+        }
+
         if (is_null($this->ident_owner)) {
 
-            //Log::debug('User: ' . $this->user_ident . ' el owner es nulo...');
+            // Log::debug('User: ' . $this->user_ident . ' el owner es nulo...');
             $this->mostrar_boton = false;
             $this->condicionador = true;
             $this->leyenda_top = "No se puede procesar...";
@@ -81,7 +94,7 @@ class Create extends Component
 
             if ($this->ident_owner < 1) {
 
-                //Log::debug('User: ' . $this->user_ident . ' No es un Owner...');
+                // Log::debug('User: ' . $this->user_ident . ' No es un Owner...');
                 $this->mostrar_boton = false;
                 $this->condicionador = true;
                 $this->leyenda_top = "No se puede procesar...";
@@ -101,7 +114,7 @@ class Create extends Component
 
                 if ($this->owner_status < 1) {
 
-                    //Log::debug('User: ' . $this->user_ident . ' es el Owner: ' . $this->ident_owner . ' pero está INACTIVO!!!');
+                    // Log::debug('User: ' . $this->user_ident . ' es el Owner: ' . $this->ident_owner . ' pero está INACTIVO!!!');
                     $this->mostrar_boton = false;
                     $this->condicionador = true;
                     $this->leyenda_top = "No se puede procesar...";
@@ -111,7 +124,7 @@ class Create extends Component
 
                 } else {
 
-                    //Log::debug('User: ' . $this->user_ident . ' es el Owner: ' . $this->ident_owner . ' activo...');
+                    // Log::debug('User: ' . $this->user_ident . ' es el Owner: ' . $this->ident_owner . ' activo...');
                     $this->mostrar_boton = true;
                     $this->condicionador = false;
                     $this->leyenda_top = "Procesando con Propietario...";
@@ -174,8 +187,8 @@ class Create extends Component
             'categoria_id' => 'required|integer|min:1|not_in:0,-1',
             'nombre_full' => 'required|string|min:10|max:60',
             'domicilio_full' => 'required|string|min:10|max:90',
-            'telefono_fijo' => 'numeric',
-            'telefono_movil' => 'required|numeric',
+            'telefono_fijo' => 'required|digits:10',
+            'telefono_movil' => 'required|digits:10',
             'correo_electronico' => 'email|max:80',
         ]);
 

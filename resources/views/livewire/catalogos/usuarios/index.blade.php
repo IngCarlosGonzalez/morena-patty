@@ -121,8 +121,10 @@
                             }
                             if ($privilegio == 'superusuario') {
                                 $privilegio = "ADMIN";
+                            } elseif ($privilegio == 'usuariocomun') {
+                                $privilegio = "Oficina";
                             } else {
-                                $privilegio = "Normal";
+                                $privilegio = "Campo";
                             }
                         @endphp
                         <tr class="border-2 border-gray-500">
@@ -179,7 +181,7 @@
 
 
     {{-- DIALOG MODAL PARA CAPTURAR NUEVO y PROCESAR INSERT --}}
-    <x-jet-dialog-modal wire:model="crear">
+    <x-jet-dialog-modal wire:model="crear" id="modal_alta">
 
         <x-slot name="title">
             <div class="text-center">
@@ -262,17 +264,26 @@
                                 {{-- Aquí se indica la clave de role --}}
                                 <div class="flex flex-row justify-center mb-4">
                                     <label for="clave_role" class="w-48 mt-2 mb-4 text-base font-normal leading-none text-gray-300 ">
-                                        Es un SuperUsuario ?
+                                        Que Rol Asignar ?
                                     </label>
-                                    <input
-                                        class="w-6 h-6 mt-1 bg-orange-600 border border-gray-500 rounded md:mr-8 focus:ring-orange-700 ring-offset-gray-800"
-                                        type="checkbox"
-                                        id="clave_role"
+                                    <select
+                                        class="w-64 px-2 py-1 mr-4 text-xl font-extrabold text-black border-gray-300 rounded-md shadow-sm select2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                        id="select2_rol_id1"
                                         name="clave_role"
-                                        wire:model.defer="clave_role"
+                                        wire:model="clave_role"
                                     >
+                                        <option value="0" class="text-orange-500">seleccionar...</option>
+                                        <option value="1" class="text-xl font-extrabold text-black">Administrador</option>
+                                        <option value="2" class="text-xl font-extrabold text-black">Usuario Oficina</option>
+                                        <option value="3" class="text-xl font-extrabold text-black">Capturista Campo</option>
+                                    </select>
                                 </div>
                             </div>
+                            @if($errors->has('clave_role'))
+                                <div class="mb-8 text-xl text-center text-white bg-red-800 animate-pulse md:w-96 md:ml-8 md:mb-6 text-extrabold">
+                                    {{ $errors->first('clave_role') }}
+                                </div>
+                            @endif
         
                             <div class="flex flex-col md:flex-row md:items-center md:justify-start">
                                 {{-- Aquí se carga la imagen "avatar" del usuario --}}
@@ -377,7 +388,7 @@
 
 
     {{-- DIALOG MODAL PARA EDITAR Y ACTUALIZAR UN USUARIO --}}
-    <x-jet-dialog-modal wire:model="abrir">
+    <x-jet-dialog-modal wire:model="abrir" id="modal_edit">
 
         <x-slot name="title">
             <div class="text-center">
@@ -455,17 +466,28 @@
         
                             <div class="flex flex-col md:flex-row md:items-center md:justify-start">
                                 {{-- Aquí se indica la clave de role --}}
-                                <div class="flex flex-row justify-center mb-2">
-                                    <label for="clave_role" class="w-48 mt-2 mb-8 text-base font-normal leading-none text-gray-300 ">
-                                        Es un SuperUsuario ?
+                                <div class="flex flex-row justify-center mb-4">
+                                    <label for="clave_role" class="w-48 mt-2 mb-4 text-base font-normal leading-none text-gray-300 ">
+                                        Que Rol Asignar ?
                                     </label>
-                                    <input
-                                        class="w-6 h-6 mt-1 bg-orange-600 border border-gray-500 rounded md:mr-8 focus:ring-orange-700 ring-offset-gray-800"
-                                        type="checkbox"
+                                    <select
+                                        class="w-64 px-2 py-1 mr-4 text-xl font-extrabold text-black border-gray-300 rounded-md shadow-sm select2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                        id="select2_rol_id2"
+                                        name="clave_role"
                                         wire:model="clave_role"
                                     >
+                                        <option value="0" class="text-orange-500">seleccionar...</option>
+                                        <option value="1" class="text-xl font-extrabold text-black">Administrador</option>
+                                        <option value="2" class="text-xl font-extrabold text-black">Usuario Oficina</option>
+                                        <option value="3" class="text-xl font-extrabold text-black">Capturista Campo</option>
+                                    </select>
                                 </div>
                             </div>
+                            @if($errors->has('clave_role'))
+                                <div class="mb-8 text-xl text-center text-white bg-red-800 animate-pulse md:w-96 md:ml-8 md:mb-6 text-extrabold">
+                                    {{ $errors->first('clave_role') }}
+                                </div>
+                            @endif
                 
                             <div class="flex flex-col md:flex-row md:items-center md:justify-start">
                                 {{-- Aquí se carga la imagen "avatar" del usuario --}}
@@ -585,6 +607,32 @@
 
     </x-jet-dialog-modal>
 
+
+    {{-- listeners de los select's  --}}
+    <script>
+        document.addEventListener('livewire:load', function(){
+
+            console.log('~~~~~~ hola  ');
+
+            $('#select2_rol_id1').select2({
+                dropdownParent: $('#modal_alta')
+            });
+            $('#select2_rol_id1').on('change', function(){
+                console.log('A-sel: ', this.value);
+                @this.clave_role = this.value;
+            });
+
+            $('#select2_rol_id2').select2({
+                dropdownParent: $('#modal_edit')
+            });
+            $('#select2_rol_id2').on('change', function(){
+                console.log('E-sel: ', this.value);
+                @this.clave_role = this.value;
+            });
+
+        });
+        
+    </script>
     
     {{-- mensaje de procesado ok --}}
     <script>

@@ -9,8 +9,8 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
-use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
 
 class Index extends Component
 {
@@ -41,7 +41,7 @@ class Index extends Component
 
     public $procesado = '';
 
-    public $cantidad = 0;
+    public $cantidad  = 0;
     public $renglones = 0;
     public $ubicacion = '';
 
@@ -63,7 +63,8 @@ class Index extends Component
     public $lafoto;
     public $opcional;
 
-    // Ejecuta método MOUNT cuando inicia el componente
+    //--- Ejecuta método MOUNT cuando inicia el componente
+    //
     public function mount()
     {
         $this->editando = new User();
@@ -71,19 +72,22 @@ class Index extends Component
         $this->numerin = rand();
     }
 
-    // Controla el ResetPage al modificar el buscador
+    //--- Controla el ResetPage al modificar el buscador
+    //
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    // Aplica la accion de LIMPIAR el buscador
+    //--- Aplica la accion de LIMPIAR el buscador
+    //
     public function limpiar()
     {
         $this->search = '';
     }
 
-    // Aplica metodo de AGREGAR un nuevo registro
+    //--- Aplica metodo de AGREGAR un nuevo registro
+    //
     public function agregar(User $user)
     {
         $this->editando = $user;
@@ -91,11 +95,12 @@ class Index extends Component
         $this->crear = true;
     }
 
-    // Aplica la acción de EDITAR o checar el registro
+    //--- Aplica la acción de EDITAR o checar el registro
+    //
     public function editar(User $user)
     {
         $this->editando = $user;
-        //Log::debug('Editando id... ' . $this->editando->id );
+        // Log::debug('Editando id... ' . $this->editando->id );
 
         $this->numerin = rand();
         $this->resetValidation();
@@ -122,11 +127,17 @@ class Index extends Component
         }
 
         $privilegio = $this->editando->roles()->first()->name;
+
         if (is_null($privilegio) ) {
             $privilegio = "*sinrole*";
         }
+
         if ($privilegio == 'superusuario') {
             $this->clave_role = 1;
+        } elseif ($privilegio == 'usuariocomun') {
+            $this->clave_role = 2;
+        } elseif ($privilegio == 'usuariomovil') {
+            $this->clave_role = 3;
         } else {
             $this->clave_role = 0;
         }
@@ -134,19 +145,22 @@ class Index extends Component
         $this->abrir = true;
     }
 
-    // reglas de validación aplicables
+    //--- reglas de validación aplicables
+    // 
     protected $rules = [
         'name' => 'required|string|min:4|max:30',
         'password' => 'required|string|min:8|max:20',
         'email' => 'required|email|unique:users',
-        'imagen' => 'required|image|mimes:jpeg,bmp,png|max:2048',
+        'imagen' => 'required|image|mimes:jpeg,jpg|max:1024',
+        'clave_role' => 'required|digits:1|in:1,2,3',
     ];
 
-    // Procesa accion de INSERCIÓN del nuevo registro
+    //--- Procesa accion de INSERCIÓN del nuevo registro
+    // 
     public function procesar()
     {
 
-        //Log::debug('Registrando nuevo... ');
+        // Log::debug('Registrando nuevo... ');
 
         $this->validate();
 
@@ -165,21 +179,21 @@ class Index extends Component
         // procsamiento de foto
         //Log::debug('prepara foto');
         $paquete = new ImageManager();
-        $ajustada = $paquete->make($this->imagen)->resize(144, 192);
+        $ajustada = $paquete->make($this->imagen)->resize(144, 192)->encode('jpg');
 
-        $size = $ajustada->filesize();
-        $mime = $ajustada->mime();
-        Log::debug("tamaño img:  " . $size . "   tipo: " . $mime);
+        // $size = $ajustada->filesize();
+        // $mime = $ajustada->mime();
+        // Log::debug("tamaño img:  " . $size . "   tipo: " . $mime);
 
         $this->folder = 'morena-patty/usuarios';
         $archivo = $this->folder . "/" . $this->imagen->hashName();
-        //Log::debug('nombre archivo: ' . $archivo);
+        // Log::debug('nombre archivo: ' . $archivo);
 
         $this->path = $archivo;
 
         Storage::disk('digitalocean')->put($archivo, (string) $ajustada, 'public');
 
-        //Log::debug('alta foto: ' . $this->path . ' --- ' );
+        // Log::debug('alta foto: ' . $this->path . ' --- ' );
 
         DB::transaction(function () {
             $nuevo = User::create(
@@ -195,11 +209,14 @@ class Index extends Component
 
             if ($this->clave_role == 1) {
                 $nuevo->assignRole('superusuario');
-                //Log::debug('Se dió de alta nuevo SU: ' . $nuevo->id);
-            } else {
+            } elseif ($this->clave_role == 2) {
                 $nuevo->assignRole('usuariocomun');
-                //Log::debug('Se dió de alta user ID: ' . $nuevo->id);
+            } elseif ($this->clave_role == 3) {
+                $nuevo->assignRole('usuariomovil');
+            } else {
+                Log::debug('Se agrega sin asignar un rol. ');
             }
+
         });
 
         $this->reset('name');
@@ -215,10 +232,11 @@ class Index extends Component
         $this->crear = false;
     }
 
-    // Procesa accion de ACTUALIZAR nuevo registro
+    //--- Procesa accion de ACTUALIZAR nuevo registro
+    // 
     public function cambios()
     {
-        //Log::debug('Actualizando registro... ' . $this->folio . '   opción: ' . $this->opcional);
+        // Log::debug('Actualizando registro... ' . $this->folio . '   opción: ' . $this->opcional);
 
         if (is_null($this->opcional)) {
             $this->opcional = 0;
@@ -229,13 +247,15 @@ class Index extends Component
                 'name' => 'required|string|min:4|max:30',
                 'password' => 'required|string|min:8|max:20',
                 'email' => 'required|email|unique:users,email,' . $this->folio,
-                'imagen' => 'required|image|mimes:jpeg,bmp,png|max:2048',
+                'imagen' => 'required|image|mimes:jpeg,jpg|max:1024',
+                'clave_role' => 'required|digits:1|in:1,2,3',
             ]);
         } else {
             $this->validate([
                 'name' => 'required|string|min:4|max:30',
                 'password' => 'required|string|min:8|max:20',
                 'email' => 'required|email|unique:users,email,' . $this->folio,
+                'clave_role' => 'required|digits:1|in:1,2,3',
             ]);
         }
         
@@ -268,28 +288,37 @@ class Index extends Component
             // se elimina la foto anterior
             if (!is_null($this->urlfoto) ) {
                 if (Storage::disk('digitalocean')->exists($this->urlfoto)) {
-                    //Log::debug('Eliminando... ' . $this->urlfoto );
+                    // Log::debug('Eliminando... ' . $this->urlfoto );
                     Storage::disk('digitalocean')->delete($this->urlfoto);
                 }
             }
 
-            // procsamiento de nueva foto
-            $paquete = new ImageManager();
-            $ajustada = $paquete->make($this->imagen)->resize(144, 192);
+            //--- procsamiento de nueva foto.-
 
-            $size = $ajustada->filesize();
-            $mime = $ajustada->mime();
-            Log::debug("tamaño new:  " . $size . "   tipo: " . $mime);
+            $paquete = new ImageManager(['driver' => 'gd']);
+            $ajustada = $paquete->make($this->imagen)->resize(144, 192)->encode('jpg');
+
+            // $ajustada = $this->imagen;
+            $name = $this->imagen->hashName();
+
+            // $size = $ajustada->filesize();
+            // $mime = $ajustada->mime();
+            // Log::debug("tamaño cambio:  " . $size . "   tipo: " . $mime);
 
             $this->folder = 'morena-patty/usuarios';
-            $archivo = $this->folder . "/" . $this->imagen->hashName();
-            //Log::debug('nombre archivo: ' . $archivo);
+            $archivo = $this->folder . "/" . $name;
+            // Log::debug('nombre archivo: ' . $archivo);
 
             $this->path = $archivo;
 
-            Storage::disk('digitalocean')->put($archivo, (string) $ajustada, 'public');
+            $retorno = Storage::disk('digitalocean')
+                ->put($archivo, $ajustada, 'public');
 
-            //Log::debug('nueva foto: ' . $this->path . ' --- ' );
+            if ($retorno) {
+                // Log::debug('nueva foto: ' . $this->path . ' --- ' );
+            } else {
+                // Log::debug('no se pudo grabar la foto --- ' );
+            }
             
         } else {
 
@@ -318,8 +347,12 @@ class Index extends Component
 
         if ($this->clave_role == 1) {
             $this->registro->assignRole('superusuario');
-        } else {
+        } elseif ($this->clave_role == 2) {
             $this->registro->assignRole('usuariocomun');
+        } elseif ($this->clave_role == 3) {
+            $this->registro->assignRole('usuariomovil');
+        } else {
+            Log::debug('Se guarda sin asignar un rol. ');
         }
 
         $this->reset('name');
@@ -335,7 +368,8 @@ class Index extends Component
         $this->abrir = false;
     }
 
-    // Aplica la acción de ELIMINACIÓN al renglón
+    //--- Aplica la acción de ELIMINACIÓN al renglón
+    // 
     public function delete(User $user)
     {
         $this->editando = $user;
@@ -363,13 +397,15 @@ class Index extends Component
         $this->emit('deleteOk');
     }
 
-    // Hace refresh del componente visual
+    //--- Hace refresh del componente visual
+    // 
     public function refrescar()
     {
         $this->render();
     }
 
-    // Clasificción de registros asegún
+    //--- Clasificción de registros asegún
+    // 
     public function clasifica($porCual)
     {
         //Log::debug('Ordenando por... ' . $porCual);
@@ -386,7 +422,8 @@ class Index extends Component
         $this->refrescar();
     }
 
-
+    //--- Renderiza componente visual.-
+    // 
     public function render()
     {
         $this->cantidad = User::where(
