@@ -143,16 +143,19 @@
 
         <div class="bg-black">
 
-            <!-- Mi top navbar -->
+            <!-- Mi top navbar personal -->
             @if(@Auth::user()->hasRole('superusuario'))
 
                 <!-- Navigation Links del Superusuario -->
+
                 <div class="topnavv" id="myTopnav">
+
                     <div>
                         <a href="/" style="background-color: #c0c0c0">
                             <img src="https://morena.org/wp-content/uploads/2021/02/logo_retina.png" alt="Logo Oficial de MNorena" width="96" height="96">
                         </a>
                     </div>
+                    
                     <div class="dropdownv">
                         <button
                             class="dropbtnv"
@@ -220,7 +223,10 @@
                             @if (request()->routeIs('directorios.subscribers.index'))
                             style="background-color: #aa0000; color:#fff;"
                             @endif
+                            style="color: #000055;"
                             >Lista de Prospectos</a>
+
+                            <br>
 
                             <a href="{{ route('directorios.contactos.create') }}"
                             @if (request()->routeIs('directorios.contactos.create'))
@@ -228,23 +234,23 @@
                             @endif
                             >Nuevo Contacto</a>
 
+                            <a href="{{ route('directorios.contactos.index2') }}"
+                            @if (request()->routeIs('directorios.contactos.index2'))
+                            style="background-color: #aa0000; color:#fff;"
+                            @endif
+                            >Mis Contactos</a>
+
                             <a href="{{ route('directorios.contactos.index') }}"
                             @if (request()->routeIs('directorios.contactos.index'))
                             style="background-color: #aa0000; color:#fff;"
                             @endif
-                            >Mis Contactos</a>
+                            >Lista Global</a>
 
                             {{-- <a href="{{ route('directorios.documentos.index') }}"
                             @if (request()->routeIs('directorios.documentos.index'))
                             style="background-color: #aa0000; color:#fff;"
                             @endif
                             >Expedientes</a> --}}
-
-                            <a href="#"
-                            >Otros Contactos</a>
-
-                            <a href="#"
-                            >Lista Global</a>
 
                         </div>
                     </div>
@@ -367,15 +373,18 @@
 
                 </div>
 
-            @else
+            @elseif(@Auth::user()->hasRole('usuariocomun'))
 
                 <!-- Navigation Links del Usuario Común -->
+
                 <div class="topnavv" id="myTopnav">
+
                     <div>
                         <a href="/" style="background-color: #c0c0c0">
                             <img src="https://morena.org/wp-content/uploads/2021/02/logo_retina.png" alt="Logo Oficial de MNorena" width="96" height="96">
                         </a>
                     </div>
+
                     <div class="dropdownv">
                         <button class="dropbtnv" onclick="window.location.href='{{ route('dashboard') }}'">
                             <i class="fa fa-home"></i>
@@ -401,16 +410,16 @@
                             @if (request()->routeIs('directorios.contactos.create'))
                             style="background-color: #aa0000; color:#fff;"
                             @endif
-                            >Nuevo Contacto</a>
+                            >Agregar Nuevo</a>
 
-                            <a href="{{ route('directorios.contactos.index') }}"
-                            @if (request()->routeIs('directorios.contactos.index'))
+                            <a href="{{ route('directorios.contactos.index2') }}"
+                            @if (request()->routeIs('directorios.contactos.index2'))
                             style="background-color: #aa0000; color:#fff;"
                             @endif
                             >Mis Contactos</a>
 
                             {{-- <a href="#"
-                            >Exportacion</a> --}}
+                            >otras opciones</a> --}}
 
                         </div>
                     </div>
@@ -439,6 +448,103 @@
                             >Compromisos</a> --}}
 
                         </div>
+                    </div>
+
+                    <!-- Salir del Sistema -->
+                    <div class="dropdownv">
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button class="dropbtnv">
+                                &nbsp;&nbsp;SALIR&nbsp;&nbsp;
+                                <i class="fa fa-arrow-circle-o-right"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="dropdownv">
+                        <button class="dropbtnv"style="color: #fff;">
+                            <span id="fechadehoy" class="text-base text-yellow-500 md:pl-12 xl:pl-24"></span>
+                        </button>
+                    </div>
+
+                    <!-- Utilities de Usuario -->
+                    <div class="dropdownv md:pl-12 xl:pl-24">
+                        <button
+                            class="dropbtnv"
+                            @if (request()->routeIs('users.*'))
+                            style="background-color: #330000;"
+                            @else
+                            style="color: #fff;"
+                            @endif
+                            >{{  Auth::user()->name }}
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdownv-content">
+
+                            <a href="#"
+                            @if (request()->routeIs('users.utilities.password'))
+                            style="background-color: #aa0000; color:#fff;"
+                            @endif
+                            >MI PASSWORD</a>
+
+                            <a href="#"
+                            @if (request()->routeIs('users.utilities.refuerzo'))
+                            style="background-color: #aa0000; color:#fff;"
+                            @endif
+                            >SEGURIDAD</a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+                    </div>
+
+                </div>
+
+            @else
+
+                <!-- Navigation Links del Usuario MOVIL -->
+
+                <div class="topnavv" id="myTopnav">
+
+                    <div>
+                        <a href="/" style="background-color: #c0c0c0">
+                            <img src="https://morena.org/wp-content/uploads/2021/02/logo_retina.png" alt="Logo Oficial de MNorena" width="96" height="96">
+                        </a>
+                    </div>
+
+                    <div class="dropdownv">
+                        <button class="dropbtnv" onclick="window.location.href='{{ route('dashboard') }}'">
+                            <i class="fa fa-home"></i>
+                            &nbsp;&nbsp;INICIO&nbsp;&nbsp;
+                        </button>
+                    </div>
+
+                    <!-- Manejo de Contactos -->
+                    <div class="dropdownv">
+                        <button
+                            class="dropbtnv"
+                            @if (request()->routeIs('directorios.*'))
+                            style="background-color: #330000;"
+                            @else
+                            style="color: #fff;"
+                            @endif
+                            >CONTACTOS
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdownv-content">
+
+                            <a href="{{ route('directorios.contactos.create') }}"
+                            @if (request()->routeIs('directorios.contactos.create'))
+                            style="background-color: #aa0000; color:#fff;"
+                            @endif
+                            >Agregar Nuevo</a>
+
+                            {{-- <a href="#"
+                            >otras opciones</a> --}}
+
+                        </div>
+                        
                     </div>
 
                     <!-- Salir del Sistema -->

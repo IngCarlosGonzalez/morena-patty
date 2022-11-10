@@ -26,13 +26,12 @@ class Create extends Component
     public $owner_status;
     public $mostrar_boton;
     public $condicionador;
-    
+    public $owner_id;
+
     public $cvetipos = [];
     public $origenes = [];
     public $categos = [];
     public $generos = [];
-
-    public $owner_id;
 
     public $clave_tipo;
     public $clave_origen;
@@ -67,17 +66,6 @@ class Create extends Component
         $this->datos_user = User::find($this->user_ident);
 
         // Log::debug('Usuario nombre... ' . $this->datos_user->name);
-
-        $data = DB::table('owners')
-                ->where('user_id', $this->user_ident)
-                ->first();
-
-        if ($data == null) {
-            $this->ident_owner = 0;
-        } else {
-            $this->ident_owner = $data->id;
-            //Log::debug('Identificacion de owner... ' . $this->ident_owner);
-        }
 
         if (is_null($this->ident_owner)) {
 
@@ -148,7 +136,7 @@ class Create extends Component
     }
 
 
-    //--- Aplica la acción de INSERTAR un nuevo registro.-
+    //--- Agregar los elementos de un nuevo registro.-
     //
     public function agregar()
     {

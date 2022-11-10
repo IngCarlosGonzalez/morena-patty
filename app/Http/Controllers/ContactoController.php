@@ -9,13 +9,33 @@ use App\Http\Requests\UpdateContactoRequest;
 class ContactoController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource in a global view.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         return view('directorios.contactos.index');
+    }
+
+    /**
+     * Display a listing of the resource for current owner.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index2()
+    {
+        return view('directorios.contactos.index2');
+    }
+
+    /**
+     * Display a single message page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function avisos()
+    {
+        return view('directorios.contactos.avisos');
     }
 
     /**

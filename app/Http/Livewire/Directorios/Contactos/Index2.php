@@ -2,13 +2,16 @@
 
 namespace App\Http\Livewire\Directorios\Contactos;
 
+use App\Models\User;
+use App\Models\Owner;
 use Livewire\Component;
 use App\Models\Contacto;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
-class Index extends Component
+class Index2 extends Component
 {
     use WithPagination;
 
@@ -33,7 +36,6 @@ class Index extends Component
     public $sortear = 'id';
     public $elOrden = 'asc';
 
-    public $delPropie = 0;
     public $delTipo   = '';
     public $delOrigen = '';
     public $delaCateg = 0;
@@ -42,10 +44,7 @@ class Index extends Component
     public $likeOrigen = '';
     public $likeCateg1 = 0;
     public $likeCateg2 = 9999;
-    public $likePropi1 = 0;
-    public $likePropi2 = 9999;
     
-    public $propiets = [];
     public $cvetipos = [];
     public $origenes = [];
     public $categos  = [];
@@ -58,18 +57,97 @@ class Index extends Component
     public $renglones = 0;
 
     public $folio = 0;
+    
+    public $user_ident;
+    public $datos_user = null;
+    public $ident_owner;
+    public $datos_owner = null;
+    public $leyenda_top;
+    public $owner_nombre;
+    public $owner_status;
+    public $mostrar_boton;
+    public $condicionador;
+    public $notifica_rech;
 
 
     //--- Ejecuta método MOUNT 
     //
     public function mount()
     {
+        // Log::debug('Usuario actual... ' . Auth::user()->id);
         $this->editando = new Contacto();
         $this->registro = new Contacto();
         $this->likeTipo   = '%';
         $this->likeOrigen = '%';
         $this->likeCateg1 =  0;
         $this->likeCateg2 =  9999;
+
+        //--- desde aqui checa que el user sea un owner 
+        $this->condicionador = false;
+        
+        $this->datos_user = new User();
+        $this->datos_owner = new Owner();
+
+        $this->user_ident = Auth::user()->id;
+        $this->datos_user = User::find($this->user_ident);
+
+        // Log::debug('Usuario nombre... ' . $this->datos_user->name);
+
+        $data = DB::table('owners')
+                ->where('user_id', $this->user_ident)
+                ->first();
+
+        if ($data == null) {
+            $this->ident_owner = 0;
+            $this->owner_nombre = "¿¿¿¿¿¿¿ x ???????";
+        } else {
+            $this->ident_owner = $data->id;
+            $this->owner_nombre = $data->nombre_titular;
+            // Log::debug('Datos de owner... ' . $this->ident_owner . '    ' . $this->owner_nombre);
+        }
+
+        if (is_null($this->ident_owner)) {
+
+            // Log::debug('User: ' . $this->user_ident . ' el owner es nulo...');
+            $this->condicionador = true;
+            $this->notifica_rech = 'El dato de owner es nulo.';
+
+        } else {
+
+            if ($this->ident_owner < 1) {
+
+                // Log::debug('User: ' . $this->user_ident . ' No es un Owner...');
+                $this->condicionador = true;
+                $this->notifica_rech = 'El usuario no es un owner.';
+
+            } else {
+    
+                $this->datos_owner = $this->datos_user->owner;
+                
+                $this->owner_status = $this->datos_owner->esta_vigente;
+
+                if (is_null($this->owner_status)) {
+                    $this->owner_status = 0;
+                }
+
+                if ($this->owner_status < 1) {
+
+                    // Log::debug('User: ' . $this->user_ident . ' es el Owner: ' . $this->ident_owner . ' pero está INACTIVO!!!');
+                    $this->condicionador = true;
+                    $this->notifica_rech = 'El owner no se encuentra activo.';
+
+                } else {
+
+                    // Log::debug('User: ' . $this->user_ident . ' es el Owner: ' . $this->ident_owner . ' activo...');
+                    $this->condicionador = false;
+                    session()->flash('msgindex2', 'El owner si está activo.');
+
+                }
+
+            }
+
+        }
+
     }
 
     //--- Ejecuta método INICIALIZA 
@@ -77,6 +155,10 @@ class Index extends Component
     public function inicializa()
     {
         // Log::debug('Inicializando... ');
+        if ($this->condicionador == true) {
+            // Log::debug('Redireccionando... ');
+            return redirect()->route('directorios.contactos.avisos');
+        }
     }
 
     //--- Activa el ResetPage al modificar el buscador
@@ -84,20 +166,6 @@ class Index extends Component
     public function updatingSearch()
     {
         $this->resetPage();
-    }
-
-    //--- Preparacion para select con Propietario...
-    //
-    public function updatedDelPropie()
-    {
-        // Log::debug('seleccionar owner... ' . $this->delPropie);
-        if ($this->delPropie == 0) {
-            $this->likePropi1 =  0;
-            $this->likePropi2 =  9999;
-        } else {
-            $this->likePropi1 = $this->delPropie - 1;
-            $this->likePropi2 = $this->delPropie + 1;
-        }
     }
 
     //--- Preparacion para select con Tipo...
@@ -145,21 +213,6 @@ class Index extends Component
         $this->search = '';
     }
 
-    //--- Redirige hacia EDICIÓN del renglón actual...
-    //
-    public function editar(Contacto $contacto)
-    {
-        $this->editando = $contacto;
-
-        $this->folio = $this->editando->id;
-        Log::debug('Editando id... ' . $this->folio);
-
-        //-- redireccionar hacia ruta EDIT con el parámetro: Objeto Contacto
-        Log::debug('Redireccionando... ');
-        return redirect()->route('directorios.contactos.edit', $this->editando);
-
-    }
-
     //--- Aplica la acción de ELIMINACIÓN al renglón
     //
     public function delete(Contacto $contacto)
@@ -193,14 +246,10 @@ class Index extends Component
         }
     }
 
-    //--- Renderiza la vista ...
+    //--- Renderiza la vista
     //
     public function render()
     {
-        $this->propiets = DB::table('owners')
-        ->select('id as own_id', 'nombre_titular as nombre')
-        ->get();
-    
         $this->cvetipos = Contacto::CLAVE_TIPO;
         $this->origenes = Contacto::CLAVE_ORIGEN;
         $this->generos  = Contacto::CLAVE_GENERO;
@@ -209,18 +258,15 @@ class Index extends Component
             ->select('id as cat_id', 'clasificacion as clasif')
             ->get();
         
+        //--- Contabiliza registros mostrables... 
         $this->cantidad = Contacto::where(
+            "owner_id",
+            "=",
+            $this->ident_owner
+        )->where(
             "nombre_full",
             "like",
             "%{$this->search}%"
-        )->where(
-            "owner_id",
-            ">",
-            $this->likePropi1
-        )->where(
-            "owner_id",
-            "<",
-            $this->likePropi2
         )->where(
             "clave_tipo",
             "like",
@@ -242,17 +288,13 @@ class Index extends Component
         //Log::debug('Contador... ' . $this->cantidad);
 
         $this->rengs = Contacto::where(
+            "owner_id",
+            "=",
+            $this->ident_owner
+        )->where(
             "nombre_full",
             "like",
             "%{$this->search}%"
-        )->where(
-            "owner_id",
-            ">",
-            $this->likePropi1
-        )->where(
-            "owner_id",
-            "<",
-            $this->likePropi2
         )->where(
             "clave_tipo",
             "like",
@@ -280,7 +322,7 @@ class Index extends Component
 
         //Log::debug('Leidos... ' . $this->rengs->count());
 
-        return view('livewire.directorios.contactos.index', [
+        return view('livewire.directorios.contactos.index2', [
             'rengs' => $this->rengs,
             'cvetipos' => $this->cvetipos,
             'origenes' => $this->origenes,

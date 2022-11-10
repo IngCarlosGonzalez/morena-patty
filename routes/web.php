@@ -76,6 +76,16 @@ Route::middleware([
     )
     ->names('contactos');
 
+    Route::get(
+        '/directorios/contactos/index2',
+        [ContactoController::class, 'index2']
+    )->name('directorios.contactos.index2');
+
+    Route::get(
+        '/directorios/contactos/avisos',
+        [ContactoController::class, 'avisos']
+    )->name('directorios.contactos.avisos');
+
     Route::name('directorios')->resource(
         'documentos',
         DocumentoController::class

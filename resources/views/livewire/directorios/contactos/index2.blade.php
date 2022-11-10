@@ -9,13 +9,12 @@
     }"
 >
 
-    {{-- Cuerpo del listado de indice global de contactos --}}
+    {{-- Cuerpo del listado - indice de Mis Contactos--}}
 
     <div class="w-full p-3 overflow-hidden bg-black">
 
         {{-- Esta fila es para controles, busqueda y comandos --}}
         <div class="flex flex-row justify-start mt-4">
-
             <h4 class="mt-1 ml-8 mr-4 text-lg font-normal text-white">
                 Cuántos por Página:
             </h4>
@@ -28,22 +27,10 @@
                 <option value="50">de 50 en 50</option>
                 <option value="100">ver cientos</option>
             </select>
-
-            <h4 class="mt-1 ml-16 mr-4 text-lg font-normal text-white">
-                Prop:
+            <h4 class="mt-1 ml-12 mr-4 text-lg font-normal text-yellow-500">
+                Prop:&nbsp;&nbsp;{{ $owner_nombre }}
             </h4>
-            <select
-                class="mb-2 h-10 p-1 cursor-pointer text-lg font-bold text-gray-300 bg-black border-2 border-gray-700 rounded-md focus:border-orange-600"
-                wire:model="delPropie"
-                id="select2_own_id"
-            >
-            <option value="0" class="text-orange-500">seleccionar...</option>
-            @foreach ($propiets as $propiet)
-            <option value="{{ $propiet->own_id }}" class="uppercase text-lg font-bold text-gray-300">{{ $propiet->nombre }}</option>
-            @endforeach
-            </select>
-
-            <h4 class="mt-1 ml-16 mr-4 text-lg font-normal text-white">
+            <h4 class="mt-1 ml-12 mr-4 text-lg font-normal text-white">
                 Buscar nombre:
             </h4>
             <input
@@ -80,7 +67,7 @@
             @endforeach
             </select>
 
-            <h4 class="mt-2 ml-20 mr-4 text-lg font-normal text-white">
+            <h4 class="mt-2 ml-24 mr-4 text-lg font-normal text-white">
                 Origen:
             </h4>
             <select
@@ -94,7 +81,7 @@
             @endforeach
             </select>
             
-            <h4 class="mt-2 ml-20 mr-4 text-lg font-normal text-white">
+            <h4 class="mt-2 ml-24 mr-4 text-lg font-normal text-white">
                 Clasif:
             </h4>
             <select
@@ -142,25 +129,6 @@
                                     @endif
                                 </th>
 
-                                {{-- <th class="w-1/12 pl-4">
-                                    Owner
-                                </th> --}}
-                                <th wire:click="clasifica('owner_id')" class="text-white w-1/12 pl-4 cursor-pointer">
-                                    Prop
-                                    @if ($sortear == 'owner_id')
-                                        @if ($elOrden == 'asc')
-                                            <x-heroicon-o-sort-descending class="float-right w-6 h-6" />
-                                        @else
-                                            <x-heroicon-o-sort-ascending class="float-right w-6 h-6" />
-                                        @endif
-                                    @else
-                                        <x-heroicon-o-sort-descending class="float-right w-6 h-6" />
-                                    @endif
-                                </th>
-
-                                {{-- <th class="w-1/12 pl-4">
-                                    Tipo
-                                </th> --}}
                                 <th wire:click="clasifica('clave_tipo')" class="text-white w-1/12 pl-4 cursor-pointer">
                                     Tipo
                                     @if ($sortear == 'clave_tipo')
@@ -174,9 +142,6 @@
                                     @endif
                                 </th>
 
-                                {{-- <th class="w-2/12 pl-4">
-                                    Origen
-                                </th> --}}
                                 <th wire:click="clasifica('clave_origen')" class="text-white w-2/12 pl-4 cursor-pointer">
                                     Originado
                                     @if ($sortear == 'clave_origen')
@@ -190,9 +155,6 @@
                                     @endif
                                 </th>
 
-                                {{-- <th class="w-1/12 pl-4">
-                                    Clasif
-                                </th> --}}
                                 <th wire:click="clasifica('clasificacion')" class="text-white w-1/12 pl-4 cursor-pointer">
                                     Clasif
                                     @if ($sortear == 'clasificacion')
@@ -206,7 +168,7 @@
                                     @endif
                                 </th>
 
-                                <th wire:click="clasifica('nombre_full')" class="text-yellow-500 w-3/12 pl-4 cursor-pointer">
+                                <th wire:click="clasifica('nombre_full')" class="text-yellow-500 w-4/12 pl-4 cursor-pointer">
                                     Nombre Contacto
                                     @if ($sortear == 'nombre_full')
                                         @if ($elOrden == 'asc')
@@ -219,9 +181,6 @@
                                     @endif
                                 </th>
 
-                                {{-- <th class="w-1/12 pl-4">
-                                    Móvil
-                                </th> --}}
                                 <th wire:click="clasifica('telefono_movil')" class="text-white w-1/12 pl-4 cursor-pointer">
                                     Móvil
                                     @if ($sortear == 'telefono_movil')
@@ -235,9 +194,6 @@
                                     @endif
                                 </th>
 
-                                {{-- <th class="w-1/12 pl-4">
-                                    Alta
-                                </th> --}}
                                 <th wire:click="clasifica('created_at')" class="text-white w-1/12 pl-4 cursor-pointer">
                                     Alta
                                     @if ($sortear == 'created_at')
@@ -264,18 +220,12 @@
                             @foreach ($rengs as $renglon)
 
                             @php
-                                $ident = $renglon->owner_id;
-                                $valor = DB::table('owners')->where("id", $ident)->first()->nombre_titular;
-                                $cadena = str_ireplace(' ','',$valor);
-                                $propiet = strtolower(substr($cadena,0,9));
                                 $categor = strtolower($renglon->clasificacion);
                             @endphp
 
                             <tr class="border-2 border-gray-500 text-gray-400">
 
                                 <td class="px-4 py-2 text-yellow-500 ">&nbsp;{{ $renglon->id }}</td>
-
-                                <td class="px-4 py-2 capitalize">{{ $propiet }}</td>
 
                                 <td class="px-4 py-2">{{ $renglon->clave_tipo }}</td>
 
@@ -346,15 +296,7 @@
     <script>
         document.addEventListener('livewire:load', function(){
 
-            console.log('+++++++ contactos');
-
-            $('#select2_own_id').select2({
-                dropdownParent: $('#vista_index')
-            });
-            $('#select2_own_id').on('change', function(){
-                // console.log('Own-sel: ', this.value);
-                @this.delPropie = this.value;
-            });
+            console.log('+++++++ mis contactos');
 
             $('#select2_tip_id').select2({
                 dropdownParent: $('#vista_index')
@@ -417,7 +359,7 @@
                 footer: 'conste que te avisamos...'
             }).then((result) => {
                 if (result.value) {
-                    Livewire.emitTo('directorios.contactos.index', 'delete', userId )
+                    Livewire.emitTo('directorios.contactos.index2', 'delete', userId )
                 } else {
                     Swal.fire('OK, el registro sigue existiendo...')
                 }

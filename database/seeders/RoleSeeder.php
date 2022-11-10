@@ -19,10 +19,12 @@ class RoleSeeder extends Seeder
         // aqui se definin los roles
         $role1 = Role::create(['name' => 'superusuario']);
         $role2 = Role::create(['name' => 'usuariocomun']);
+        $role3 = Role::create(['name' => 'usuariomovil']);
 
         // aqui se definen los primeros permisos y se asignan a roles
         Permission::create(['name' => 'es-super-usuario'])->assignRole($role1);
         Permission::create(['name' => 'es-usuario-comun'])->assignRole($role2);
+        Permission::create(['name' => 'es-usuario-movil'])->assignRole($role3);
 
         Permission::create(['name' => 'catalogos.usuarios.index'])->assignRole($role1);
         Permission::create(['name' => 'catalogos.usuarios.create'])->assignRole($role1);
@@ -57,7 +59,9 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'directorios.subscribers.destroy'])->assignRole($role1);
 
         Permission::create(['name' => 'directorios.contactos.index'])->syncRoles([$role1, $role2]);
-        Permission::create(['name' => 'directorios.contactos.create'])->syncRoles([$role1, $role2]);
+        Permission::create(['name' => 'directorios.contactos.index2'])->syncRoles([$role1, $role2]);
+        Permission::create(['name' => 'directorios.contactos.avisos'])->syncRoles([$role1, $role2]);
+        Permission::create(['name' => 'directorios.contactos.create'])->syncRoles([$role1, $role2, $role3]);
         Permission::create(['name' => 'directorios.contactos.store'])->syncRoles([$role1, $role2]);
         Permission::create(['name' => 'directorios.contactos.show'])->syncRoles([$role1, $role2]);
         Permission::create(['name' => 'directorios.contactos.edit'])->syncRoles([$role1, $role2]);
