@@ -12,6 +12,9 @@ class Index extends Component
 {
     use WithPagination;
 
+    public $dedonde;
+    public $mandado;
+
     public $editando;
     public $registro;
 
@@ -64,6 +67,15 @@ class Index extends Component
     //
     public function mount()
     {
+        // recibe parametros de sesión con o sin datos...
+        $this->dedonde = session('hacia_coontactos', 'vacio');
+        $this->mandado = session('contacto_editado', 0);
+        Log::debug('Abre indice1 desde... ' . $this->dedonde . '  con id: ' . $this->mandado);
+        // resetea contenido de parámetros de sesión...
+        session(['hacia_coontactos' => 'vacio']);
+        session(['contacto_editado' => 0]);
+        // Pendiente ver como reposicionarse en el ID mandado cuando dedonde = 'edicion'
+
         $this->editando = new Contacto();
         $this->registro = new Contacto();
         $this->likeTipo   = '%';
@@ -152,11 +164,12 @@ class Index extends Component
         $this->editando = $contacto;
 
         $this->folio = $this->editando->id;
-        Log::debug('Editando id... ' . $this->folio);
+        // Log::debug('Eniado id... ' . $this->folio);
 
         //-- redireccionar hacia ruta EDIT con el parámetro: Objeto Contacto
-        Log::debug('Redireccionando... ');
-        return redirect()->route('directorios.contactos.edit', $this->editando);
+        Log::debug('Redireccionando desde Index1... ');
+        session(['contactos_edit' => 'index1']);
+        return redirect()->route('directorios.contactos.edit', [$this->editando]);
 
     }
 

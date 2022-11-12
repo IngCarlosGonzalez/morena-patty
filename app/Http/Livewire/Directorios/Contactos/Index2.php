@@ -15,6 +15,9 @@ class Index2 extends Component
 {
     use WithPagination;
 
+    public $dedonde;
+    public $mandado;
+
     public $editando;
     public $registro;
 
@@ -74,6 +77,15 @@ class Index2 extends Component
     //
     public function mount()
     {
+        // recibe parametros de sesión con o sin datos...
+        $this->dedonde = session('hacia_coontactos', 'vacio');
+        $this->mandado = session('contacto_editado', 0);
+        Log::debug('Abre indice2 desde... ' . $this->dedonde . '  con id: ' . $this->mandado);
+        // resetea contenido de parámetros de sesión...
+        session(['hacia_coontactos' => 'vacio']);
+        session(['contacto_editado' => 0]);
+        // Pendiente ver como reposicionarse en el ID mandado cuando dedonde = 'edicion'
+
         // Log::debug('Usuario actual... ' . Auth::user()->id);
         $this->editando = new Contacto();
         $this->registro = new Contacto();
@@ -211,6 +223,22 @@ class Index2 extends Component
     public function limpiar()
     {
         $this->search = '';
+    }
+
+    //--- Redirige hacia EDICIÓN del renglón actual...
+    //
+    public function editar(Contacto $contacto)
+    {
+        $this->editando = $contacto;
+
+        $this->folio = $this->editando->id;
+        // Log::debug('Editando id... ' . $this->folio);
+
+        //-- redireccionar hacia ruta EDIT con el parámetro: Objeto Contacto
+        Log::debug('Redireccionando desde Index2... ');
+        session(['contactos_edit' => 'index2']);
+        return redirect()->route('directorios.contactos.edit', $this->editando);
+
     }
 
     //--- Aplica la acción de ELIMINACIÓN al renglón

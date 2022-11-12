@@ -78,7 +78,12 @@ class ContactoController extends Controller
      */
     public function edit(Contacto $contacto)
     {
-        return view('directorios.contactos.edit');
+        return view('directorios.contactos.edit')
+        ->with(
+            [
+                'datos' => $contacto,
+            ]
+        );
     }
 
     /**

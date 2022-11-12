@@ -1,24 +1,24 @@
 <x-app-layout>
-    <div style="background-color: #000000" class="flex flex-col items-center max-w-7xl mx-auto min-h-screen mt-2 md:mt-1 pb-4 md:pb-2">
+    <div style="background-color: #000000" class="flex flex-col items-center min-h-screen pb-4 mx-auto mt-2 max-w-7xl md:mt-1 md:pb-2">
 
         <div class="flex flex-row w-full">
-            <div class="hidden md:block w-1/12">
+            <div class="hidden w-1/12 md:block">
                 <span></span>
             </div>
             <div class="flex flex-col w-full md:w-10/12 place-content-center">
-                <div style="background-color: rgb(86, 13, 13);" class="px-4 mt-2 mb-2 md:mt-4 md:rounded-3xl shadow-2xl shadow-outline text-xl md:text-2xl text-white">
-                    <h1 class="font-sans font-light text-center tracking-widest">
+                <div style="background-color: rgb(86, 13, 13);" class="px-4 mt-2 mb-2 text-xl text-white shadow-2xl shadow-outline md:mt-4 md:rounded-3xl md:text-2xl">
+                    <h1 class="font-sans font-light tracking-widest text-center">
                     Edición de Datos de un Contacto
                     </h1>
                 </div>
             </div>
-            <div class="hidden md:block w-1/12">
+            <div class="hidden w-1/12 md:block">
                 <span></span>
             </div>
         </div>
 
         <div class="flex flex-row w-full">
-            @livewire('directorios.contactos.edit')
+            @livewire('directorios.contactos.edit', ['contacto' => $datos])
         </div>
 
     </div>
