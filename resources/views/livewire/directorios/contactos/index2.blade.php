@@ -4,6 +4,7 @@
     x-data="{
         cantidad: @entangle('cantidad'),
         deCuantos: @entangle('deCuantos'),
+        valorengs: @entangle('valorengs'),
         search: @entangle('search'),
         mensaje: 'Developed by: calin_mx @2022'
     }"
@@ -19,7 +20,7 @@
                 Cuántos por Página:
             </h4>
             <select
-                class="h-10 w-48 p-1 mb-4 cursor-pointer text-lg font-bold text-gray-200 bg-black border-2 border-gray-700 rounded-md focus:border-orange-600"
+                class="w-48 h-10 p-1 mb-4 text-lg font-bold text-gray-200 bg-black border-2 border-gray-700 rounded-md cursor-pointer focus:border-orange-600"
                 wire:model="deCuantos"
             >
                 <option value="6">de 6 en 6</option>
@@ -48,7 +49,7 @@
         </div>
 
         {{-- Esta otra fila es para los filtros aplicables --}}
-        <div class="flex flex-row justify-start align-center h-12 mt-0 pt-1 pb-4 bg-black border rounded-lg border-gray-800">
+        <div class="flex flex-row justify-start h-12 pt-1 pb-4 mt-0 bg-black border border-gray-800 rounded-lg align-center">
 
             <h4 class="mt-2 ml-8 mr-4 text-xl font-normal text-white">
                 FILTROS.-  
@@ -57,13 +58,13 @@
                 del Tipo:
             </h4>
             <select
-                class="mb-2 h-10 p-1 cursor-pointer text-lg font-bold text-gray-300 bg-black border-2 border-gray-700 rounded-md focus:border-orange-600"
+                class="h-10 p-1 mb-2 text-lg font-bold text-gray-300 bg-black border-2 border-gray-700 rounded-md cursor-pointer focus:border-orange-600"
                 wire:model="delTipo"
                 id="select2_tip_id"
             >
             <option value="" class="text-orange-500">seleccionar...</option>
             @foreach ($cvetipos as $cvetipo)
-            <option value="{{ $cvetipo }}" class="uppercase text-lg font-bold text-gray-300">{{ $cvetipo }}</option>
+            <option value="{{ $cvetipo }}" class="text-lg font-bold text-gray-300 uppercase">{{ $cvetipo }}</option>
             @endforeach
             </select>
 
@@ -71,13 +72,13 @@
                 Origen:
             </h4>
             <select
-                class="mb-2 h-10 p-1 cursor-pointer text-lg font-bold text-gray-300 bg-black border-2 border-gray-700 rounded-md focus:border-orange-600"
+                class="h-10 p-1 mb-2 text-lg font-bold text-gray-300 bg-black border-2 border-gray-700 rounded-md cursor-pointer focus:border-orange-600"
                 wire:model="delOrigen"
                 id="select2_ori_id"
             >
             <option value="" class="text-orange-500">seleccionar...</option>
             @foreach ($origenes as $origen)
-            <option value="{{ $origen }}" class="uppercase text-lg font-bold text-gray-300">{{ $origen }}</option>
+            <option value="{{ $origen }}" class="text-lg font-bold text-gray-300 uppercase">{{ $origen }}</option>
             @endforeach
             </select>
             
@@ -85,13 +86,13 @@
                 Clasif:
             </h4>
             <select
-                class="mb-2 h-10 p-1 cursor-pointer text-lg font-bold text-gray-300 bg-black border-2 border-gray-700 rounded-md focus:border-orange-600"
+                class="h-10 p-1 mb-2 text-lg font-bold text-gray-300 bg-black border-2 border-gray-700 rounded-md cursor-pointer focus:border-orange-600"
                 wire:model="delaCateg"
                 id="select2_cat_id"
             >
             <option value="0" class="text-orange-500">seleccionar...</option>
             @foreach ($categos as $categ)
-            <option value="{{ $categ->cat_id }}" class="uppercase text-lg font-bold text-gray-300">{{ $categ->clasif }}</option>
+            <option value="{{ $categ->cat_id }}" class="text-lg font-bold text-gray-300 uppercase">{{ $categ->clasif }}</option>
             @endforeach
             </select>
             
@@ -116,7 +117,7 @@
 
                             <tr class="text-left uppercase">
 
-                                <th wire:click="clasifica('id')" class="text-yellow-500 w-1/12 pl-4 cursor-pointer">
+                                <th wire:click="clasifica('id')" class="w-1/12 pl-4 text-yellow-500 cursor-pointer">
                                     id
                                     @if ($sortear == 'id')
                                         @if ($elOrden == 'asc')
@@ -129,7 +130,7 @@
                                     @endif
                                 </th>
 
-                                <th wire:click="clasifica('clave_tipo')" class="text-white w-1/12 pl-4 cursor-pointer">
+                                <th wire:click="clasifica('clave_tipo')" class="w-1/12 pl-4 text-white cursor-pointer">
                                     Tipo
                                     @if ($sortear == 'clave_tipo')
                                         @if ($elOrden == 'asc')
@@ -142,7 +143,7 @@
                                     @endif
                                 </th>
 
-                                <th wire:click="clasifica('clave_origen')" class="text-white w-2/12 pl-4 cursor-pointer">
+                                <th wire:click="clasifica('clave_origen')" class="w-2/12 pl-4 text-white cursor-pointer">
                                     Originado
                                     @if ($sortear == 'clave_origen')
                                         @if ($elOrden == 'asc')
@@ -155,7 +156,7 @@
                                     @endif
                                 </th>
 
-                                <th wire:click="clasifica('clasificacion')" class="text-white w-1/12 pl-4 cursor-pointer">
+                                <th wire:click="clasifica('clasificacion')" class="w-1/12 pl-4 text-white cursor-pointer">
                                     Clasif
                                     @if ($sortear == 'clasificacion')
                                         @if ($elOrden == 'asc')
@@ -168,7 +169,7 @@
                                     @endif
                                 </th>
 
-                                <th wire:click="clasifica('nombre_full')" class="text-yellow-500 w-4/12 pl-4 cursor-pointer">
+                                <th wire:click="clasifica('nombre_full')" class="w-4/12 pl-4 text-yellow-500 cursor-pointer">
                                     Nombre Contacto
                                     @if ($sortear == 'nombre_full')
                                         @if ($elOrden == 'asc')
@@ -181,7 +182,7 @@
                                     @endif
                                 </th>
 
-                                <th wire:click="clasifica('telefono_movil')" class="text-white w-1/12 pl-4 cursor-pointer">
+                                <th wire:click="clasifica('telefono_movil')" class="w-1/12 pl-4 text-white cursor-pointer">
                                     Móvil
                                     @if ($sortear == 'telefono_movil')
                                         @if ($elOrden == 'asc')
@@ -194,7 +195,7 @@
                                     @endif
                                 </th>
 
-                                <th wire:click="clasifica('created_at')" class="text-white w-1/12 pl-4 cursor-pointer">
+                                <th wire:click="clasifica('created_at')" class="w-1/12 pl-4 text-white cursor-pointer">
                                     Alta
                                     @if ($sortear == 'created_at')
                                         @if ($elOrden == 'asc')
@@ -223,7 +224,7 @@
                                 $categor = strtolower($renglon->clasificacion);
                             @endphp
 
-                            <tr class="border-2 border-gray-500 text-gray-400">
+                            <tr wire:key="{{ $renglon->id }}" class="text-gray-400 border-2 border-gray-500">
 
                                 <td class="px-4 py-2 text-yellow-500 ">&nbsp;{{ $renglon->id }}</td>
 
@@ -245,7 +246,7 @@
 
                                         <button
                                                 class="px-2 py-1 mx-2 bg-gray-800 border-2 border-blue-800 rounded-md hover:bg-blue-500"
-                                                wire:click="editar({{ $renglon }})"
+                                                wire:click="$emit('informar', {{ $renglon }}, {{ $loop->iteration }})"
                                         >
                                         <x-heroicon-o-pencil-alt class="w-8 h-8 text-gray-500" />
                                         </button>
@@ -275,6 +276,12 @@
                         <div class="mt-1 mr-8 text-gray-500">Registros:&nbsp;&nbsp;{{ $cantidad }}</div>
                     </div>
 
+                    <div class="hidden mt-4">
+                        <span class="px-4 py-2 text-2xl font-bold text-white">
+                            {{ $rengs->currentPage() }}
+                        </span>
+                    </div>
+
                 @endif
 
             @else
@@ -290,6 +297,30 @@
         </div>
 
     </div>
+
+    <script>
+
+        document.addEventListener('livewire:load', () => {
+
+            @this.on('informar', (contacto, posicion) => {
+
+                const querystring = window.location.search;
+                console.log(querystring);
+                const params = new URLSearchParams(querystring);
+                if (params.has("rengs")) {
+                    console.log('Param rengs: ', params.get('rengs'));
+                    @this.valorengs = params.get('rengs');
+                } else {
+                    console.log('no existe param rengs');
+                }
+                console.log('Informado: ', @this.valorengs);
+                Livewire.emitTo('directorios.contactos.index2', 'editar', contacto, posicion )
+
+            })
+
+        })
+
+    </script>
 
 
     {{-- listeners de los select's  --}}

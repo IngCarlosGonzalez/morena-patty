@@ -11,7 +11,10 @@ use Illuminate\Support\Facades\Log;
 class Edit extends Component
 {
     public $dedonde;
+    public $conpagina;
+    public $conrenglo;
     public $mandado;
+    
 
     public $editando;
 
@@ -44,11 +47,16 @@ class Edit extends Component
     //
     public function mount($contacto)
     {
-        $this->dedonde = session('contactos_edit', 'vacio');
+        $this->dedonde = session('contactos_edit_from', 'vacio');
         Log::debug('   Edita desde... ' . $this->dedonde);
+        $this->conpagina = session('contactos_edit_page', 0);
+        $this->conrenglo = session('contactos_edit_reng', 0);
+        Log::debug('   Reciiendo... PAGE: ' . $this->conpagina . ' RENG: ' . $this->conrenglo);
+
         $this->editando = new Contacto();
         $this->editando = $contacto;
         Log::debug('   Abriendo id... ' . $this->editando->id);
+
     }
 
 
@@ -56,7 +64,11 @@ class Edit extends Component
     //
     public function iniciar()
     {
-        Log::debug('   iniciando... ');
+        Log::debug('   Iniciando edit... ');
+        if ($this->dedonde == 'vacio') {
+            Log::debug('      no puede procesar... VACIO');
+            return redirect('/');
+        }
     }
 
 
@@ -64,11 +76,13 @@ class Edit extends Component
     //
     public function abortar()
     {
-        Log::debug('   aborta desde... ' . $this->dedonde);
+        Log::debug('Proceso abortado desde... ' . $this->dedonde);
         $this->emit('abortado');
 
         session(['hacia_coontactos' => 'edicion']);
         session(['contacto_editado' => $this->editando->id]);
+        session(['contacto_paginan' => $this->conpagina]);
+        session(['contacto_renglon' => $this->conrenglo]);
 
         if ($this->dedonde == 'index1') {
             return redirect()->route('directorios.contactos.index', $this->editando->id);
@@ -117,6 +131,8 @@ class Edit extends Component
 
         session(['hacia_coontactos' => 'edicion']);
         session(['contacto_editado' => $this->folio]);
+        session(['contacto_paginan' => $this->conpagina]);
+        session(['contacto_renglon' => $this->conrenglo]);
 
         if ($this->dedonde == 'index1') {
             return redirect()->route('directorios.contactos.index', $this->editando->id);

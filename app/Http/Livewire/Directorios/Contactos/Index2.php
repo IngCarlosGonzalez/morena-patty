@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Owner;
 use Livewire\Component;
 use App\Models\Contacto;
+use Illuminate\Http\Request;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -17,23 +18,32 @@ class Index2 extends Component
 
     public $dedonde;
     public $mandado;
-
+    public $paginan;
+    public $renglon;
+    
     public $editando;
     public $registro;
+
+    public $urlactual;
+    public $valorengs;
+
+    public $iteracion;
+    public $paginanum;
 
     public $rengs = [];
 
     public $crear = false;
     public $abrir = false;
 
-    protected $listeners = ['delete', 'limpiar'];
+    protected $listeners = ['delete', 'limpiar', 'editar'];
 
-    public $deCuantos = 6;
+    public $deCuantos = '6';
     public $search    = '';
     public $estatus   = 2;
 
     protected $queryString = [
-        'search' => ['except' => '']
+        'search' => ['except' => ''],
+        'deCuantos' => ['except' => '6'],
     ];
 
     public $sortear = 'id';
@@ -80,11 +90,16 @@ class Index2 extends Component
         // recibe parametros de sesión con o sin datos...
         $this->dedonde = session('hacia_coontactos', 'vacio');
         $this->mandado = session('contacto_editado', 0);
+        $this->paginan = session('contacto_paginan', 0);
+        $this->renglon = session('contacto_renglon', 0);
         Log::debug('Abre indice2 desde... ' . $this->dedonde . '  con id: ' . $this->mandado);
+        Log::debug('     arrastra PAGE: ' . $this->paginan . '  y RENG: ' . $this->renglon);
+
         // resetea contenido de parámetros de sesión...
         session(['hacia_coontactos' => 'vacio']);
         session(['contacto_editado' => 0]);
-        // Pendiente ver como reposicionarse en el ID mandado cuando dedonde = 'edicion'
+        session(['contacto_paginan' => 0]);
+        session(['contacto_renglon' => 0]);
 
         // Log::debug('Usuario actual... ' . Auth::user()->id);
         $this->editando = new Contacto();
@@ -166,12 +181,30 @@ class Index2 extends Component
     //
     public function inicializa()
     {
-        // Log::debug('Inicializando... ');
+        Log::debug('Inicializando listado index2... ');
+
         if ($this->condicionador == true) {
             // Log::debug('Redireccionando... ');
             return redirect()->route('directorios.contactos.avisos');
         }
+        
+        // checa si viene de "edicion" y si trae PAGE redirige a ella.-
+        if ($this->dedonde == 'vacio') {
+            Log::debug('      no viene de editar');
+        } else {
+            if ($this->paginan > 0) {
+                $ubicacion = '/directorios/contactos/index2?rengs=' . $this->paginan;
+                return redirect()->to($ubicacion);
+            } else {
+                $ubicacion = '/directorios/contactos/index2';
+                return redirect()->to($ubicacion);
+            }
+        }
+
+        // Pendiente ver como reposicionarse en el ID del RENG...
+
     }
+
 
     //--- Activa el ResetPage al modificar el buscador
     //
@@ -225,18 +258,35 @@ class Index2 extends Component
         $this->search = '';
     }
 
+    //--- rastreo del atributo publico updatedValorengs
+    //
+    public function updatedValorengs()
+    {
+        Log::debug('>>> Valor Rengs... ' . $this->valorengs);
+    }
+
     //--- Redirige hacia EDICIÓN del renglón actual...
     //
-    public function editar(Contacto $contacto)
+    public function editar(Contacto $contacto, $acualreng, Request $request)
     {
         $this->editando = $contacto;
+        $this->iteracion = $acualreng;
+        $this->urlactual = $request->fullUrl();
 
         $this->folio = $this->editando->id;
-        // Log::debug('Editando id... ' . $this->folio);
+        $this->paginanum = $this->valorengs;
 
-        //-- redireccionar hacia ruta EDIT con el parámetro: Objeto Contacto
-        Log::debug('Redireccionando desde Index2... ');
-        session(['contactos_edit' => 'index2']);
+        Log::debug('Activandel desde URL... ' . $this->urlactual);
+        Log::debug('Edit id: ' . $this->folio . '  en renglon: ' . $this->iteracion . '  de pagina: ' . $this->paginanum);
+
+        //-- preparación de variables de sesión.-
+        Log::debug('Redireccionando desde: Index2... ');
+        session(['contactos_edit_from' => 'index2']);
+        session(['contactos_edit_page' => $this->paginanum]);
+        session(['contactos_edit_reng' => $this->iteracion]);
+        Log::debug('   Parametros... PAGE: ' . $this->paginanum . ' RENG: ' . $this->iteracion);
+
+        //-- redireccionar hacia ruta EDIT con el parámetro: Objeto Contacto.-
         return redirect()->route('directorios.contactos.edit', $this->editando);
 
     }
@@ -346,7 +396,7 @@ class Index2 extends Component
             $perPage = $this->deCuantos,
             $columns = ['*'],
             $pageName = 'rengs'
-        );
+        )->withQueryString();
 
         //Log::debug('Leidos... ' . $this->rengs->count());
 

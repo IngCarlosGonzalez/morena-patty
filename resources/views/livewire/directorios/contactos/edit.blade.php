@@ -230,7 +230,7 @@
                     </div>
                 @endif
 
-                <div class="flex flex-col justify-start md:flex-row">
+                <div class="flex flex-col justify-start h-16 md:flex-row">
 
                     <a href="#" wire:click="abortar" class="w-48 px-12 py-2 text-lg font-bold text-black bg-orange-500 border-2 border-orange-700 hover:bg-orange-300">
                         SIEMPRE NO
