@@ -26,6 +26,7 @@ class Index2 extends Component
 
     public $urlactual;
     public $valorengs;
+    public $cueristri;
 
     public $iteracion;
     public $paginanum;
@@ -41,11 +42,6 @@ class Index2 extends Component
     public $search    = '';
     public $estatus   = 2;
 
-    protected $queryString = [
-        'search' => ['except' => ''],
-        'deCuantos' => ['except' => '6'],
-    ];
-
     public $sortear = 'id';
     public $elOrden = 'asc';
 
@@ -57,7 +53,27 @@ class Index2 extends Component
     public $likeOrigen = '';
     public $likeCateg1 = 0;
     public $likeCateg2 = 9999;
-    
+
+    protected $queryString = [
+        'search'     => ['except' => ''],
+        'deCuantos'  => ['as' => 'pp'],
+        'sortear'    => ['as' => 'sx'],
+        'elOrden'    => ['as' => 'ad'],
+        'likeTipo'   => ['as' => 'kt'],
+        'likeOrigen' => ['as' => 'ko'],
+        'likeCateg1' => ['as' => 'c1'],
+        'likeCateg2' => ['as' => 'c2'],
+    ];
+
+    public $parametbu;
+    public $parametpp;
+    public $parametsx;
+    public $parametad;
+    public $parametkt;
+    public $parametko;
+    public $parametc1;
+    public $parametc2;
+
     public $cvetipos = [];
     public $origenes = [];
     public $categos  = [];
@@ -92,15 +108,19 @@ class Index2 extends Component
         $this->mandado = session('contacto_editado', 0);
         $this->paginan = session('contacto_paginan', 0);
         $this->renglon = session('contacto_renglon', 0);
-        Log::debug('Abre indice2 desde... ' . $this->dedonde . '  con id: ' . $this->mandado);
-        Log::debug('     arrastra PAGE: ' . $this->paginan . '  y RENG: ' . $this->renglon);
 
-        // resetea contenido de parámetros de sesión...
-        session(['hacia_coontactos' => 'vacio']);
-        session(['contacto_editado' => 0]);
-        session(['contacto_paginan' => 0]);
-        session(['contacto_renglon' => 0]);
-
+        // // estos son de prueba quedan pendientes...
+        // $this->parametbu = session('contactos_edit_p_bu', '');
+        // $this->parametpp = session('contactos_edit_p_pp', 6);
+        // $this->parametsx = session('contactos_edit_p_sx', 'id');
+        // $this->parametad = session('contactos_edit_p_ad', 'asc');
+        // $this->parametkt = session('contactos_edit_p_kt', '');
+        // $this->parametko = session('contactos_edit_p_ko', '');
+        // $this->parametc1 = session('contactos_edit_p_c1', 0);
+        // $this->parametc2 = session('contactos_edit_p_c2', 9999);
+        // Log::debug('Abre indice2 desde... ' . $this->dedonde . '  con id: ' . $this->mandado);
+        // Log::debug('     arrastra PAGE: ' . $this->paginan . '  y RENG: ' . $this->renglon);
+        
         // Log::debug('Usuario actual... ' . Auth::user()->id);
         $this->editando = new Contacto();
         $this->registro = new Contacto();
@@ -177,29 +197,154 @@ class Index2 extends Component
 
     }
 
+
     //--- Ejecuta método INICIALIZA 
     //
     public function inicializa()
     {
-        Log::debug('Inicializando listado index2... ');
+        // Log::debug('Inicializando listado index2... ');
 
         if ($this->condicionador == true) {
-            // Log::debug('Redireccionando... ');
+            Log::debug('No tiene permiso en index... ');
             return redirect()->route('directorios.contactos.avisos');
         }
         
-        // checa si viene de "edicion" y si trae PAGE redirige a ella.-
-        if ($this->dedonde == 'vacio') {
-            Log::debug('      no viene de editar');
-        } else {
-            if ($this->paginan > 0) {
-                $ubicacion = '/directorios/contactos/index2?rengs=' . $this->paginan;
-                return redirect()->to($ubicacion);
-            } else {
-                $ubicacion = '/directorios/contactos/index2';
-                return redirect()->to($ubicacion);
-            }
-        }
+        // //--- checa si viene de "edicion" y si trae PAGE redirige a ella.-
+        // if ($this->dedonde == 'vacio') {
+        //     Log::debug('     no viene de editar');
+        // } else {
+        //     $rutaorigen = '/directorios/contactos/index2';
+        //     $parametros = '';
+            
+        //     if ($this->paginan > 0) {
+        //         if ($parametros == '') {
+        //             $parametros = '?rengs=' . $this->paginan;
+        //         } else {
+        //             $parametros = $parametros . '&rengs=' . $this->paginan;
+        //         }
+        //     }
+            
+        //     if ($this->parametbu == '') {
+        //         $this->search = '';
+        //     } else {
+        //         $this->search = $this->parametbu;
+        //     }
+        //     if ($parametros == '') {
+        //         $parametros = '?search=' . $this->search;
+        //     } else {
+        //         $parametros = $parametros . '&search=' . $this->search;
+        //     }
+            
+        //     if ($this->parametpp > 0) {
+        //         $this->deCuantos = $this->parametpp;
+        //     } else {
+        //         $this->deCuantos = 6;
+        //     }
+        //     if ($parametros == '') {
+        //         $parametros = '?pp=' . $this->deCuantos;
+        //     } else {
+        //         $parametros = $parametros . '&pp=' . $this->deCuantos;
+        //     }
+            
+        //     if ($this->parametsx == '') {
+        //         $this->sortear = 'id';
+        //     } else {
+        //         $this->sortear = $this->parametsx;
+        //     }
+        //     if ($parametros == '') {
+        //         $parametros = '?sx=' . $this->sortear;
+        //     } else {
+        //         $parametros = $parametros . '&sx=' . $this->sortear;
+        //     }
+            
+        //     if ($this->parametad == '') {
+        //         $this->elOrden = 'asc';
+        //     } else {
+        //         $this->elOrden = $this->parametad;
+        //     }
+        //     if ($parametros == '') {
+        //         $parametros = '?ad=' . $this->elOrden;
+        //     } else {
+        //         $parametros = $parametros . '&ad=' . $this->elOrden;
+        //     }
+
+        //     if ($this->parametkt == '') {
+        //         $this->delTipo = '';
+        //         $this->likeTipo = '';
+        //         $this->parametkt = '%';
+        //     } else {
+        //         $this->delTipo = $this->parametkt;
+        //         $this->likeTipo = $this->parametkt;
+        //     }
+        //     if ($parametros == '') {
+        //         $parametros = '?kt=' . $this->parametkt;
+        //     } else {
+        //         $parametros = $parametros . '&kt=' . $this->parametkt;
+        //     }
+
+        //     if ($this->parametko == '') {
+        //         $this->delOrigen = '';
+        //         $this->likeOrigen = '';
+        //         $this->parametko = '%';
+        //     } else {
+        //         $paso = str_ireplace("+", " ", $this->parametko);
+        //         $this->delOrigen = $paso;
+        //         $this->likeOrigen = $paso;
+        //         $paso = str_ireplace(" ", "+", $this->parametko);
+        //         $this->parametko = $paso;
+        //     }
+        //     if ($parametros == '') {
+        //         $parametros = '?ko=' . $this->parametko;
+        //     } else {
+        //         $parametros = $parametros . '&ko=' . $this->parametko;
+        //     }
+
+        //     if ($this->parametc1 > 0) {
+        //         $this->likeCateg1 = $this->parametc1;
+        //     } else {
+        //         $this->likeCateg1 = 0;
+        //     }
+        //     if ($parametros == '') {
+        //         $parametros = '?c1=' . $this->likeCateg1;
+        //     } else {
+        //         $parametros = $parametros . '&c1=' . $this->likeCateg1;
+        //     }
+                        
+        //     if ($this->parametc2 > 0) {
+        //         $this->delaCateg = $this->parametc2 - 1;
+        //         $this->likeCateg2 = $this->parametc2;
+        //     } else {
+        //         $this->delaCateg = 0;
+        //         $this->likeCateg2 = 0;
+        //     }
+        //     if ($parametros == '') {
+        //         $parametros = '?c2=' . $this->likeCateg2;
+        //     } else {
+        //         $parametros = $parametros . '&c2=' . $this->likeCateg2;
+        //     }
+            
+        //     // resetea contenido de parámetros de sesión...
+        //     session(['hacia_coontactos' => 'vacio']);
+        //     session(['contacto_editado' => 0]);
+        //     session(['contacto_paginan' => 0]);
+        //     session(['contacto_renglon' => 0]);
+        //     session(['contactos_edit_p_bu' => null]);
+        //     session(['contactos_edit_p_pp' => null]);
+        //     session(['contactos_edit_p_sx' => null]);
+        //     session(['contactos_edit_p_ad' => null]);
+        //     session(['contactos_edit_p_kt' => null]);
+        //     session(['contactos_edit_p_ko' => null]);
+        //     session(['contactos_edit_p_c1' => null]);
+        //     session(['contactos_edit_p_c2' => null]);
+
+        //     if ($parametros == '') {
+        //         $ubicacion = $rutaorigen;
+        //     } else {
+        //         $ubicacion = $rutaorigen . $parametros;
+        //     }
+        //     return redirect()->to($ubicacion);
+
+        // }
 
         // Pendiente ver como reposicionarse en el ID del RENG...
 
@@ -251,6 +396,7 @@ class Index2 extends Component
         }
     }
 
+
     //--- Aplica la accion de LIMPIAR el buscador
     //
     public function limpiar()
@@ -258,12 +404,14 @@ class Index2 extends Component
         $this->search = '';
     }
 
+
     //--- rastreo del atributo publico updatedValorengs
     //
     public function updatedValorengs()
     {
-        Log::debug('>>> Valor Rengs... ' . $this->valorengs);
+        // Log::debug('>>> Valor Rengs... ' . $this->valorengs);
     }
+
 
     //--- Redirige hacia EDICIÓN del renglón actual...
     //
@@ -276,20 +424,42 @@ class Index2 extends Component
         $this->folio = $this->editando->id;
         $this->paginanum = $this->valorengs;
 
-        Log::debug('Activandel desde URL... ' . $this->urlactual);
-        Log::debug('Edit id: ' . $this->folio . '  en renglon: ' . $this->iteracion . '  de pagina: ' . $this->paginanum);
+        // // pruebas para arastrar paraetros...
+        Log::debug('>>> QueryString... ' . $this->cueristri);
+        // $this->parametbu = $this->search;
+        // $this->parametpp = $this->deCuantos;
+        // $this->parametsx = $this->sortear;
+        // $this->parametad = $this->elOrden;
+        // $this->parametkt = $this->likeTipo;
+        // $this->parametko = $this->likeOrigen;
+        // $this->parametc1 = $this->likeCateg1;
+        // $this->parametc2 = $this->likeCateg2;
+        // Log::debug('Activando desde URL... ' . $this->urlactual);
+        // Log::debug('Edit id: ' . $this->folio . '  en renglon: ' . $this->iteracion . '  de pagina: ' . $this->paginanum);
+        // //-- preparación de variables de sesión.-
+        // Log::debug('Redireccionando desde: Index2... ');
 
-        //-- preparación de variables de sesión.-
-        Log::debug('Redireccionando desde: Index2... ');
         session(['contactos_edit_from' => 'index2']);
         session(['contactos_edit_page' => $this->paginanum]);
         session(['contactos_edit_reng' => $this->iteracion]);
-        Log::debug('   Parametros... PAGE: ' . $this->paginanum . ' RENG: ' . $this->iteracion);
+
+        // session(['contactos_edit_p_bu' => $this->parametbu]);
+        // session(['contactos_edit_p_pp' => $this->parametpp]);
+        // session(['contactos_edit_p_sx' => $this->parametsx]);
+        // session(['contactos_edit_p_ad' => $this->parametad]);
+        // session(['contactos_edit_p_kt' => $this->parametkt]);
+        // session(['contactos_edit_p_ko' => $this->parametko]);
+        // session(['contactos_edit_p_c1' => $this->parametc1]);
+        // session(['contactos_edit_p_c2' => $this->parametc2]);
+        // Log::debug('   Parametros... PAGE: ' . $this->paginanum . ' RENG: ' . $this->iteracion);
+        // Log::debug('   BU: ' . $this->parametbu . ' PP: ' . $this->parametpp . ' SX: ' . $this->parametsx . ' AD: ' . $this->parametad);
+        // Log::debug('   KT: ' . $this->parametkt . ' KO: ' . $this->parametko . ' C1: ' . $this->parametc1 . ' C2: ' . $this->parametc2);
 
         //-- redireccionar hacia ruta EDIT con el parámetro: Objeto Contacto.-
         return redirect()->route('directorios.contactos.edit', $this->editando);
 
     }
+
 
     //--- Aplica la acción de ELIMINACIÓN al renglón
     //
@@ -307,6 +477,7 @@ class Index2 extends Component
         $this->emit('deleteOk');
     }
 
+
     //--- Clasificción de registros asegún
     //
     public function clasifica($porCual)
@@ -323,6 +494,7 @@ class Index2 extends Component
             $this->elOrden = 'asc';
         }
     }
+
 
     //--- Renderiza la vista
     //

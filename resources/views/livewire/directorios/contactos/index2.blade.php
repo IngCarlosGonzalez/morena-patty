@@ -4,7 +4,15 @@
     x-data="{
         cantidad: @entangle('cantidad'),
         deCuantos: @entangle('deCuantos'),
+        cueristri: @entangle('cueristri'),
         valorengs: @entangle('valorengs'),
+        parametpp: @entangle('parametpp'),
+        parametsx: @entangle('parametsx'),
+        parametad: @entangle('parametad'),
+        parametkt: @entangle('parametkt'),
+        parametko: @entangle('parametko'),
+        parametc1: @entangle('parametc1'),
+        parametc2: @entangle('parametc2'),
         search: @entangle('search'),
         mensaje: 'Developed by: calin_mx @2022'
     }"
@@ -305,15 +313,43 @@
             @this.on('informar', (contacto, posicion) => {
 
                 const querystring = window.location.search;
+                @this.cueristri = window.location.search;
                 console.log(querystring);
                 const params = new URLSearchParams(querystring);
+
                 if (params.has("rengs")) {
                     console.log('Param rengs: ', params.get('rengs'));
                     @this.valorengs = params.get('rengs');
-                } else {
-                    console.log('no existe param rengs');
                 }
-                console.log('Informado: ', @this.valorengs);
+                if (params.has("pp")) {
+                    console.log('Param PP: ', params.get('pp'));
+                    @this.parametpp = params.get('pp');
+                }
+                if (params.has("sx")) {
+                    console.log('Param SX: ', params.get('sx'));
+                    @this.parametpp = params.get('sx');
+                }
+                if (params.has("ad")) {
+                    console.log('Param AD: ', params.get('ad'));
+                    @this.parametpp = params.get('ad');
+                }
+                if (params.has("kt")) {
+                    console.log('Param KT: ', params.get('kt'));
+                    @this.parametpp = params.get('kt');
+                }
+                if (params.has("ko")) {
+                    console.log('Param KOT: ', params.get('ko'));
+                    @this.parametpp = params.get('ko');
+                }
+                if (params.has("c1")) {
+                    console.log('Param C1: ', params.get('c1'));
+                    @this.parametpp = params.get('c1');
+                }
+                if (params.has("c2")) {
+                    console.log('Param C2: ', params.get('c2'));
+                    @this.parametpp = params.get('c2');
+                }
+                console.log('Informado: ok');
                 Livewire.emitTo('directorios.contactos.index2', 'editar', contacto, posicion )
 
             })

@@ -70,7 +70,7 @@ class Index extends Component
         // recibe parametros de sesión con o sin datos...
         $this->dedonde = session('hacia_coontactos', 'vacio');
         $this->mandado = session('contacto_editado', 0);
-        Log::debug('Abre indice1 desde... ' . $this->dedonde . '  con id: ' . $this->mandado);
+        // Log::debug('Abre indice1 desde... ' . $this->dedonde . '  con id: ' . $this->mandado);
         // resetea contenido de parámetros de sesión...
         session(['hacia_coontactos' => 'vacio']);
         session(['contacto_editado' => 0]);
@@ -88,7 +88,7 @@ class Index extends Component
     //
     public function inicializa()
     {
-        // Log::debug('Inicializando... ');
+        Log::debug('...... ');
     }
 
     //--- Activa el ResetPage al modificar el buscador
@@ -167,8 +167,8 @@ class Index extends Component
         // Log::debug('Eniado id... ' . $this->folio);
 
         //-- redireccionar hacia ruta EDIT con el parámetro: Objeto Contacto
-        Log::debug('Redireccionando desde Index1... ');
-        session(['contactos_edit' => 'index1']);
+        // Log::debug('Redireccionando desde Index1... ');
+        session(['contactos_edit_from' => 'index1']);
         return redirect()->route('directorios.contactos.edit', [$this->editando]);
 
     }

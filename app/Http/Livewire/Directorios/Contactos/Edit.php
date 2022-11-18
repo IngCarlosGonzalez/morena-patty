@@ -15,8 +15,8 @@ class Edit extends Component
     public $conrenglo;
     public $mandado;
     
-
-    public $editando;
+    public Contacto $editando;
+    public $folio;
 
     public $abrir;
 
@@ -25,20 +25,20 @@ class Edit extends Component
     public $categos = [];
     public $generos = [];
 
-    public $clave_tipo;
-    public $clave_origen;
-    public $categoria_id;
-    public $clasificacion;
-    public $clave_genero;
+    // public $clave_tipo;
+    // public $clave_origen;
+    // public $categoria_id;
+    // public $clasificacion;
+    // public $clave_genero;
 
     public $datos_catego = null;
 
-    public $nombre_full;
-    public $domicilio_full;
-    public $telefono_fijo;
-    public $telefono_movil;
-    public $tiene_watsapp = 0;
-    public $correo_electronico;
+    // public $nombre_full;
+    // public $domicilio_full;
+    // public $telefono_fijo;
+    // public $telefono_movil;
+    // public $tiene_watsapp = 0;
+    // public $correo_electronico;
 
     public $mivariable;
 
@@ -48,14 +48,14 @@ class Edit extends Component
     public function mount($contacto)
     {
         $this->dedonde = session('contactos_edit_from', 'vacio');
-        Log::debug('   Edita desde... ' . $this->dedonde);
+        // Log::debug('   Edita desde... ' . $this->dedonde);
         $this->conpagina = session('contactos_edit_page', 0);
         $this->conrenglo = session('contactos_edit_reng', 0);
-        Log::debug('   Reciiendo... PAGE: ' . $this->conpagina . ' RENG: ' . $this->conrenglo);
+        // Log::debug('   Reciiendo... PAGE: ' . $this->conpagina . ' RENG: ' . $this->conrenglo);
 
-        $this->editando = new Contacto();
         $this->editando = $contacto;
-        Log::debug('   Abriendo id... ' . $this->editando->id);
+        $this->folio = $this->editando->id;
+        Log::debug('   Abriendo id... ' . $this->folio);
 
     }
 
@@ -64,7 +64,7 @@ class Edit extends Component
     //
     public function iniciar()
     {
-        Log::debug('   Iniciando edit... ');
+        // Log::debug('   Iniciando edit... ');
         if ($this->dedonde == 'vacio') {
             Log::debug('      no puede procesar... VACIO');
             return redirect('/');
@@ -72,7 +72,7 @@ class Edit extends Component
     }
 
 
-    //--- Abandonar la edición...v
+    //--- Abandonar la edición...
     //
     public function abortar()
     {
@@ -94,6 +94,19 @@ class Edit extends Component
         
     }
 
+
+    protected $rules = [
+        'editando.clave_tipo' => 'required|string',
+        'editando.clave_origen' => 'required|string',
+        'editando.clave_genero' => 'required|string',
+        'editando.categoria_id' => 'required|integer|min:1|not_in:0,-1',
+        'editando.nombre_full' => 'required|string|min:10|max:60',
+        'editando.domicilio_full' => 'required|string|min:10|max:90',
+        'editando.telefono_fijo' => 'required|digits:10',
+        'editando.telefono_movil' => 'required|digits:10',
+        'editando.tiene_watsapp' => 'required|digits:1',
+        'editando.direccion_email' => 'required|email|max:80',
+    ];
     
     //--- Procesa accion de ACTUALIZAR el registro
     // 
@@ -101,31 +114,22 @@ class Edit extends Component
     {
         Log::debug('Actualizando id... ' . $this->folio);
 
-        $this->validate([
-            'clave_tipo' => 'required|string',
-            'clave_origen' => 'required|string',
-            'clave_genero' => 'required|string',
-            'categoria_id' => 'required|integer|min:1|not_in:0,-1',
-            'nombre_full' => 'required|string|min:10|max:60',
-            'domicilio_full' => 'required|string|min:10|max:90',
-            'telefono_fijo' => 'required|digits:10',
-            'telefono_movil' => 'required|digits:10',
-            'correo_electronico' => 'email|max:80',
-        ]);
+        $this->validate();
 
-        $this->clasificacion = '';
-        $this->datos_catego = Categoria::find($this->categoria_id);
-        $this->clasificacion = $this->datos_catego->clasificacion;
+        $this->editando->clasificacion = '';
+        $this->datos_catego = Categoria::find($this->editando->categoria_id);
+        $this->editando->clasificacion = $this->datos_catego->clasificacion;
 
 
         $this->mivariable = '';
-        $this->mivariable = strtoupper($this->nombre_full);
-        $this->nombre_full = $this->mivariable;
-        $this->mivariable = strtoupper($this->domicilio_full);
-        $this->domicilio_full = $this->mivariable;
-        $this->mivariable = strtolower($this->correo_electronico);
-        $this->correo_electronico = $this->mivariable;
+        $this->mivariable = strtoupper($this->editando->nombre_full);
+        $this->editando->nombre_full = $this->mivariable;
+        $this->mivariable = strtoupper($this->editando->domicilio_full);
+        $this->editando->domicilio_full = $this->mivariable;
+        $this->mivariable = strtolower($this->editando->direccion_email);
+        $this->editando->direccion_email = $this->mivariable;
 
+        $this->editando->save();
         Log::debug('   regresa ok desde... ' . $this->dedonde);
         $this->emit('procesaOk');
 
