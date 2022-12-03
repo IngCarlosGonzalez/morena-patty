@@ -23,7 +23,7 @@ class Index extends Component
     public $crear = false;
     public $abrir = false;
 
-    protected $listeners = ['delete', 'limpiar'];
+    protected $listeners = ['delete', 'limpiar', 'editar'];
 
     public $deCuantos = 6;
     public $search    = '';
@@ -68,13 +68,12 @@ class Index extends Component
     public function mount()
     {
         // recibe parametros de sesión con o sin datos...
-        $this->dedonde = session('hacia_coontactos', 'vacio');
-        $this->mandado = session('contacto_editado', 0);
+        // $this->dedonde = session('hacia_coontactos', 'vacio');
+        // $this->mandado = session('contacto_editado', 0);
         // Log::debug('Abre indice1 desde... ' . $this->dedonde . '  con id: ' . $this->mandado);
         // resetea contenido de parámetros de sesión...
-        session(['hacia_coontactos' => 'vacio']);
-        session(['contacto_editado' => 0]);
-        // Pendiente ver como reposicionarse en el ID mandado cuando dedonde = 'edicion'
+        // session(['hacia_coontactos' => 'vacio']);
+        // session(['contacto_editado' => 0]);
 
         $this->editando = new Contacto();
         $this->registro = new Contacto();
@@ -83,6 +82,7 @@ class Index extends Component
         $this->likeCateg1 =  0;
         $this->likeCateg2 =  9999;
     }
+
 
     //--- Ejecuta método INICIALIZA 
     //
@@ -164,15 +164,25 @@ class Index extends Component
         $this->editando = $contacto;
 
         $this->folio = $this->editando->id;
-        // Log::debug('Eniado id... ' . $this->folio);
+
+        Log::debug('Eniado desde idx1 el id... ' . $this->folio);
 
         //-- redireccionar hacia ruta EDIT con el parámetro: Objeto Contacto
         // Log::debug('Redireccionando desde Index1... ');
-        session(['contactos_edit_from' => 'index1']);
-        return redirect()->route('directorios.contactos.edit', [$this->editando]);
+        // session(['contactos_edit_from' => 'index1']);
+        // return redirect()->route('directorios.contactos.edit', [$this->editando]);
+
+        //--- opcion preferida... abre modal.-
+
+
 
     }
 
+
+
+
+
+    
     //--- Aplica la acción de ELIMINACIÓN al renglón
     //
     public function delete(Contacto $contacto)
@@ -205,6 +215,7 @@ class Index extends Component
             $this->elOrden = 'asc';
         }
     }
+
 
     //--- Renderiza la vista ...
     //

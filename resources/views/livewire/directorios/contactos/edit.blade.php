@@ -3,7 +3,7 @@
     id="vista_edit"
     class="flex flex-col h-auto"
     x-data="{
-        crear: @entangle('abrir'),
+        abrir: @entangle('abrir'),
         mensaje: 'Developed by: calin_mx @2022'
     }"
 >

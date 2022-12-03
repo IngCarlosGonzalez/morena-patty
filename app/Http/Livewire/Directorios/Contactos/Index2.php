@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Owner;
 use Livewire\Component;
 use App\Models\Contacto;
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
@@ -98,16 +99,35 @@ class Index2 extends Component
     public $condicionador;
     public $notifica_rech;
 
+    //---atributos livewire para edicion...
+
+    public $clave_tipo;
+    public $clave_origen;
+    public $categoria_id;
+    public $clasificacion;
+    public $clave_genero;
+
+    public $nombre_full;
+    public $domicilio_full;
+    public $telefono_fijo;
+    public $telefono_movil;
+    public $tiene_watsapp = 0;
+    public $direccion_email;
+
+
+
+    public $mivariable;
+
 
     //--- Ejecuta método MOUNT 
     //
     public function mount()
     {
-        // recibe parametros de sesión con o sin datos...
-        $this->dedonde = session('hacia_coontactos', 'vacio');
-        $this->mandado = session('contacto_editado', 0);
-        $this->paginan = session('contacto_paginan', 0);
-        $this->renglon = session('contacto_renglon', 0);
+        // // recibe parametros de sesión con o sin datos...
+        // $this->dedonde = session('hacia_coontactos', 'vacio');
+        // $this->mandado = session('contacto_editado', 0);
+        // $this->paginan = session('contacto_paginan', 0);
+        // $this->renglon = session('contacto_renglon', 0);
 
         // // estos son de prueba quedan pendientes...
         // $this->parametbu = session('contactos_edit_p_bu', '');
@@ -122,6 +142,7 @@ class Index2 extends Component
         // Log::debug('     arrastra PAGE: ' . $this->paginan . '  y RENG: ' . $this->renglon);
         
         // Log::debug('Usuario actual... ' . Auth::user()->id);
+
         $this->editando = new Contacto();
         $this->registro = new Contacto();
         $this->likeTipo   = '%';
@@ -204,11 +225,15 @@ class Index2 extends Component
     {
         // Log::debug('Inicializando listado index2... ');
 
+        // --------------------------------------------------------------
+
         if ($this->condicionador == true) {
             Log::debug('No tiene permiso en index... ');
             return redirect()->route('directorios.contactos.avisos');
         }
-        
+
+        // --------------------------------------------------------------
+
         // //--- checa si viene de "edicion" y si trae PAGE redirige a ella.-
         // if ($this->dedonde == 'vacio') {
         //     Log::debug('     no viene de editar');
@@ -419,13 +444,15 @@ class Index2 extends Component
     {
         $this->editando = $contacto;
         $this->iteracion = $acualreng;
-        $this->urlactual = $request->fullUrl();
 
+        $this->urlactual = $request->fullUrl();
         $this->folio = $this->editando->id;
         $this->paginanum = $this->valorengs;
 
+        Log::debug('Eniado desde idx2 el id... ' . $this->folio);
+
         // // pruebas para arastrar paraetros...
-        Log::debug('>>> QueryString... ' . $this->cueristri);
+        // Log::debug('>>> QueryString... ' . $this->cueristri);
         // $this->parametbu = $this->search;
         // $this->parametpp = $this->deCuantos;
         // $this->parametsx = $this->sortear;
@@ -438,11 +465,11 @@ class Index2 extends Component
         // Log::debug('Edit id: ' . $this->folio . '  en renglon: ' . $this->iteracion . '  de pagina: ' . $this->paginanum);
         // //-- preparación de variables de sesión.-
         // Log::debug('Redireccionando desde: Index2... ');
-
-        session(['contactos_edit_from' => 'index2']);
-        session(['contactos_edit_page' => $this->paginanum]);
-        session(['contactos_edit_reng' => $this->iteracion]);
-
+        //
+        // session(['contactos_edit_from' => 'index2']);
+        // session(['contactos_edit_page' => $this->paginanum]);
+        // session(['contactos_edit_reng' => $this->iteracion]);
+        //
         // session(['contactos_edit_p_bu' => $this->parametbu]);
         // session(['contactos_edit_p_pp' => $this->parametpp]);
         // session(['contactos_edit_p_sx' => $this->parametsx]);
@@ -454,9 +481,101 @@ class Index2 extends Component
         // Log::debug('   Parametros... PAGE: ' . $this->paginanum . ' RENG: ' . $this->iteracion);
         // Log::debug('   BU: ' . $this->parametbu . ' PP: ' . $this->parametpp . ' SX: ' . $this->parametsx . ' AD: ' . $this->parametad);
         // Log::debug('   KT: ' . $this->parametkt . ' KO: ' . $this->parametko . ' C1: ' . $this->parametc1 . ' C2: ' . $this->parametc2);
-
+        //
         //-- redireccionar hacia ruta EDIT con el parámetro: Objeto Contacto.-
-        return redirect()->route('directorios.contactos.edit', $this->editando);
+        // return redirect()->route('directorios.contactos.edit', $this->editando);
+
+        //--- opcion preferida... abre modal.-
+
+        $this->resetValidation();
+
+        $this->name = $this->editando->name;
+
+
+
+    }
+
+
+    
+    //--- Abandonar la edición...
+    //
+    public function abortar()
+    {
+        Log::debug('Proceso abortado desde... ' . $this->dedonde);
+        $this->emit('abortado');
+        $this->abrir = false;
+
+        // session(['hacia_coontactos' => 'edicion']);
+        // session(['contacto_editado' => $this->editando->id]);
+        // session(['contacto_paginan' => $this->conpagina]);
+        // session(['contacto_renglon' => $this->conrenglo]);
+        //
+        // if ($this->dedonde == 'index1') {
+        //     return redirect()->route('directorios.contactos.index', $this->editando->id);
+        // } elseif ($this->dedonde == 'index2') {
+        //     return redirect()->route('directorios.contactos.index2', $this->editando->id);
+        // } else {
+        //     return redirect('/');
+        // }
+        
+    }
+
+
+    protected $rules = [
+        'clave_tipo' => 'required|string',
+        'clave_origen' => 'required|string',
+        'clave_genero' => 'required|string',
+        'categoria_id' => 'required|integer|min:1|not_in:0,-1',
+        'nombre_full' => 'required|string|min:10|max:60',
+        'domicilio_full' => 'required|string|min:10|max:90',
+        'telefono_fijo' => 'required|digits:10',
+        'telefono_movil' => 'required|digits:10',
+        'tiene_watsapp' => 'required|digits:1',
+        'direccion_email' => 'required|email|max:80',
+    ];
+    
+
+    //--- Procesa accion de ACTUALIZAR el registro
+    // 
+    public function procesar()
+    {
+        Log::debug('Actualizando id... ' . $this->folio);
+                
+        if (!is_null($this->trampa)) {
+            return redirect('/');
+        }
+
+        $this->validate();
+
+        $this->clasificacion = '';
+        $this->datos_catego = Categoria::find($this->categoria_id);
+        $this->clasificacion = $this->datos_catego->clasificacion;
+
+        $this->mivariable = '';
+        $this->mivariable = strtoupper($this->nombre_full);
+        $this->nombre_full = $this->mivariable;
+        $this->mivariable = strtoupper($this->domicilio_full);
+        $this->domicilio_full = $this->mivariable;
+        $this->mivariable = strtolower($this->direccion_email);
+        $this->direccion_email = $this->mivariable;
+
+        $this->editando->save();
+
+        $this->emit('procesaOk');
+
+        // Log::debug('   regresa ok desde... ' . $this->dedonde);
+        // session(['hacia_coontactos' => 'edicion']);
+        // session(['contacto_editado' => $this->folio]);
+        // session(['contacto_paginan' => $this->conpagina]);
+        // session(['contacto_renglon' => $this->conrenglo]);
+        //
+        // if ($this->dedonde == 'index1') {
+        //     return redirect()->route('directorios.contactos.index', $this->editando->id);
+        // } elseif ($this->dedonde == 'index2') {
+        //     return redirect()->route('directorios.contactos.index2', $this->editando->id);
+        // } else {
+        //     return redirect('/');
+        // }
 
     }
 

@@ -14,6 +14,7 @@
         parametc1: @entangle('parametc1'),
         parametc2: @entangle('parametc2'),
         search: @entangle('search'),
+        abrir: @entangle('abrir'),
         mensaje: 'Developed by: calin_mx @2022'
     }"
 >
@@ -254,7 +255,7 @@
 
                                         <button
                                                 class="px-2 py-1 mx-2 bg-gray-800 border-2 border-blue-800 rounded-md hover:bg-blue-500"
-                                                wire:click="$emit('informar', {{ $renglon }}, {{ $loop->iteration }})"
+                                                wire:click="$emit('editar', {{ $renglon }}, {{ $loop->iteration }})"
                                         >
                                         <x-heroicon-o-pencil-alt class="w-8 h-8 text-gray-500" />
                                         </button>
@@ -306,51 +307,332 @@
 
     </div>
 
+
+    {{-- DIALOG MODAL PARA VER Y ACTUALIZAR DATOS DE CONTACTO --}}
+    <x-jet-dialog-modal wire:model="abrir" id="modal_editar">
+
+        <x-slot name="title">
+            <div class="text-center my-4 text-2xl text-orange-500 text-bold"">
+                Datos del Contacto con id: <span class="ml-4">{{ $editando->id }}</span>
+            </div>
+        </x-slot>
+
+        <x-slot name="content">
+            <div class="text-white ">
+
+                <div class="mt-0" style="width: 720px;">
+
+                    <form
+                        class="flex flex-col items-center flex-1 p-1"
+                        wire:submit.prevent="procesar"
+                    >
+                        <div class="w-full">
+
+                            <div class="flex flex-col mb-6 wire:ignore md:mx-24 md:flex-row md:items-center ">
+                                {{-- Aquí va la CATEGORÍA del contacto --}}
+                                <label for="categoria_id" class="w-48 text-base font-normal leading-none text-gray-300 ">
+                                    Categoría Asignada:
+                                </label>
+                                <select
+                                    class="w-64 px-2 py-1 mr-4 text-xl font-extrabold text-black border-gray-300 rounded-md shadow-sm select2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    id="mod_select2_cat_id"
+                                    name="categoria_id"
+                                    wire:model="categoria_id"
+                                >
+                                    <option value="0" class="text-orange-500">seleccionar...</option>
+                                    @foreach ($categos as $categ)
+                                    <option value="{{ $categ->cat_id }}" class="text-xl font-extrabold text-black">{{ $categ->clasif }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @if($errors->has('categoria_id'))
+                                <div class="mb-8 text-xl text-center text-white bg-red-800 animate-pulse md:w-96 md:ml-8 md:mb-6 text-extrabold">
+                                    {{ $errors->first('categoria_id') }}
+                                </div>
+                            @endif
+
+                            <div class="flex flex-col mb-6 wire:ignore md:mx-24 md:flex-row md:items-center ">
+                                {{-- Aquí va el TIPO de contacto --}}
+                                <label for="clave_tipo" class="w-48 text-base font-normal leading-none text-gray-300 ">
+                                    Tipo de Contacto:
+                                </label>
+                                <select
+                                    class="w-64 px-2 py-1 mr-4 text-xl font-extrabold text-black border-gray-300 rounded-md shadow-sm select2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    id="mod_select2_tip_id"
+                                    name="clave_tipo"
+                                    wire:model="clave_tipo"
+                                >
+                                    <option value="" class="text-orange-500">seleccionar...</option>
+                                    @foreach ($cvetipos as $cvetipo)
+                                    <option value="{{ $cvetipo }}" class="text-xl font-extrabold text-black">{{ $cvetipo }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @if($errors->has('clave_tipo'))
+                                <div class="mb-8 text-xl text-center text-white bg-red-800 animate-pulse md:w-96 md:ml-8 md:mb-6 text-extrabold">
+                                    {{ $errors->first('clave_tipo') }}
+                                </div>
+                            @endif
+
+                            <div class="flex flex-col mb-6 wire:ignore md:mx-24 md:flex-row md:items-center ">
+                                {{-- Aquí va el ORIGEN del registro --}}
+                                <label for="clave_origen" class="w-48 text-base font-normal leading-none text-gray-300 ">
+                                    Origen del Registro:
+                                </label>
+                                <select
+                                    class="w-64 px-2 py-1 mr-4 text-xl font-extrabold text-black border-gray-300 rounded-md shadow-sm select2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    id="mod_select2_ori_id"
+                                    name="clave_origen"
+                                    wire:model="clave_origen"
+                                >
+                                    <option value="" class="text-orange-500">seleccionar...</option>
+                                    @foreach ($origenes as $origen)
+                                    <option value="{{ $origen }}" class="text-xl font-extrabold text-black">{{ $origen }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @if($errors->has('clave_origen'))
+                                <div class="mb-8 text-xl text-center text-white bg-red-800 animate-pulse md:w-96 md:ml-8 md:mb-6 text-extrabold">
+                                    {{ $errors->first('clave_origen') }}
+                                </div>
+                            @endif
+
+                            <div class="flex flex-col mb-6 wire:ignore md:mx-24 md:flex-row md:items-center ">
+                                {{-- Aquí va el GENERO de la PERSONA --}}
+                                <label for="clave_genero" class="w-48 text-base font-normal leading-none text-gray-300 ">
+                                    Género del Contacto:
+                                </label>
+                                <select
+                                    class="w-64 px-2 py-1 mr-4 text-xl font-extrabold text-black border-gray-300 rounded-md shadow-sm select2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    id="mod_select2_gen_id"
+                                    name="clave_genero"
+                                    wire:model="clave_genero"
+                                >
+                                    <option value="" class="text-orange-500">seleccionar...</option>
+                                    @foreach ($generos as $genero)
+                                    <option value="{{ $genero }}" class="text-xl font-extrabold text-black">{{ $genero }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @if($errors->has('clave_genero'))
+                                <div class="mb-8 text-xl text-center text-white bg-red-800 animate-pulse md:w-96 md:ml-8 md:mb-6 text-extrabold">
+                                    {{ $errors->first('clave_genero') }}
+                                </div>
+                            @endif
+
+                            <div class="flex flex-col mt-4 md:flex-row md:items-center ">
+                                {{-- Aquí entra el nombre completo del contacto --}}
+                                <label for="nombre_full" class="w-48 mt-2 mb-4 text-base font-normal leading-none text-gray-300 ">
+                                    Nombre del Contacto:
+                                </label>
+                                <input
+                                    style="width: 400px;"
+                                    class="px-2 py-1 mb-4 mr-4 text-xl font-bold text-black placeholder-orange-400 uppercase border-gray-300 rounded-md shadow-sm brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    type="text"
+                                    id="nombre_full"
+                                    name="nombre_full"
+                                    placeholder="nombre completo"
+                                    wire:model="nombre_full"
+                                >
+                            </div>
+                            @if($errors->has('nombre_full'))
+                                <div class="mb-8 text-xl text-center text-white bg-red-800 animate-pulse md:w-96 md:ml-8 md:mb-6 text-extrabold">
+                                    {{ $errors->first('nombre_full') }}
+                                </div>
+                            @endif
+
+                            <div class="flex flex-col md:flex-row md:items-center ">
+                                {{-- Aquí entra el domicilio completo del contacto --}}
+                                <label for="domicilio_full" class="w-48 mt-2 mb-4 text-base font-normal leading-none text-gray-300 ">
+                                    Domicilio de Contacto:
+                                </label>
+                                <input
+                                    style="width: 400px;"
+                                    class="px-2 py-1 mb-4 mr-4 text-xl font-bold text-black placeholder-orange-400 uppercase border-gray-300 rounded-md shadow-sm brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    type="text"
+                                    id="domicilio_full"
+                                    name="domicilio_full"
+                                    placeholder="domicilio completo"
+                                    wire:model="domicilio_full"
+                                >
+                            </div>
+                            @if($errors->has('domicilio_full'))
+                                <div class="mb-8 text-xl text-center text-white bg-red-800 animate-pulse md:w-96 md:ml-8 md:mb-6 text-extrabold">
+                                    {{ $errors->first('domicilio_full') }}
+                                </div>
+                            @endif
+
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-start">
+                                {{-- Aquí entra el numero de telefono FIJO --}}
+                                <label for="telefono_fijo" class="w-48 text-base font-normal leading-none text-gray-300 md:mb-4 ">
+                                    Teléfono de Casa:
+                                </label>
+                                <input
+                                    class="px-2 py-1 mb-4 text-xl font-bold text-black placeholder-orange-400 border-gray-300 rounded-md shadow-sm md:w-48 md:mr-2 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    type="number"
+                                    size="10"
+                                    maxlength="10"
+                                    id="telefono_fijo"
+                                    name="telefono_fijo"
+                                    placeholder="obligatorio"
+                                    wire:model="telefono_fijo"
+                                >
+                            </div>
+                            @if($errors->has('telefono_fijo'))
+                                <div class="mb-8 text-xl text-center text-white bg-red-800 animate-pulse md:w-96 md:mb-6 text-extrabold">
+                                    {{ $errors->first('telefono_fijo') }}
+                                </div>
+                            @endif
+
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-start">
+                                {{-- Aquí entra el numero de telefono celular --}}
+                                <label for="telefono_movil" class="w-48 text-base font-normal leading-none text-gray-300 md:mb-4 ">
+                                    Teléfono Celular:
+                                </label>
+                                <input
+                                    class="px-2 py-1 mb-4 mr-0 text-xl font-bold text-black placeholder-orange-400 border-gray-300 rounded-md shadow-sm md:w-48 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    type="number"
+                                    size="10"
+                                    maxlength="10"
+                                    id="telefono_movil"
+                                    name="telefono_movil"
+                                    placeholder="obligatorio"
+                                    wire:model="telefono_movil"
+                                >
+                                <div class="flex flex-row justify-center mb-3">
+                                    <label for="tiene_watsapp" class="ml-0 mr-4 text-base font-normal leading-none text-left text-gray-300 md:ml-4 md:text-right">
+                                        Tiene Watsapp...
+                                    </label>
+                                    <input
+                                        class="w-6 h-6 bg-orange-600 border border-gray-500 rounded md:mr-8 focus:ring-orange-700 ring-offset-gray-800"
+                                        type="checkbox"
+                                        id="tiene_watsapp"
+                                        name="tiene_watsapp"
+                                        wire:model="tiene_watsapp"
+                                    >
+                                </div>
+                            </div>
+                            @if($errors->has('telefono_movil'))
+                                <div class="mb-8 text-xl text-center text-white bg-red-800 animate-pulse md:w-96 md:ml-8 md:mb-6 text-extrabold">
+                                    {{ $errors->first('telefono_movil') }}
+                                </div>
+                            @endif
+      
+                            <div class="flex flex-col md:flex-row md:items-center ">
+                                {{-- Aquí entra el correo electrónico del contacto --}}
+                                <label for="direccion_email" class="w-48 mt-2 mb-4 text-base font-normal leading-none text-gray-300 ">
+                                    Correo Electrónico:
+                                </label>
+                                <input
+                                    style="width: 400px;"
+                                    class="px-2 py-1 mb-4 mr-4 text-xl font-bold text-black placeholder-orange-400 lowercase border-gray-300 rounded-md shadow-sm md:mr-12 brder focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                    type="email"
+                                    id="direccion_email"
+                                    name="direccion_email"
+                                    wire:model="direccion_email"
+                                >
+                            </div>
+                            @if($errors->has('direccion_email'))
+                                <div class="mb-8 text-xl text-center text-white bg-red-800 animate-pulse md:w-96 md:ml-8 md:mb-6 text-extrabold">
+                                    {{ $errors->first('direccion_email') }}
+                                </div>
+                            @endif
+
+                            {{-- Este es un honeypot rístico --}}
+                            <div class="invisible">
+                                <input
+                                    type="checkbox"
+                                    id="trampa"
+                                    name="trampa"
+                                    wire:model="trampa"
+                                >
+                            </div>
+        
+                            <div class="flex flex-col justify-start md:flex-row">
+
+                                <button wire:click="abortar" class="w-48 px-12 py-2 text-lg font-bold text-black bg-orange-500 border-2 border-orange-700 hover:bg-orange-300">
+                                    SIEMPRE NO
+                                </button>
+                
+                                <button wire:click="procesar" class="w-48 px-8 py-2 text-xl font-bold text-black bg-green-500 border-2 border-green-700 md:ml-32 hover:bg-green-300">
+                                    <span wire:loading wire:target="procesar" class="px-12 text-xl font-extrabold animate-spin">
+                                        &#9696;
+                                    </span>
+                                    <span wire:loading.remove wire:target="procesar" class="text-xl">
+                                        ACTUALIZAR
+                                    </span>
+                                </button>
+
+                            </div>
+        
+                        </div>
+        
+                    </form>
+
+                </div>
+
+            </div>
+        </x-slot>
+
+        <x-slot name="footer">
+            <div class="my-6 mr-6">
+
+                <span class="w-full border-b-2 border-white">
+
+                </span>
+
+            </div>
+        </x-slot>
+
+    </x-jet-dialog-modal>
+
+
+    {{-- para informar parametros  --}}
     <script>
 
         document.addEventListener('livewire:load', () => {
 
             @this.on('informar', (contacto, posicion) => {
 
-                const querystring = window.location.search;
-                @this.cueristri = window.location.search;
-                console.log(querystring);
-                const params = new URLSearchParams(querystring);
+                // const querystring = window.location.search;
+                // @this.cueristri = window.location.search;
+                // console.log(querystring);
+                // const params = new URLSearchParams(querystring);
 
-                if (params.has("rengs")) {
-                    console.log('Param rengs: ', params.get('rengs'));
-                    @this.valorengs = params.get('rengs');
-                }
-                if (params.has("pp")) {
-                    console.log('Param PP: ', params.get('pp'));
-                    @this.parametpp = params.get('pp');
-                }
-                if (params.has("sx")) {
-                    console.log('Param SX: ', params.get('sx'));
-                    @this.parametpp = params.get('sx');
-                }
-                if (params.has("ad")) {
-                    console.log('Param AD: ', params.get('ad'));
-                    @this.parametpp = params.get('ad');
-                }
-                if (params.has("kt")) {
-                    console.log('Param KT: ', params.get('kt'));
-                    @this.parametpp = params.get('kt');
-                }
-                if (params.has("ko")) {
-                    console.log('Param KOT: ', params.get('ko'));
-                    @this.parametpp = params.get('ko');
-                }
-                if (params.has("c1")) {
-                    console.log('Param C1: ', params.get('c1'));
-                    @this.parametpp = params.get('c1');
-                }
-                if (params.has("c2")) {
-                    console.log('Param C2: ', params.get('c2'));
-                    @this.parametpp = params.get('c2');
-                }
-                console.log('Informado: ok');
-                Livewire.emitTo('directorios.contactos.index2', 'editar', contacto, posicion )
+                // if (params.has("rengs")) {
+                //     console.log('Param rengs: ', params.get('rengs'));
+                //     @this.valorengs = params.get('rengs');
+                // }
+                // if (params.has("pp")) {
+                //     console.log('Param PP: ', params.get('pp'));
+                //     @this.parametpp = params.get('pp');
+                // }
+                // if (params.has("sx")) {
+                //     console.log('Param SX: ', params.get('sx'));
+                //     @this.parametpp = params.get('sx');
+                // }
+                // if (params.has("ad")) {
+                //     console.log('Param AD: ', params.get('ad'));
+                //     @this.parametpp = params.get('ad');
+                // }
+                // if (params.has("kt")) {
+                //     console.log('Param KT: ', params.get('kt'));
+                //     @this.parametpp = params.get('kt');
+                // }
+                // if (params.has("ko")) {
+                //     console.log('Param KOT: ', params.get('ko'));
+                //     @this.parametpp = params.get('ko');
+                // }
+                // if (params.has("c1")) {
+                //     console.log('Param C1: ', params.get('c1'));
+                //     @this.parametpp = params.get('c1');
+                // }
+                // if (params.has("c2")) {
+                //     console.log('Param C2: ', params.get('c2'));
+                //     @this.parametpp = params.get('c2');
+                // }
+                // console.log('Informado: ok');
+                // Livewire.emitTo('directorios.contactos.index2', 'editar', contacto, posicion )
 
             })
 
@@ -364,6 +646,8 @@
         document.addEventListener('livewire:load', function(){
 
             console.log('+++++++ mis contactos');
+
+            // estos son para los filtros:
 
             $('#select2_tip_id').select2({
                 dropdownParent: $('#vista_index')
@@ -389,6 +673,40 @@
                 @this.delaCateg = this.value;
             });
 
+            // estos son para el modal de edicion:
+        
+            $('#mod_select2_cat_id').select2({
+                dropdownParent: $('#modal_editar')
+            });
+            $('#mod_select2_cat_id').on('change', function(){
+                // console.log('C-sel: ', this.value);
+                @this.categoria_id = this.value;
+            });
+
+            $('#mod_select2_tip_id').select2({
+                dropdownParent: $('#modal_editar')
+            });
+            $('#mod_select2_tip_id').on('change', function(){
+                // console.log('T-sel: ', this.value);
+                @this.clave_tipo = this.value;
+            });
+
+            $('#mod_select2_ori_id').select2({
+                dropdownParent: $('#modal_editar')
+            });
+            $('#mod_select2_ori_id').on('change', function(){
+                // console.log('O-sel: ', this.value);
+                @this.clave_origen = this.value;
+            });
+
+            $('#mod_select2_gen_id').select2({
+                dropdownParent: $('#modal_editar')
+            });
+            $('#mod_select2_gen_id').on('change', function(){
+                // console.log('G-sel: ', this.value);
+                @this.clave_genero = this.value;
+            });
+            
         });
         
     </script>
@@ -459,6 +777,69 @@
                 showConfirmButton: true,
                 confirmButtonText: 'O K'
             })
+        })
+
+    </script>
+
+
+    {{-- mensaje de procesado ok --}}
+    <script>
+
+        Livewire.on('procesaOk', () => {
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'px-12 py-3 my-8 text-black text-3xl font-extrabold border-2 rounded-md border-gray-600 bg-gray-400 hover:bg-gray-200'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Procesado!',
+                text: 'El Contacto fué Actualizado Correctamente.',
+                icon: 'success',
+                timer: 3000,
+                width: 600,
+                padding: '3em',
+                color: '#000000',
+                background: '#00aa00',
+                showConfirmButton: true,
+                confirmButtonText: 'O K'
+            })
+        })
+
+    </script>
+
+
+    {{-- toast que avisa que no se procesó --}}
+    <script>
+
+        Livewire.on('abortado', () => {
+
+            console.log('<< abortado >>');
+            
+            const Toast = Swal.mixin({
+            toast: true,
+            position: 'center',
+            width: 720,
+            padding: '3em',
+            color: '#006600',
+            background: '#ccff33',
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+            })
+            Toast.fire({
+            imageUrl: '{{ asset('logos/Tick.png') }}',
+            imageHeight: 95,
+            imageWidth: 95,
+            title: '<h6 class="text-5xl font-extrabold">No se aplicaron cambios</h6>'
+            })
+
         })
 
     </script>
