@@ -245,7 +245,7 @@
     </div>
 
     {{-- DIALOG MODAL PARA CHECAR y PROCESAR --}}
-    <x-jet-dialog-modal wire:model="abrir">
+    <x-dialog-modal wire:model="abrir">
 
         <x-slot name="title">
             <div class="text-center">
@@ -358,7 +358,7 @@
             </div>
         </x-slot>
 
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
     {{-- mensaje de procesado ok --}}
     <script>

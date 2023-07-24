@@ -181,7 +181,7 @@
 
 
     {{-- DIALOG MODAL PARA CAPTURAR NUEVO y PROCESAR INSERT --}}
-    <x-jet-dialog-modal wire:model="crear" id="modal_alta">
+    <x-dialog-modal wire:model="crear" id="modal_alta">
 
         <x-slot name="title">
             <div class="text-center">
@@ -384,11 +384,11 @@
             </div>
         </x-slot>
 
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
 
     {{-- DIALOG MODAL PARA EDITAR Y ACTUALIZAR UN USUARIO --}}
-    <x-jet-dialog-modal wire:model="abrir" id="modal_edit">
+    <x-dialog-modal wire:model="abrir" id="modal_edit">
 
         <x-slot name="title">
             <div class="text-center">
@@ -605,7 +605,7 @@
             </div>
         </x-slot>
 
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
 
     {{-- listeners de los select's  --}}

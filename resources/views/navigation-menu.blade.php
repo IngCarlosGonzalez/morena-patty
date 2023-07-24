@@ -8,25 +8,25 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="/">
-                        <x-jet-application-mark class="block h-9 w-auto" />
+                        <x-application-mark class="block h-9 w-auto" />
                     </a>
                 </div>
 
                 @if(@Auth::user()->hasRole('superusuario'))
                     <!-- Navigation Links del Superusuario -->
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                        <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                             {{-- La portada de la app --}}
                             INICIO
-                        </x-jet-nav-link>
+                        </x-nav-link>
                     </div>
                 @else
                     <!-- Navigation Links del Usuario Común -->
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                        <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                             {{-- La portada de la app --}}
                             INICIO
-                        </x-jet-nav-link>
+                        </x-nav-link>
                     </div>
                 @endif
 
@@ -36,7 +36,7 @@
 
                 <!-- Settings Dropdown -->
                 <div class="ml-3 relative">
-                    <x-jet-dropdown align="right" width="48">
+                    <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <span class="inline-flex rounded-md">
                                 <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
@@ -59,13 +59,13 @@
                             <!-- para salir de la sesión -->
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
-                                <x-jet-dropdown-link href="{{ route('logout') }}"
+                                <x-dropdown-link href="{{ route('logout') }}"
                                         @click.prevent="$root.submit();">
                                     Cerrar sesión
-                                </x-jet-dropdown-link>
+                                </x-dropdown-link>
                             </form>
                         </x-slot>
-                    </x-jet-dropdown>
+                    </x-dropdown>
                 </div>
             </div>
 
@@ -86,17 +86,17 @@
 
         @if(@Auth::user()->hasRole('superusuario'))
             <div class="pt-2 pb-3 space-y-1">
-                <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                     {{-- Portada de la app --}}
                     INICIO
-                </x-jet-responsive-nav-link>
+                </x-responsive-nav-link>
             </div>
         @else
             <div class="pt-2 pb-3 space-y-1">
-                <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                     {{-- Portada de la app --}}
                     INICIO
-                </x-jet-responsive-nav-link>
+                </x-responsive-nav-link>
             </div>
         @endif
 
@@ -113,10 +113,10 @@
                 <!-- Salir de la sesión -->
                 <form method="POST" action="{{ route('logout') }}" x-data>
                     @csrf
-                    <x-jet-responsive-nav-link class="text-white" href="{{ route('logout') }}"
+                    <x-responsive-nav-link class="text-white" href="{{ route('logout') }}"
                                 @click.prevent="$root.submit();">
                         CERRAR SESIÓN
-                    </x-jet-responsive-nav-link>
+                    </x-responsive-nav-link>
                 </form>
             </div>
         </div>

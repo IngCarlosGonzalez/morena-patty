@@ -449,8 +449,8 @@ class Index2 extends Component
         $this->folio = $this->editando->id;
         $this->paginanum = $this->valorengs;
 
-        Log::debug('Eniado desde idx2 el id... ' . $this->folio);
-
+        // Log::debug('Editando desde idx2 el id... ' . $this->folio);
+        //
         // // pruebas para arastrar paraetros...
         // Log::debug('>>> QueryString... ' . $this->cueristri);
         // $this->parametbu = $this->search;
@@ -489,10 +489,20 @@ class Index2 extends Component
 
         $this->resetValidation();
 
-        $this->name = $this->editando->name;
+        $this->clave_tipo    = $this->editando->clave_tipo;
+        $this->clave_origen  = $this->editando->clave_origen;
+        $this->categoria_id  = $this->editando->categoria_id;
+        $this->clasificacion = $this->editando->clasificacion;
+        $this->clave_genero  = $this->editando->clave_genero;
+    
+        $this->nombre_full     = $this->editando->nombre_full;
+        $this->domicilio_full  = $this->editando->domicilio_full;
+        $this->telefono_fijo   = $this->editando->telefono_fijo;
+        $this->telefono_movil  = $this->editando->telefono_movil;
+        $this->tiene_watsapp   = $this->editando->tiene_watsapp;
+        $this->direccion_email = $this->editando->direccion_email;
 
-
-
+        $this->abrir = true;
     }
 
 
@@ -501,10 +511,8 @@ class Index2 extends Component
     //
     public function abortar()
     {
-        Log::debug('Proceso abortado desde... ' . $this->dedonde);
-        $this->emit('abortado');
-        $this->abrir = false;
-
+        // Log::debug('Proceso abortado desde... ' . $this->dedonde);
+        //
         // session(['hacia_coontactos' => 'edicion']);
         // session(['contacto_editado' => $this->editando->id]);
         // session(['contacto_paginan' => $this->conpagina]);
@@ -517,7 +525,10 @@ class Index2 extends Component
         // } else {
         //     return redirect('/');
         // }
-        
+
+        $this->emit('abortado');
+        $this->abrir = false;
+
     }
 
 
@@ -539,11 +550,7 @@ class Index2 extends Component
     // 
     public function procesar()
     {
-        Log::debug('Actualizando id... ' . $this->folio);
-                
-        if (!is_null($this->trampa)) {
-            return redirect('/');
-        }
+        // Log::debug('Actualizando id... ' . $this->folio);
 
         $this->validate();
 
@@ -559,9 +566,19 @@ class Index2 extends Component
         $this->mivariable = strtolower($this->direccion_email);
         $this->direccion_email = $this->mivariable;
 
-        $this->editando->save();
-
-        $this->emit('procesaOk');
+        $this->editando->update([
+            'clave_tipo'         => $this->clave_tipo,
+            'clave_origen'       => $this->clave_origen,
+            'clave_genero'       => $this->clave_genero,
+            'categoria_id'       => $this->categoria_id,
+            'clasificacion'      => $this->clasificacion,
+            'nombre_full'        => $this->nombre_full,
+            'domicilio_full'     => $this->domicilio_full,
+            'telefono_fijo'      => $this->telefono_fijo,
+            'telefono_movil'     => $this->telefono_movil,
+            'tiene_watsapp'      => $this->tiene_watsapp,
+            'direccion_email'    => $this->direccion_email,
+        ]);
 
         // Log::debug('   regresa ok desde... ' . $this->dedonde);
         // session(['hacia_coontactos' => 'edicion']);
@@ -577,6 +594,9 @@ class Index2 extends Component
         //     return redirect('/');
         // }
 
+        $this->emit('procesaOk');
+
+        $this->abrir = false;
     }
 
 

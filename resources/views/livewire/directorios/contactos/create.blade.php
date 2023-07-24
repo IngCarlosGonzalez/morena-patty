@@ -33,12 +33,12 @@
             @if ($mostrar_boton)
 
                 <div class="m-4" >
-                    <x-jet-button
+                    <x-button
                     class="justify-center w-32 px-4 py-2 text-base bg-green-600 md:w-64 md:px-8 md:py-4 md:text-lg hover:bg-yellow-700"
                     wire:click="agregar"
                     >
                     Agregar Otro
-                    </x-jet-button>
+                    </x-button>
                 </div>
 
                 <p class="mt-2 mb-8 text-base leading-normal text-gray-400">
@@ -57,7 +57,7 @@
 
 
     {{-- DIALOG MODAL PARA CAPTURAR NUEVO y PROCESAR INSERT --}}
-    <x-jet-dialog-modal wire:model="crear" id="modal_crear">
+    <x-dialog-modal wire:model="crear" id="modal_crear">
 
         <x-slot name="title">
             <div class="text-center">
@@ -333,7 +333,7 @@
             </div>
         </x-slot>
 
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
 
     {{-- listeners de los select's  --}}

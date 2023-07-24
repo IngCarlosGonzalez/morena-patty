@@ -309,7 +309,7 @@
 
 
     {{-- DIALOG MODAL PARA VER Y ACTUALIZAR DATOS DE CONTACTO --}}
-    <x-jet-dialog-modal wire:model="abrir" id="modal_editar">
+    <x-dialog-modal wire:model="abrir" id="modal_editar">
 
         <x-slot name="title">
             <div class="text-center my-4 text-2xl text-orange-500 text-bold"">
@@ -584,7 +584,7 @@
             </div>
         </x-slot>
 
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
 
     {{-- para informar parametros  --}}

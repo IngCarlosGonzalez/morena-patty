@@ -10,12 +10,12 @@
 
     {{-- Este botón es el que se inserta en la vista LandingPage --}}
     <div class="m-4" >
-        <x-jet-button
+        <x-button
         class="w-full bg-green-600 text-lg justify-center py-4 px-8 hover:bg-yellow-700"
         x-on:click="showSubscribe=true"
         >
         Ponte en Contacto
-        </x-jet-button>
+        </x-button>
     </div>
 
     {{-- Modal con formato para registrar al prospecto --}}

@@ -216,7 +216,7 @@
 
 
     {{-- DIALOG MODAL PARA CAPTURAR NUEVO y PROCESAR INSERT --}}
-    <x-jet-dialog-modal wire:model="crear" id="modal_crear">
+    <x-dialog-modal wire:model="crear" id="modal_crear">
 
         <x-slot name="title">
             <div class="text-center">
@@ -380,11 +380,11 @@
             </div>
         </x-slot>
 
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
 
     {{-- DIALOG MODAL PARA EDITAR Y ACTUALIZAR UN REGISTRO --}}
-    <x-jet-dialog-modal wire:model="abrir">
+    <x-dialog-modal wire:model="abrir">
 
         <x-slot name="title">
             <div class="text-center">
@@ -537,7 +537,7 @@
             </div>
         </x-slot>
 
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
         
     {{-- aqui se llama al Select2 de modal_crear --}}

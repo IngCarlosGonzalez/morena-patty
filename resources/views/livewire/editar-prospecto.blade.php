@@ -4,7 +4,7 @@
         VER
     <button>
 
-    <x-jet-dialog-modal wire:model="abrir">
+    <x-dialog-modal wire:model="abrir">
 
         <x-slot name="title">
             <div class="">
@@ -114,7 +114,7 @@
             </div>
         </x-slot>
 
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
     <script>
 
