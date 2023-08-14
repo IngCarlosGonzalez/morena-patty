@@ -7,7 +7,7 @@
         <x-validation-errors class="mb-4" />
 
         @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
+            <div class="mb-4 text-sm font-medium text-green-600">
                 {{ session('status') }}
             </div>
         @endif
@@ -16,13 +16,13 @@
             @csrf
 
             <div>
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+                <x-label for="email" label="{{ __('Email') }}" />
+                <x-input id="email" class="block w-full mt-1" type="email" name="email" :value="old('email')" required autofocus />
             </div>
 
             <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
+                <x-label for="password" label="{{ __('Password') }}" />
+                <x-input id="password" class="block w-full mt-1" type="password" name="password" required autocomplete="current-password" />
             </div>
 
             <div class="block mt-4">
@@ -32,19 +32,19 @@
                 </label>
             </div>
 
-            <div class="flex items-center justify-center mt-4 py-1 bg-white border-2 border-gray-400">
+            <div class="flex items-center justify-center py-1 mt-4 bg-white border-2 border-gray-400">
                 {!! NoCaptcha::renderJs() !!}
                 {!! NoCaptcha::display() !!}
             </div>
 
             <div class="flex items-center justify-end mt-6 mb-6">
                 @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
+                    <a class="text-sm text-gray-600 underline hover:text-gray-900" href="{{ route('password.request') }}">
                         ¿ Se te olvidó tu password ?
                     </a>
                 @endif
 
-                <x-button class="ml-4">
+                <x-button type="submit" class="ml-4">
                     Ingresar
                 </x-button>
             </div>

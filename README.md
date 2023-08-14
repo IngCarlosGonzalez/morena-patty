@@ -7,6 +7,19 @@ Esta aplicación es desarrollada por su servidor, Carlos Enrique González Casti
 Saltillo, Coahuila
 Agosto de 2022
 
-
 ... come frutas y verduras ;)
+
+
+
+## Actuaizaciones 2023...
+
+Se implementa versión actual de Laravel 10
+y se pasa todo el desarrollo al ambiente
+Linux, en máquina virtual box con Ubuntu
+y se prueba deployer en VPS de Hostinger.
+
+Agosto 14, 2024
+
+
+
 
